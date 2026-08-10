@@ -334,6 +334,25 @@ a:hover { text-decoration: underline; }
 
 .btn-calc { width: 100%; margin-top: 1.5rem; }
 
+/* Trust-rad – ljusare platta som läser som en egen enhet */
+.trust {
+  max-width: 900px; margin: 1.75rem auto 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+  background: var(--bg-card); border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 1.75rem clamp(1.25rem, 3vw, 2rem);
+}
+.trust-item { text-align: center; }
+.trust-icon { color: var(--orange); margin-bottom: .6rem; }
+.trust-icon svg { width: 30px; height: 30px; }
+.trust-item h3 {
+  margin: 0 0 .3rem;
+  font-size: .82rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .05em;
+  line-height: 1.35; color: var(--ink);
+}
+.trust-item p { margin: 0; font-size: .88rem; line-height: 1.55; color: var(--muted); }
+
 /* Så går det till */
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
 .step { text-align: center; padding: 0 1rem; }
@@ -368,6 +387,7 @@ a:hover { text-decoration: underline; }
 @media (max-width: 860px) {
   .calc-truck { grid-template-columns: 1fr; gap: 1.25rem; }
   .calc-steps { grid-template-columns: repeat(3, 1fr); }
+  .trust { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1.25rem; }
   .steps { grid-template-columns: 1fr; gap: 2rem; }
 
   body { padding-bottom: 68px; }
@@ -387,6 +407,10 @@ a:hover { text-decoration: underline; }
   .mobile-bar a:hover { text-decoration: none; }
   .mb-call  { background: var(--orange); color: #fff; }
   .mb-quote { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.5); }
+}
+
+@media (max-width: 560px) {
+  .trust { grid-template-columns: 1fr; gap: 1.35rem; }
 }
 
 /* Ankarlänkar ska inte hamna bakom den fasta headern */
