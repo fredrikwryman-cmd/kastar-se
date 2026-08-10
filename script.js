@@ -1,6 +1,6 @@
-// Kastar.se – liten mängd JavaScript för meny och årtal.
+// Kastar.se – mobilmeny, priskalkylator och scroll-animationer.
 
-// Mobilmeny (hamburgare)
+/* ---------- Mobilmeny (hamburgare) ---------- */
 const toggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
 
@@ -10,7 +10,6 @@ if (toggle && nav) {
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 
-  // Stäng menyn när man klickar på en länk (mobil)
   nav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
@@ -19,8 +18,80 @@ if (toggle && nav) {
   });
 }
 
-// Sätt årtal i sidfoten automatiskt
+/* ---------- Årtal i sidfoten ---------- */
 const yearEl = document.getElementById('year');
-if (yearEl) {
-  yearEl.textContent = '© ' + new Date().getFullYear();
+if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
+
+/* ---------- Priskalkylator ----------
+   Ändra priser, volymer och texter här – resten sköter sig självt. */
+const TIERS = [
+  { label: 'Litet',    vol: 'Upp till 2 m³',  price: 1695, fill: 0.12, desc: 'För några få saker, mindre möbler eller lådor.' },
+  { label: '1/4 bil',  vol: 'Upp till 4 m³',  price: 2695, fill: 0.25, desc: 'Passar mindre bohag, förråd eller garage.' },
+  { label: '1/2 bil',  vol: 'Upp till 8 m³',  price: 4195, fill: 0.50, desc: 'Halva bilen – perfekt för större tömningar.' },
+  { label: '5/8 bil',  vol: 'Upp till 10 m³', price: 5195, fill: 0.625, desc: 'För dig som har mycket som ska bort.' },
+  { label: '3/4 bil',  vol: 'Upp till 12 m³', price: 5995, fill: 0.75, desc: 'Nästan full bil – för större boenden eller lokaler.' },
+  { label: 'Full bil', vol: 'Upp till 16 m³', price: 7795, fill: 1.00, desc: 'Fullastad bil – för hela hem, dödsbon eller lokaler.' }
+];
+
+const BOX_WIDTH = 196; // bredd på lastutrymmet i SVG-koordinater
+
+const range   = document.getElementById('calcRange');
+const fillEl  = document.getElementById('truckFill');
+const labelEl = document.getElementById('calcLabel');
+const volEl   = document.getElementById('calcVol');
+const priceEl = document.getElementById('calcPrice');
+const descEl  = document.getElementById('calcDesc');
+const stepsEl = document.getElementById('calcSteps');
+
+function formatPrice(n) {
+  return n.toLocaleString('sv-SE').replace(/ /g, ' ') + ' kr';
+}
+
+function renderTier(i) {
+  const t = TIERS[i];
+  if (!t) return;
+
+  fillEl.setAttribute('width', (BOX_WIDTH * t.fill).toFixed(1));
+  labelEl.textContent = t.label;
+  volEl.textContent   = t.vol;
+  descEl.textContent  = t.desc;
+  priceEl.textContent = formatPrice(t.price);
+
+  // färgad del av reglaget
+  range.style.setProperty('--pct', (i / (TIERS.length - 1)) * 100 + '%');
+
+  stepsEl.querySelectorAll('button').forEach((b) => {
+    b.classList.toggle('active', Number(b.dataset.i) === i);
+  });
+}
+
+if (range && fillEl) {
+  range.addEventListener('input', () => renderTier(Number(range.value)));
+
+  stepsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    range.value = btn.dataset.i;
+    renderTier(Number(btn.dataset.i));
+  });
+
+  renderTier(Number(range.value));
+}
+
+/* ---------- Scroll-animationer ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+
+if ('IntersectionObserver' in window && revealEls.length) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach((el) => io.observe(el));
+} else {
+  revealEls.forEach((el) => el.classList.add('in'));
 }

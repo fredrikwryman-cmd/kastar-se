@@ -30,6 +30,7 @@
 
       <nav class="nav" id="nav">
         <a href="#tjanster">Tjänster</a>
+        <a href="#priser">Priser</a>
         <a href="#varfor">Varför oss</a>
         <a href="#omdomen">Omdömen</a>
         <a href="#kontakt">Kontakt</a>
@@ -95,6 +96,85 @@
             <p>Snabb och smidig bortforsling från garage, förråd och kontorslokaler för en renare arbets- och förvaringsmiljö.</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ PRISKALKYLATOR ============ -->
+    <section class="section section-price" id="priser">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Priser</p>
+          <h2>Hur mycket vill du bli av med?</h2>
+          <p class="lead">Du betalar efter <strong>hur mycket plats</strong> dina saker tar i bilen.</p>
+        </div>
+
+        <div class="calc reveal">
+          <!-- Lastbil som fylls -->
+          <div class="calc-truck">
+            <svg viewBox="0 0 320 150" role="img" aria-label="Lastbil som fylls beroende på vald mängd">
+              <!-- lastutrymme -->
+              <rect class="truck-box" x="108" y="26" width="200" height="76" rx="4" />
+              <!-- fyllnad -->
+              <clipPath id="boxClip"><rect x="110" y="28" width="196" height="72" rx="3" /></clipPath>
+              <g clip-path="url(#boxClip)">
+                <rect id="truckFill" class="truck-fill" x="110" y="28" width="0" height="72" />
+              </g>
+              <!-- hytt -->
+              <path class="truck-cab" d="M104 102 V54 H70 L44 74 v28 Z" />
+              <rect class="truck-window" x="60" y="60" width="26" height="18" rx="3" />
+              <!-- chassi -->
+              <rect class="truck-chassis" x="40" y="102" width="268" height="8" rx="3" />
+              <!-- hjul -->
+              <circle class="truck-wheel" cx="88" cy="118" r="15" />
+              <circle class="truck-hub"   cx="88" cy="118" r="6" />
+              <circle class="truck-wheel" cx="250" cy="118" r="15" />
+              <circle class="truck-hub"   cx="250" cy="118" r="6" />
+            </svg>
+            <div class="calc-readout">
+              <span class="calc-label" id="calcLabel">1/2 BIL</span>
+              <span class="calc-vol"   id="calcVol">Upp till 8 m³</span>
+              <span class="calc-from">Från</span>
+              <span class="calc-price" id="calcPrice">4 195 kr</span>
+              <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
+            </div>
+          </div>
+
+          <!-- Reglage -->
+          <label class="sr-only" for="calcRange">Välj hur mycket som ska bort</label>
+          <input class="calc-range" id="calcRange" type="range" min="0" max="5" step="1" value="2" />
+
+          <div class="calc-steps" id="calcSteps">
+            <button type="button" data-i="0">Litet</button>
+            <button type="button" data-i="1">1/4 bil</button>
+            <button type="button" data-i="2" class="active">1/2 bil</button>
+            <button type="button" data-i="3">5/8 bil</button>
+            <button type="button" data-i="4">3/4 bil</button>
+            <button type="button" data-i="5">Full bil</button>
+          </div>
+
+          <a href="#kontakt" class="btn btn-primary btn-calc">Få fast pris – skicka bilder</a>
+        </div>
+
+        <!-- Så går det till -->
+        <div class="steps reveal">
+          <div class="step">
+            <span class="step-num">1</span>
+            <h3>Skicka bilder</h3>
+            <p>Skicka några bilder på det som ska bort via sms eller formulär.</p>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <h3>Få pris direkt</h3>
+            <p>Vi uppskattar mängden och ger dig ett fast pris innan vi kommer.</p>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <h3>Vi fixar resten</h3>
+            <p>Vi bär, lastar, sorterar och tar hand om allt – du slipper jobbet.</p>
+          </div>
+        </div>
+
+        <p class="price-note reveal">Priserna är frånpriser inklusive moms. Extra kostnad kan tillkomma vid mycket tungt material, långa bäravstånd, många trappor eller särskilda avfallsavgifter.</p>
       </div>
     </section>
 
@@ -252,6 +332,12 @@
       <span id="year"></span> Kastar.se · Alla rättigheter förbehållna
     </div>
   </footer>
+
+  <!-- Sticky ring-bar på mobil -->
+  <div class="mobile-bar">
+    <a href="tel:0703433440" class="mb-call">📞 Ring nu</a>
+    <a href="#kontakt" class="mb-quote">Få pris</a>
+  </div>
 
   <script src="script.js"></script>
 </body>
