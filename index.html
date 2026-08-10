@@ -13,6 +13,9 @@
   <meta property="og:url" content="https://kastar.se" />
   <meta property="og:locale" content="sv_SE" />
 
+  <!-- Hero-bilden är en CSS-bakgrund – hämta den tidigt så första intrycket inte fördröjs -->
+  <link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -71,29 +74,37 @@
           <p class="eyebrow">Våra tjänster</p>
           <h2>Vad vi hjälper dig med</h2>
         </div>
-        <div class="cards">
+        <div class="cards cards-services">
           <article class="card">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18M3 9l1.5 9a2 2 0 0 0 2 1.7h11a2 2 0 0 0 2-1.7L21 9M3 9l2-4h14l2 4M9 13h6"/></svg>
+            <img class="card-img" src="assets/mobler.jpg" alt="Soffa, fåtölj, matbord och stolar utställda på gatan intill en öppen lastbil" width="900" height="502" loading="lazy" />
+            <div class="card-body">
+              <h3>Bortforsling av möbler och inventarier</h3>
+              <p>Vi hämtar och transporterar bort möbler och inventarier för att frigöra utrymme i ditt hem eller företag.</p>
             </div>
-            <h3>Bortforsling av möbler och inventarier</h3>
-            <p>Vi hämtar och transporterar bort möbler och inventarier för att frigöra utrymme i ditt hem eller företag.</p>
           </article>
 
           <article class="card">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9M9 20v-6h6v6"/></svg>
+            <img class="card-img" src="assets/dodsbo.jpg" alt="Vardagsrum i ett dödsbo med packade flyttkartonger, vitrinskåp och bokhyllor" width="900" height="502" loading="lazy" />
+            <div class="card-body">
+              <h3>Tömning av bostäder och dödsbon</h3>
+              <p>Vi hjälper med tömning av hela bostäder och dödsbon på ett respektfullt och effektivt sätt.</p>
             </div>
-            <h3>Tömning av bostäder och dödsbon</h3>
-            <p>Vi hjälper med tömning av hela bostäder och dödsbon på ett respektfullt och effektivt sätt.</p>
           </article>
 
           <article class="card">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5M6 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+            <img class="card-img" src="assets/garage.jpg" alt="Fullpackat garage med kartonger, cyklar, verktygsbänk och en bil" width="900" height="502" loading="lazy" />
+            <div class="card-body">
+              <h3>Bortforsling från garage, förråd och kontor</h3>
+              <p>Snabb och smidig bortforsling från garage, förråd och kontorslokaler för en renare arbets- och förvaringsmiljö.</p>
             </div>
-            <h3>Bortforsling från garage, förråd och kontor</h3>
-            <p>Snabb och smidig bortforsling från garage, förråd och kontorslokaler för en renare arbets- och förvaringsmiljö.</p>
+          </article>
+
+          <article class="card">
+            <img class="card-img" src="assets/flytt.jpg" alt="Soffa och fåtölj inlindade i flyttfiltar med spännband, redo att bäras ut genom ytterdörren" width="900" height="502" loading="lazy" />
+            <div class="card-body">
+              <h3>Mindre flyttar och enstaka möbler</h3>
+              <p>Vi flyttar enstaka möbler eller mindre bohag – snabbt och utan att du behöver hyra släp eller be om hjälp.</p>
+            </div>
           </article>
         </div>
       </div>
