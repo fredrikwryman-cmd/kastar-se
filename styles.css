@@ -237,6 +237,15 @@ a:hover { text-decoration: underline; }
 .field input:focus, .field textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,134,46,.18); }
 .form-alt { text-align: center; font-size: .9rem; color: var(--muted); margin: 1rem 0 0; }
 
+/* Bekräftelse/fel efter att formuläret skickats */
+.form-status {
+  margin: 1rem 0 0; padding: .85rem 1rem;
+  border-radius: var(--radius-btn);
+  font-size: .93rem; font-weight: 600; line-height: 1.45;
+}
+.form-status.is-ok    { background: #E7F3EC; border: 1px solid #B7DCC6; color: #1B5E38; }
+.form-status.is-error { background: #FCEDE6; border: 1px solid #F0C4AB; color: #8A3A12; }
+
 /* ---------- Footer (mörk petrol som originalet) ---------- */
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }

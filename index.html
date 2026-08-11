@@ -6,12 +6,109 @@
   <title>Kastar.se – Snabb och smidig tömning av bostäder och lokaler</title>
   <meta name="description" content="Kastar.se hjälper dig tömma dödsbon, bostäder, kontor och förråd i Stockholm och Uppsala. Snabb, miljövänlig bortforsling. Kontakta oss för kostnadsfri offert." />
 
+  <link rel="canonical" href="https://kastar.se/" />
+
   <!-- Open Graph / social sharing -->
   <meta property="og:title" content="Kastar.se – Snabb och smidig tömning" />
   <meta property="og:description" content="Tömning av dödsbon, bostäder, kontor och förråd. Kostnadsfri offert." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://kastar.se" />
+  <meta property="og:url" content="https://kastar.se/" />
   <meta property="og:locale" content="sv_SE" />
+  <meta property="og:site_name" content="Kastar.se" />
+  <meta property="og:image" content="https://kastar.se/assets/hero.jpg" />
+  <meta property="og:image:width" content="1376" />
+  <meta property="og:image:height" content="768" />
+  <meta property="og:image:alt" content="Flyttkartonger och möbler som bärs ut till en lastbil" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://kastar.se/assets/hero.jpg" />
+
+  <!-- Lokal SEO: strukturerad data för Google. Typen MovingCompany är en
+       underklass till LocalBusiness och den närmaste specifika typ som finns
+       för tömning, bortforsling och mindre flyttar. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MovingCompany",
+    "@id": "https://kastar.se/#business",
+    "name": "Kastar.se",
+    "description": "Tömning och bortforsling av bostäder, dödsbon, garage, förråd och kontor samt mindre flyttar i Stockholm och Uppsala.",
+    "url": "https://kastar.se/",
+    "image": "https://kastar.se/assets/hero.jpg",
+    "logo": "https://kastar.se/assets/hero.jpg",
+    "telephone": "+46703433440",
+    "email": "boka@kastar.se",
+    "priceRange": "1695–7795 SEK",
+    "currenciesAccepted": "SEK",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Arlandastad",
+      "addressRegion": "Stockholms län",
+      "addressCountry": "SE"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Stockholm" },
+      { "@type": "City", "name": "Uppsala" }
+    ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "10:00",
+        "closes": "16:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "00:00",
+        "closes": "00:00"
+      }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Tjänster",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Bortforsling av möbler och inventarier",
+            "description": "Vi hämtar och transporterar bort möbler och inventarier för att frigöra utrymme i ditt hem eller företag."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Tömning av bostäder och dödsbon",
+            "description": "Tömning av hela bostäder och dödsbon på ett respektfullt och effektivt sätt."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Bortforsling från garage, förråd och kontor",
+            "description": "Snabb och smidig bortforsling från garage, förråd och kontorslokaler."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Mindre flyttar och enstaka möbler",
+            "description": "Vi flyttar enstaka möbler eller mindre bohag utan att du behöver hyra släp."
+          }
+        }
+      ]
+    }
+  }
+  </script>
 
   <!-- Hero-bilden är en CSS-bakgrund – hämta den tidigt så första intrycket inte fördröjs -->
   <link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high" />
@@ -320,14 +417,21 @@
         </div>
 
         <!--
-          OBS: GitHub Pages är statiskt och kan inte ta emot formulär av sig själv.
-          Formuläret nedan är kopplat till en gratis-tjänst (Web3Forms) via "action".
-          Skapa en gratis "access key" på https://web3forms.com och klistra in den i
-          value="DIN-ACCESS-KEY" nedan. Tills dess fungerar knapparna "Ring" och "Maila".
+          GitHub Pages är statiskt och kan inte ta emot formulär av sig självt –
+          därför går inskicket till Web3Forms. Nyckeln nedan hämtas på web3forms.com
+          och är kopplad till boka@kastar.se. Med JavaScript på skickas formuläret i
+          bakgrunden och besökaren får en bekräftelse direkt på sidan (se script.js);
+          är JavaScript av görs en vanlig POST och besökaren landar på tack.html.
         -->
-        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="DIN-ACCESS-KEY" />
+        <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="KLISTRA-IN-NYCKELN-HÄR" />
           <input type="hidden" name="subject" value="Ny offertförfrågan från kastar.se" />
+          <!-- Avsändarnamn och svarsadress sätts om till kundens egna uppgifter av
+               script.js. Värdena här är reserven om JavaScript inte kör. -->
+          <input type="hidden" name="from_name" value="Kastar.se – webbformulär" />
+          <input type="hidden" name="replyto" value="boka@kastar.se" />
+          <input type="hidden" name="redirect" value="https://kastar.se/tack.html" />
+          <!-- Honeypot: osynligt fält som bara robotar fyller i -->
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div class="field">
@@ -346,7 +450,8 @@
             <label for="message">Vad behöver du hjälp med?</label>
             <textarea id="message" name="message" rows="4" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Skicka förfrågan</button>
+          <button type="submit" class="btn btn-primary btn-block" id="contactSubmit">Skicka förfrågan</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
           <p class="form-alt">Eller <a href="mailto:boka@kastar.se">maila oss direkt</a> · <a href="tel:0703433440">ring 070-343 34 40</a></p>
         </form>
       </div>
