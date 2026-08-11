@@ -126,12 +126,12 @@ if (contactForm && formStatus && submitBtn) {
       } else {
         showStatus(
           (result.message ? result.message + ' ' : '') +
-          'Något gick fel. Ring oss gärna på 070-343 34 40 eller maila boka@kastar.se.',
+          'Något gick fel. Ring gärna Thom på 070-343 34 40 eller Fredrik på 070-561 48 45, eller maila boka@kastar.se.',
           false
         );
       }
     } catch (err) {
-      showStatus('Kunde inte skicka just nu. Ring 070-343 34 40 eller maila boka@kastar.se.', false);
+      showStatus('Kunde inte skicka just nu. Ring Thom 070-343 34 40 eller Fredrik 070-561 48 45, eller maila boka@kastar.se.', false);
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = originalLabel;

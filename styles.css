@@ -225,6 +225,8 @@ a:hover { text-decoration: underline; }
 .ci-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .063em; color: var(--orange); font-weight: 700; }
 .contact-list a, .contact-list span { color: var(--ink); }
 .contact-list a { font-size: 1.05rem; font-weight: 700; }
+/* Två telefonnummer under samma etikett behöver lite mer luft än radgapet */
+.contact-list li a + a { margin-top: .3rem; }
 
 .contact-form {
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
