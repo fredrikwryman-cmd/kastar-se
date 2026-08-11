@@ -40,7 +40,7 @@
     "description": "Tömning och bortforsling av bostäder, dödsbon, garage, förråd och kontor samt mindre flyttar i Stockholm och Uppsala.",
     "url": "https://kastar.se/",
     "image": "https://kastar.se/assets/hero.jpg",
-    "logo": "https://kastar.se/assets/hero.jpg",
+    "logo": "https://kastar.se/assets/logo.png",
     "telephone": "+46703433440",
     "email": "boka@kastar.se",
     "contactPoint": [
@@ -85,12 +85,6 @@
         "dayOfWeek": "Saturday",
         "opens": "10:00",
         "closes": "16:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Sunday",
-        "opens": "00:00",
-        "closes": "00:00"
       }
     ],
     "hasOfferCatalog": {
@@ -183,10 +177,21 @@
             <li>✔ Snabbt på plats</li>
             <li>✔ Miljövänlig återvinning</li>
             <li>✔ Flexibla tider</li>
+            <li>✔ RUT-avdrag – betala halva priset</li>
           </ul>
         </div>
       </div>
     </section>
+
+    <!-- ============ TRUST-BAR ============ -->
+    <div class="trust-bar">
+      <div class="container trust-bar-inner">
+        <span>✓ F-skatteregistrerad</span>
+        <span>✓ Ansvarsförsäkrade</span>
+        <span>✓ RUT-avdrag</span>
+        <span>✓ Fast pris utan dolda kostnader</span>
+      </div>
+    </div>
 
     <!-- ============ TJÄNSTER ============ -->
     <section class="section" id="tjanster">
@@ -269,6 +274,7 @@
               <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
               <span class="calc-price" id="calcPrice">4 195 kr</span>
+              <span class="rut-price" id="calcRutPrice">efter RUT: 2 100 kr</span>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
             </div>
           </div>
@@ -281,6 +287,11 @@
           <div class="calc-steps" id="calcSteps"></div>
 
           <a href="#kontakt" class="btn btn-primary btn-calc">Få fast pris – skicka bilder</a>
+        </div>
+
+        <div class="rut-info">
+          <h3>💡 Visste du? Med RUT-avdrag betalar du bara halva priset</h3>
+          <p>Våra tjänster är godkända för RUT-avdrag, vilket innebär att Skatteverket betalar 50 % av arbetskostnaden (max 75 000 kr/person/år). Vi sköter pappersarbetet – du behöver bara ange ditt personnummer.</p>
         </div>
 
         <!-- Trust-rad -->
@@ -502,7 +513,14 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <span id="year"></span> Kastar.se · Alla rättigheter förbehållna
+      <span id="year"></span> Kastar.se · Alla rättigheter förbehållna · <a href="integritetspolicy.html">Integritetspolicy</a>
+    </div>
+
+    <div class="footer-legal">
+      <p>Kastar.se drivs av [Företagsnamn AB] · Org.nr: [559XXX-XXXX]</p>
+      <p>F-skatteregistrerad · Ansvarsförsäkrade · Godkänd för RUT-avdrag</p>
+      <p>Arlandastad, Stockholms län</p>
+      <!-- TODO: Ersätt [Företagsnamn AB] och [559XXX-XXXX] med riktiga uppgifter -->
     </div>
   </footer>
 

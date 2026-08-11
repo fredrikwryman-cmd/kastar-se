@@ -48,6 +48,12 @@ const volEl   = document.getElementById('calcVol');
 const priceEl = document.getElementById('calcPrice');
 const descEl  = document.getElementById('calcDesc');
 const stepsEl = document.getElementById('calcSteps');
+const rutEl   = document.getElementById('calcRutPrice');
+
+// Halva priset, avrundat uppåt till närmaste 5-tal.
+function rutPrice(n) {
+  return Math.ceil((n / 2) / 5) * 5;
+}
 
 function formatPrice(n) {
   return n.toLocaleString('sv-SE').replace(/ /g, ' ') + ' kr';
@@ -78,6 +84,7 @@ function renderTier(i) {
   volEl.textContent   = t.part;  // sekundärt: motsvarande del av bilen
   descEl.textContent  = t.desc;
   priceEl.textContent = formatPrice(t.price);
+  if (rutEl) rutEl.textContent = 'efter RUT: ' + formatPrice(rutPrice(t.price));
 
   // färgad del av reglaget
   range.style.setProperty('--pct', (i / (TIERS.length - 1)) * 100 + '%');

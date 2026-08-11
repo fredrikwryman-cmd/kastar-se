@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /tack.html
 
 Sitemap: https://kastar.se/sitemap.xml
