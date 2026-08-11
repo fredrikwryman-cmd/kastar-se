@@ -360,7 +360,8 @@ a:hover { text-decoration: underline; }
   background: var(--orange); box-shadow: 0 2px 8px rgba(0,36,46,.28); cursor: grab;
 }
 
-.calc-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: .4rem; }
+/* --steg sätts av script.js efter antalet steg i TIERS */
+.calc-steps { display: grid; grid-template-columns: repeat(var(--steg, 6), 1fr); gap: .4rem; }
 .calc-steps button {
   font: inherit; font-size: .78rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: .03em; padding: .5rem .25rem; cursor: pointer;

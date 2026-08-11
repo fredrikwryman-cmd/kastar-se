@@ -262,9 +262,11 @@
               <circle class="truck-wheel" cx="250" cy="118" r="15" />
               <circle class="truck-hub"   cx="250" cy="118" r="6" />
             </svg>
+            <!-- Texterna nedan är bara startvärden – script.js skriver över dem
+                 direkt vid laddning utifrån TIERS. -->
             <div class="calc-readout">
-              <span class="calc-label" id="calcLabel">1/2 BIL</span>
-              <span class="calc-vol"   id="calcVol">Upp till 8 m³</span>
+              <span class="calc-label" id="calcLabel">8 m³</span>
+              <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
               <span class="calc-price" id="calcPrice">4 195 kr</span>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
@@ -275,14 +277,8 @@
           <label class="sr-only" for="calcRange">Välj hur mycket som ska bort</label>
           <input class="calc-range" id="calcRange" type="range" min="0" max="5" step="1" value="2" />
 
-          <div class="calc-steps" id="calcSteps">
-            <button type="button" data-i="0">Litet</button>
-            <button type="button" data-i="1">1/4 bil</button>
-            <button type="button" data-i="2" class="active">1/2 bil</button>
-            <button type="button" data-i="3">5/8 bil</button>
-            <button type="button" data-i="4">3/4 bil</button>
-            <button type="button" data-i="5">Full bil</button>
-          </div>
+          <!-- Knapparna byggs av script.js ur TIERS – en enda sanningskälla -->
+          <div class="calc-steps" id="calcSteps"></div>
 
           <a href="#kontakt" class="btn btn-primary btn-calc">Få fast pris – skicka bilder</a>
         </div>
