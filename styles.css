@@ -145,7 +145,11 @@ a:hover { text-decoration: underline; }
   background-repeat: no-repeat;
   padding: clamp(4rem, 9vw, 7.5rem) 0;
 }
-.hero-inner { display: block; max-width: 760px; }
+/* Containern håller full bredd så hero-texten börjar vid samma vänsterkant som
+   loggan och sektionerna nedanför. Textkolumnen begränsas i stället på .hero-copy –
+   tidigare låg max-width på containern, vilket centrerade hela hero:n. */
+.hero-inner { display: block; }
+.hero-copy  { max-width: 760px; }
 .hero h1 { color: #fff; }
 .hero .eyebrow { color: var(--orange-badge); }
 .hero-copy .lead { color: var(--on-dark-body); font-size: 1.12rem; max-width: 46ch; }
@@ -303,13 +307,16 @@ a:hover { text-decoration: underline; }
   .trust-bar span { font-size: .75rem; letter-spacing: .02em; }
 }
 
-/* RUT-avdrag */
+/* RUT-avdrag – exakt samma bredd och rundning som kalkylatorkortet ovanför,
+   annars sticker blocket ut 110px åt vardera hållet på desktop */
 .rut-info {
+  max-width: 900px;
+  margin: 2.5rem auto 0;
   background: var(--petrol);
   color: var(--on-dark);
   border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
   padding: 2rem 2.5rem;
-  margin-top: 2.5rem;
   text-align: center;
 }
 .rut-info h3 {
@@ -476,7 +483,8 @@ a:hover { text-decoration: underline; }
 .trust-item p { margin: 0; font-size: .88rem; line-height: 1.55; color: var(--muted); }
 
 /* Så går det till */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+/* Samma 900px som .calc, .rut-info och .trust – hela prissektionen delar kant */
+.steps { max-width: 900px; margin: 3rem auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .step { text-align: center; padding: 0 1rem; }
 .step-num {
   display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto .9rem;
