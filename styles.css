@@ -272,6 +272,9 @@ a:hover { text-decoration: underline; }
   text-align: center;
 }
 .footer-legal p { margin: 0 0 .25rem; }
+.footer-legal a { color: inherit; text-decoration: underline; }
+.footer-legal a:hover { color: #fff; }
+.footer-credit { margin-top: .75rem; }
 
 /* Förtroendeband direkt under hero */
 .trust-bar {
