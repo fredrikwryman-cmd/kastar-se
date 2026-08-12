@@ -89,6 +89,8 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
 }
 .btn:hover { text-decoration: none; transform: translateY(-1px); }
+/* Medan formuläret skickas: knappen dämpas och slutar reagera på hover */
+.btn:disabled { opacity: .65; cursor: progress; transform: none; }
 .btn-primary { background: var(--orange); color: #fff; }
 .btn-primary:hover { background: var(--orange-hover); color: #fff; }
 .btn-light { background: var(--bg); color: var(--petrol-deep); }

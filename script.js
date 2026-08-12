@@ -142,6 +142,9 @@ const contactForm = document.getElementById('contactForm');
 const formStatus  = document.getElementById('formStatus');
 const submitBtn   = document.getElementById('contactSubmit');
 
+const OK_TEXT    = 'Tack! Vi har fått din förfrågan och återkommer så snart vi kan.';
+const ERROR_TEXT = 'Något gick fel. Ring oss på 070-343 34 40 eller maila boka@kastar.se så hjälper vi dig.';
+
 if (contactForm && formStatus && submitBtn) {
   const showStatus = (text, ok) => {
     formStatus.textContent = text;
@@ -178,16 +181,16 @@ if (contactForm && formStatus && submitBtn) {
 
       if (res.ok && result.success) {
         contactForm.reset();
-        showStatus('Tack! Din förfrågan är skickad – vi hör av oss inom kort.', true);
+        showStatus(OK_TEXT, true);
       } else {
-        showStatus(
-          (result.message ? result.message + ' ' : '') +
-          'Något gick fel. Ring gärna Thom på 070-343 34 40 eller Fredrik på 070-561 48 45, eller maila boka@kastar.se.',
-          false
-        );
+        // Serverns egen text visas inte för besökaren – den säger inget
+        // användbart för en kund. Den loggas i stället för felsökning.
+        console.error('Web3Forms:', res.status, result.message || '');
+        showStatus(ERROR_TEXT, false);
       }
     } catch (err) {
-      showStatus('Kunde inte skicka just nu. Ring Thom 070-343 34 40 eller Fredrik 070-561 48 45, eller maila boka@kastar.se.', false);
+      console.error('Web3Forms:', err);
+      showStatus(ERROR_TEXT, false);
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = originalLabel;
