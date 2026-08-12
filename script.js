@@ -42,7 +42,7 @@ if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
    så följer resten med.
      vol   – volymen, primär avläsning (chippen och knappens etikett)
      part  – motsvarande del av bilen, sekundär förklaringsrad
-     fill  – hur mycket av lastutrymmet i SVG:n som färgas
+     fill  – hur högt lasten når i skåpet, 0–1 av skåpets höjd
      desc  – längre beskrivning under priset */
 const TIERS = [
   { vol: '2 m³',  part: 'Några få saker',            price: 1695, fill: 0.12,  desc: 'För några få saker, mindre möbler eller lådor.' },
@@ -53,10 +53,8 @@ const TIERS = [
   { vol: '16 m³', part: 'En fullastad bil',          price: 7795, fill: 1.00,  desc: 'Fullastad bil – för hela hem, dödsbon eller lokaler.' }
 ];
 
-const BOX_WIDTH = 196; // bredd på lastutrymmet i SVG-koordinater
-
 const range   = document.getElementById('calcRange');
-const fillEl  = document.getElementById('truckFill');
+const loadEl  = document.getElementById('truckLoad');
 const labelEl = document.getElementById('calcLabel');
 const volEl   = document.getElementById('calcVol');
 const priceEl = document.getElementById('calcPrice');
@@ -98,7 +96,7 @@ function renderTier(i) {
   const t = TIERS[i];
   if (!t) return;
 
-  fillEl.setAttribute('width', (BOX_WIDTH * t.fill).toFixed(1));
+  loadEl.style.setProperty('--fill', (t.fill * 100) + '%');
   labelEl.textContent = t.vol;   // primärt: volymen
   volEl.textContent   = t.part;  // sekundärt: motsvarande del av bilen
   descEl.textContent  = t.desc;
@@ -120,7 +118,7 @@ function renderTier(i) {
   });
 }
 
-if (range && fillEl) {
+if (range && loadEl) {
   range.max = TIERS.length - 1;
   buildSteps();
 

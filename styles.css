@@ -380,15 +380,38 @@ a:hover { text-decoration: underline; }
 }
 
 .calc-truck { display: grid; grid-template-columns: 1.25fr .75fr; gap: 2rem; align-items: center; }
-.calc-truck svg { width: 100%; height: auto; }
-
-.truck-box     { fill: #fff; stroke: var(--petrol); stroke-width: 3; }
-.truck-fill    { fill: var(--orange); transition: width .45s cubic-bezier(.4,0,.2,1); }
-.truck-cab     { fill: #fff; stroke: var(--petrol); stroke-width: 3; stroke-linejoin: round; }
-.truck-window  { fill: #DCE7EA; stroke: var(--petrol); stroke-width: 2.5; }
-.truck-chassis { fill: var(--petrol); }
-.truck-wheel   { fill: var(--petrol); }
-.truck-hub     { fill: #fff; }
+.truck-photo{
+  position: relative;
+  /* Skåpets insida i procent av bildens mått (foto 1600x893). Justera dessa
+     fyra tills den orange ytan ligger exakt innanför skåpets kanter — inget
+     annat behöver ändras.
+     Uppmätt i bilden: vänster x=569, höger x=1455, topp y=158, botten y=622. */
+  --box-left: 35.56%;
+  --box-right: 90.94%;
+  --box-top: 17.69%;
+  --box-bottom: 69.65%;
+}
+.truck-photo img{ width:100%; height:auto; display:block; border-radius:6px; }
+.truck-load{
+  position:absolute;
+  left: var(--box-left);
+  width: calc(var(--box-right) - var(--box-left));
+  top: var(--box-top);
+  height: calc(var(--box-bottom) - var(--box-top));
+  overflow:hidden;
+  pointer-events:none;
+}
+.truck-load::after{
+  content:'';
+  position:absolute; left:0; right:0; bottom:0;
+  height: var(--fill, 0%);
+  background: rgba(232,134,46,.55);
+  border-top: 3px solid rgba(217,115,26,.95);
+  transition: height .45s cubic-bezier(.4,0,.2,1);
+}
+@media (prefers-reduced-motion: reduce){
+  .truck-load::after{ transition:none; }
+}
 
 .calc-readout { display: grid; gap: .15rem; }
 .calc-label {
@@ -481,7 +504,6 @@ a:hover { text-decoration: underline; }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .truck-fill { transition: none; }
 }
 
 /* ==========================================================================

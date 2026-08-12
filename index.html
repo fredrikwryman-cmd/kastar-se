@@ -238,25 +238,11 @@
         <div class="calc reveal">
           <!-- Lastbil som fylls -->
           <div class="calc-truck">
-            <svg viewBox="0 0 320 150" role="img" aria-label="Lastbil som fylls beroende på vald mängd">
-              <!-- lastutrymme -->
-              <rect class="truck-box" x="108" y="26" width="200" height="76" rx="4" />
-              <!-- fyllnad -->
-              <clipPath id="boxClip"><rect x="110" y="28" width="196" height="72" rx="3" /></clipPath>
-              <g clip-path="url(#boxClip)">
-                <rect id="truckFill" class="truck-fill" x="110" y="28" width="0" height="72" />
-              </g>
-              <!-- hytt -->
-              <path class="truck-cab" d="M104 102 V54 H70 L44 74 v28 Z" />
-              <rect class="truck-window" x="60" y="60" width="26" height="18" rx="3" />
-              <!-- chassi -->
-              <rect class="truck-chassis" x="40" y="102" width="268" height="8" rx="3" />
-              <!-- hjul -->
-              <circle class="truck-wheel" cx="88" cy="118" r="15" />
-              <circle class="truck-hub"   cx="88" cy="118" r="6" />
-              <circle class="truck-wheel" cx="250" cy="118" r="15" />
-              <circle class="truck-hub"   cx="250" cy="118" r="6" />
-            </svg>
+            <div class="truck-photo">
+              <img src="assets/bil.jpg" alt="Vit skåpbil med Kastar.se-logga, sedd från sidan"
+                   width="1600" height="893" loading="lazy" decoding="async">
+              <div class="truck-load" id="truckLoad" aria-hidden="true"></div>
+            </div>
             <!-- Texterna nedan är bara startvärden – script.js skriver över dem
                  direkt vid laddning utifrån TIERS. -->
             <div class="calc-readout">
