@@ -380,6 +380,9 @@ a:hover { text-decoration: underline; }
 }
 
 .calc-truck { display: grid; grid-template-columns: 1.25fr .75fr; gap: 2rem; align-items: center; }
+/* Utan detta blir kolumnen lika bred som fotots naturliga 1600px (grid-items
+   har min-width:auto = min-content) och hela kortet spränger sidan. */
+.calc-truck > * { min-width: 0; }
 .truck-photo{
   position: relative;
   /* Skåpets insida i procent av bildens mått (foto 1600x893). Justera dessa
@@ -391,7 +394,7 @@ a:hover { text-decoration: underline; }
   --box-top: 17.69%;
   --box-bottom: 69.65%;
 }
-.truck-photo img{ width:100%; height:auto; display:block; border-radius:6px; }
+.truck-photo img{ width:100%; max-width:100%; height:auto; display:block; border-radius:6px; }
 .truck-load{
   position:absolute;
   left: var(--box-left);
