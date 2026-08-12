@@ -1,19 +1,5 @@
 // Kastar.se – mobilmeny, priskalkylator, kontaktformulär och scroll-animationer.
 
-/* ---------- RUT-avdrag ----------
-   RUT_LABOUR_SHARE är hur stor andel av priset som utgörs av ARBETSKOSTNAD,
-   angivet som ett tal mellan 0 och 1. Bara arbetskostnaden är avdragsgill –
-   transport, fordon, drivmedel och avfallsavgifter är det inte. Att räkna
-   avdraget på hela priset ger ett för lågt och därmed vilseledande kundpris.
-
-   null  = andelen är INTE fastställd. Då visas ingen RUT-rad i kalkylatorn.
-           Det är läget nu.
-   0.6   = 60 % av priset är arbetskostnad. Då visas "Cirka X kr efter RUT".
-
-   TODO: Sätt värdet först när den faktiska arbetskostnadsandelen är känd –
-   stäm av med bokföringen/kalkylen innan siffran publiceras. */
-const RUT_LABOUR_SHARE = null;
-
 /* ---------- Mobilmeny (hamburgare) ---------- */
 const toggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
@@ -60,17 +46,6 @@ const volEl   = document.getElementById('calcVol');
 const priceEl = document.getElementById('calcPrice');
 const descEl  = document.getElementById('calcDesc');
 const stepsEl = document.getElementById('calcSteps');
-const rutEl   = document.getElementById('calcRutPrice');
-
-// Avdraget är 50 % av arbetskostnaden – inte av hela priset. Resultatet är en
-// uppskattning och avrundas därför till närmaste hundralapp.
-function priceAfterRut(price) {
-  return Math.round((price - price * RUT_LABOUR_SHARE * 0.5) / 100) * 100;
-}
-
-// Visas bara när arbetskostnadsandelen faktiskt är satt till ett giltigt värde.
-const showRut = typeof RUT_LABOUR_SHARE === 'number'
-  && RUT_LABOUR_SHARE > 0 && RUT_LABOUR_SHARE <= 1;
 
 function formatPrice(n) {
   return n.toLocaleString('sv-SE').replace(/ /g, ' ') + ' kr';
@@ -101,12 +76,6 @@ function renderTier(i) {
   volEl.textContent   = t.part;  // sekundärt: motsvarande del av bilen
   descEl.textContent  = t.desc;
   priceEl.textContent = formatPrice(t.price);
-  if (rutEl) {
-    rutEl.hidden = !showRut;
-    rutEl.textContent = showRut
-      ? 'Cirka ' + formatPrice(priceAfterRut(t.price)) + ' efter RUT'
-      : '';
-  }
 
   // färgad del av reglaget
   range.style.setProperty('--pct', (i / (TIERS.length - 1)) * 100 + '%');

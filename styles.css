@@ -282,40 +282,6 @@ a:hover { text-decoration: underline; }
 .footer-legal a:hover { color: #fff; }
 .footer-credit { margin-top: .75rem; }
 
-/* RUT-avdrag – exakt samma bredd och rundning som kalkylatorkortet ovanför,
-   annars sticker blocket ut 110px åt vardera hållet på desktop */
-.rut-info {
-  max-width: 900px;
-  margin: 2.5rem auto 0;
-  background: var(--petrol);
-  color: var(--on-dark);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-  padding: 2rem 2.5rem;
-  text-align: center;
-}
-.rut-info h3 {
-  color: var(--on-dark);
-  text-transform: none;
-  font-size: 1.3rem;
-  margin-bottom: .75rem;
-}
-.rut-info p {
-  color: var(--on-dark-body);
-  max-width: 640px;
-  margin: 0 auto;
-  font-size: .95rem;
-}
-.rut-price {
-  display: block;
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--orange);
-  margin-top: .25rem;
-}
-/* display:block ovan slår annars ut webbläsarens [hidden]-regel */
-.rut-price[hidden] { display: none; }
-
 /* Textsidor (integritetspolicy) */
 .legal { max-width: 760px; margin: 0 auto; }
 .legal h1 { margin-bottom: 1.5rem; }
@@ -486,7 +452,7 @@ a:hover { text-decoration: underline; }
 .trust-item p { margin: 0; font-size: .88rem; line-height: 1.55; color: var(--muted); }
 
 /* Så går det till */
-/* Samma 900px som .calc, .rut-info och .trust – hela prissektionen delar kant */
+/* Samma 900px som .calc och .trust – hela prissektionen delar kant */
 .steps { max-width: 900px; margin: 3rem auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .step { text-align: center; padding: 0 1rem; }
 .step-num {
