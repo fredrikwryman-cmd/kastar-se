@@ -110,17 +110,16 @@ a:hover { text-decoration: underline; }
 .brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 800; font-size: 1.2rem; color: #fff; text-transform: uppercase; }
 .brand:hover { text-decoration: none; }
 
-/* Logotypen har petrolfärgad platta (#0E3A44) inbakad – exakt samma ton som
-   header och sidfot, så den smälter in utan synlig ruta. Ordmärket upptar bara
-   ~52 % av bildens höjd, därför är höjden här större än den optiska storleken:
-   56px bild ≈ 29px synligt ordmärke. De negativa marginalerna kompenserar för
-   bildens inbakade vänstermarginal så logotypen optiskt kantar mot innehållet. */
-.brand-logo  { display: block; height: 56px; width: auto; margin-left: -16px; }
-.footer-logo { display: block; height: 68px; width: auto; margin-left: -20px; }
+/* Logotypen är beskuren tight runt märket och har petrolplattan (#0E3A44)
+   inbakad i exakt samma ton som header och sidfot, så den smälter in utan
+   synlig ruta. Höjden här är alltså den optiska storleken – ingen kompensation
+   för inbakade marginaler behövs längre. */
+.brand-logo  { display: block; height: 40px; width: auto; }
+.footer-logo { display: block; height: 44px; width: auto; }
 
 .nav { display: flex; align-items: center; gap: 1.7rem; }
-.nav a { color: var(--on-dark-body); font-weight: 600; font-size: .95rem; }
-.nav a:hover { color: #fff; text-decoration: none; }
+.nav a { color: var(--bg); font-weight: 600; font-size: .95rem; }
+.nav a:hover { color: var(--orange); text-decoration: none; }
 .nav .nav-cta { color: #fff; }
 .nav .nav-cta:hover { color: #fff; }
 
@@ -325,6 +324,7 @@ a:hover { text-decoration: underline; }
   .nav a { padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
   .nav .nav-cta { margin-top: .75rem; border-bottom: 0; }
   .nav-toggle { display: flex; }
+  .brand-logo { height: 32px; }
 }
 
 /* ==========================================================================
