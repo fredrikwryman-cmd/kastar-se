@@ -184,6 +184,8 @@ a:hover { text-decoration: underline; }
 .section-head { max-width: 700px; margin: 0 auto 2.75rem; text-align: center; }
 .section-head h2 { margin: 0 0 .5rem; }
 .section-head .lead { color: var(--muted); }
+/* På mörk sektion skulle den dämpade grå tonen ovan bli oläslig */
+.section-alt .section-head .lead { color: var(--on-dark-body); }
 
 /* ---------- Tjänstekort (vita kort på kräm) ---------- */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
@@ -318,6 +320,15 @@ a:hover { text-decoration: underline; }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
 .legal li { margin-bottom: .35rem; }
 .legal .updated { font-size: .85rem; color: var(--muted); }
+/* Avvikande, mindre ruta för friskrivningar sist på en textsida */
+.legal-note {
+  margin: 2.5rem 0 0;
+  padding: 1.1rem 1.35rem;
+  background: #F1EAE0;
+  border-left: 3px solid var(--orange);
+  border-radius: var(--radius-btn);
+}
+.legal-note p { margin: 0; font-size: .85rem; line-height: 1.65; color: var(--muted); }
 
 /* ---------- Responsivt ---------- */
 @media (max-width: 860px) {
