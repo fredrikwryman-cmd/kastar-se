@@ -237,6 +237,53 @@ a:hover { text-decoration: underline; }
   border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 .card-body { padding: 1.75rem 2rem 2rem; }
+
+/* ---------- Klickbara tjänstekort med informationspanel ---------- */
+.cards-services .card { cursor: pointer; }
+/* Inline, inte flex: då flödar pilen med texten och hamnar direkt efter sista
+   ordet även när raden bryts, i stället för att ligga kvar längst till höger. */
+.card-cta {
+  display: inline-block; text-align: center;
+  margin-top: 1.1rem; padding: 0; background: none; border: 0;
+  font: inherit; font-size: .8rem; font-weight: 800; line-height: 1.5;
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--orange-hover); cursor: pointer;
+}
+.card-cta span { display: inline-block; margin-left: .35rem; transition: transform .2s ease; }
+.cards-services .card:hover .card-cta span,
+.card-cta:focus-visible span { transform: translateX(4px); }
+
+.panel {
+  width: min(640px, calc(100% - 2rem));
+  max-width: none; max-height: 88vh;
+  padding: 0; border: 0; border-radius: var(--radius-card);
+  background: var(--bg-card); color: var(--body-c);
+  box-shadow: 0 24px 60px rgba(0, 36, 46, .28);
+}
+.panel::backdrop { background: rgba(0, 36, 46, .55); }
+/* Långa paneler scrollar inuti sig själva, aldrig sidan bakom */
+.panel-inner { max-height: 88vh; overflow-y: auto; padding: clamp(1.5rem, 4vw, 2.25rem); text-align: left; }
+.panel-close {
+  position: absolute; top: .4rem; right: .6rem;
+  width: 40px; height: 40px; padding: 0;
+  background: none; border: 0; cursor: pointer;
+  font-size: 1.9rem; line-height: 1; color: var(--muted);
+}
+.panel-close:hover { color: var(--ink); }
+.panel-title {
+  margin: 0 2.5rem .25rem 0;
+  font-size: 1.35rem; font-weight: 800; color: var(--ink);
+}
+.panel h4 {
+  margin: 1.6rem 0 .4rem;
+  font-size: .82rem; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--orange-hover);
+}
+.panel p { margin: 0 0 .75rem; font-size: .95rem; line-height: 1.7; }
+.panel-list { margin: 0 0 .75rem; padding-left: 1.15rem; font-size: .95rem; line-height: 1.7; }
+.panel-list li { margin-bottom: .2rem; }
+.panel-btn { margin-top: 1.4rem; }
+.panel-note { margin: 1.1rem 0 0; font-size: .8rem; line-height: 1.6; color: var(--muted); }
 .card h3 { margin-bottom: .5rem; }
 .card p { margin: 0; }
 

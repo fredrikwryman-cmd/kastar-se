@@ -289,70 +289,248 @@
           <h2>Vad vi hjälper dig med</h2>
         </div>
         <div class="cards cards-services">
-          <article class="card">
+          <article class="card" data-panel="panel-1">
             <img class="card-img" src="assets/tjanst-1.jpg" alt="Tomt rum med mörkgrön vägg där en orange fåtölj, uppställda trälister och en stapel trästolar står kvar mot väggen" width="1200" height="900" />
             <div class="card-body">
               <h3>Bortforsling av möbler och inventarier</h3>
               <p>Vi hämtar och transporterar bort möbler och inventarier för att frigöra utrymme i ditt hem eller företag.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-1">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-2">
             <img class="card-img" src="assets/tjanst-2.jpg" alt="Rum i en tömd bostad med matbord, stolar, tom bokhylla och staplade flyttkartonger vid väggen" width="1200" height="900" />
             <div class="card-body">
               <h3>Tömning av bostäder och dödsbon</h3>
               <p>Vi hjälper med tömning av hela bostäder och dödsbon på ett respektfullt och effektivt sätt.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-2">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-3">
             <img class="card-img" src="assets/tjanst-3.jpg" alt="Garage med öppen port där en bokhylla, en hoprullad matta och staplade förvaringslådor står kvar" width="1200" height="900" />
             <div class="card-body">
               <h3>Bortforsling från garage, förråd och kontor</h3>
               <p>Snabb och smidig bortforsling från garage, förråd och kontorslokaler för en renare arbets- och förvaringsmiljö.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-3">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-4">
             <img class="card-img" src="assets/tjanst-4.jpg" alt="Staplade flyttkartonger märkta Kastar.se i ett tomt rum, med hopvikt flyttfilt och tejprulle på golvet" width="1200" height="900" />
             <div class="card-body">
               <h3>Flytthjälp</h3>
               <p>Från etta till villa, från kontor till lager. Vi flyttar allt som ska med, och tar hand om det som inte ska följa med.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-4">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-5">
             <img class="card-img" src="assets/tjanst-5.jpg" alt="Ett piano fastspänt med spännband på en flyttvagn i en hall intill en trappa, med flyttfiltar uppställda mot väggen" width="1200" height="900" loading="lazy" />
             <div class="card-body">
               <h3>Tungflytt och pianoflytt</h3>
               <p>Piano, kassaskåp och andra tunga pjäser flyttas säkert med rätt utrustning och vana – även genom trapphus där det är ont om plats.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-5">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-6">
             <img class="card-img" src="assets/tjanst-6.jpg" alt="Rum under nedmontering med nedtagna skivor och köksluckor lutade mot väggen och skruvdragare på skyddspapp på golvet" width="1200" height="900" loading="lazy" />
             <div class="card-body">
               <h3>Nedmontering och rivning</h3>
               <p>Vi monterar ned kök, golv och icke-bärande väggar – och kör bort allt direkt, så du slipper container och flera leverantörer.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-6">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-7">
             <img class="card-img" src="assets/tjanst-7.jpg" alt="Magasin med staplade flyttkartonger märkta Kastar.se och en inplastad fåtölj" width="1200" height="900" loading="lazy" />
             <div class="card-body">
               <h3>Magasinering</h3>
               <p>Behöver du förvara bohaget en period? Vi hämtar, magasinerar och levererar tillbaka när du är redo – tryggt och torrt.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-7">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-panel="panel-8">
             <img class="card-img" src="assets/tjanst-8.jpg" alt="Delar till en möbel utlagda på skyddspapper på golvet tillsammans med beslag och skruvmejsel, bredvid staplade kartonger" width="1200" height="900" loading="lazy" />
             <div class="card-body">
               <h3>Praktisk hjälp hemma</h3>
               <p>Hjälp med det tunga och tidsödande – bära, rensa, sortera och montera inför flytt, försäljning eller visning.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-8">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
         </div>
+
+      <!-- Informationspaneler, en per tjänst. Innehållet ligger i HTML så att
+           det är läsbart för sökmotorer även när panelen är stängd. -->
+      <dialog class="panel" id="panel-1" role="dialog" aria-modal="true" aria-label="Bortforsling av möbler och inventarier">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Bortforsling av möbler och inventarier</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Vi räknar på volym — hur stor del av bilen dina saker tar. Du får ett fast pris innan vi börjar, baserat på bilder du skickar eller vad du beskriver. Varje nivå rymmer upp till 100 kg per kubikmeter.</p>
+
+          <h4>Prisexempel</h4>
+          <p>2 m³ – 1 695 kr · 4 m³ – 2 695 kr · 8 m³ – 4 195 kr<br />10 m³ – 5 195 kr · 12 m³ – 5 995 kr · 16 m³ – 7 795 kr</p>
+
+          <h4>Det ingår</h4>
+          <p>Bärhjälp, lastning, transport och lämning på återvinning. Vi bär från våningsplan utan extra kostnad.</p>
+          <p>Bortforsling är transport och avfallshantering, inte arbete i bostaden. Det ger därför varken ROT eller RUT.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-2" role="dialog" aria-modal="true" aria-label="Tömning av bostäder och dödsbon">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Tömning av bostäder och dödsbon</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Samma volympris som bortforsling. Vi kommer gärna ut och tittar först, kostnadsfritt, så att priset står fast. Ska något sparas, skänkas eller säljas vidare går vi igenom det tillsammans innan vi börjar.</p>
+
+          <h4>Prisexempel</h4>
+          <p>En normalstor tvårumslägenhet landar oftast på 12–16 m³, alltså 5 995–7 795 kr. En enstaka soffa och några lådor ligger på 1 695 kr.</p>
+
+          <h4>Det ingår</h4>
+          <p>Genomgång på plats, sortering, bärhjälp, transport och lämning. Vi sorterar ut det som går att skänka eller återvinna och berättar vart sakerna tar vägen.</p>
+          <p>Tömning är transport och avfallshantering och ger inget ROT- eller RUT-avdrag.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-3" role="dialog" aria-modal="true" aria-label="Bortforsling från garage, förråd och kontor">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Bortforsling från garage, förråd och kontor</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Volympris precis som för bohag. Är innehållet ovanligt tungt — verktyg, metall, byggrester — räknar vi istället på vikt, 295 kr per påbörjat 100 kg. Vi säger vilket som gäller innan vi börjar, aldrig efteråt.</p>
+
+          <h4>Prisexempel</h4>
+          <p>Ett normalstort källarförråd ligger på 4–8 m³, alltså 2 695–4 195 kr.</p>
+
+          <h4>Det ingår</h4>
+          <p>Bärhjälp, lastning, transport och lämning. Vi kan hämta utanför kontorstid om verksamheten inte ska störas.</p>
+          <p>Arbete i lokaler som inte är bostäder ger inget ROT- eller RUT-avdrag.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-4" role="dialog" aria-modal="true" aria-label="Flytthjälp">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Flytthjälp</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Timpris för två personer med bil, 1 195 kr per timme. Minsta debitering tre timmar. Vi räknar från att vi är på plats till att vi är klara.</p>
+
+          <h4>Prisexempel</h4>
+          <p>En tvårumslägenhet tar normalt 4–6 timmar, alltså 4 780–7 170 kr före avdrag. Med RUT halveras arbetskostnaden.</p>
+
+          <h4>Det ingår</h4>
+          <p>Bärhjälp, filtar och spännband, bil och bränsle, samt bortforsling av det som inte ska följa med — den delen prissätts separat på volym.</p>
+          <p>Flytt av bohag mellan två bostäder är RUT-grundande. RUT ger 50 procent av arbetskostnaden, upp till 75 000 kr per person och år.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-5" role="dialog" aria-modal="true" aria-label="Tungflytt och pianoflytt">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Tungflytt och pianoflytt</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Fast pris per föremål. Piano eller kassaskåp från 2 995 kr inom samma ort, entréplan till entréplan. Tillägg 595 kr per våning utan hiss. Föremål över 300 kg och trånga bärvägar offereras separat efter bilder.</p>
+
+          <h4>Prisexempel</h4>
+          <p>Piano från entréplan till entréplan – 2 995 kr. Samma piano upp två trappor utan hiss – 4 185 kr.</p>
+
+          <h4>Det ingår</h4>
+          <p>Rätt utrustning, pianovagn, remmar och skydd, samt två vana bärare. Vi skyddar trapphus och dörrfoder.</p>
+          <p>Ingår flytten i en flytt mellan två bostäder är arbetet RUT-grundande.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-6" role="dialog" aria-modal="true" aria-label="Nedmontering och rivning">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Nedmontering och rivning</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>Fast pris på arbetet, och bortforslingen separat på vikt. Rivningsmassor väger fem till tio gånger mer än bohag, därför räknar vi dem på vikt och inte på volym — 295 kr per påbörjat 100 kg, minst 995 kr.</p>
+
+          <h4>Prisexempel</h4>
+          <ul class="panel-list">
+            <li>Nedmontering av kök – från 3 900 kr</li>
+            <li>Kök inklusive kakel ovanför bänk – från 5 900 kr</li>
+            <li>Parkettgolv, per rum upp till 20 m² – från 3 300 kr</li>
+            <li>Klinker på golv, per rum upp till 10 m² – från 6 500 kr</li>
+            <li>Icke-bärande gipsvägg – 700 kr per löpmeter</li>
+            <li>Garderober och inbyggda möbler – från 2 200 kr</li>
+          </ul>
+          <p>Timpris när uppdraget inte passar tabellen: 1 300 kr per timme för två personer.</p>
+
+          <h4>Det ingår</h4>
+          <p>Nedmontering, skydd av golv och angränsande ytor, ihopsamling av massorna och bortforsling. Farligt avfall som asbest, tryckimpregnerat virke och kemikalier hanterar vi inte.</p>
+          <p>Arbetet är ROT-grundande om du äger bostaden och den är äldre än fem år. ROT ger 30 procent av arbetskostnaden, upp till 50 000 kr per person och år. Bortforslingen av massorna är däremot inte ROT-grundande — därför står de två posterna alltid separat i offerten.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-7" role="dialog" aria-modal="true" aria-label="Magasinering">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Magasinering</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>169 kr per kubikmeter och månad. Minimum fyra kubikmeter och en månad. Hämtning och utkörning tillkommer enligt volympriset för bortforsling.</p>
+
+          <h4>Prisexempel</h4>
+          <p>Bohaget från en tvåa, ungefär 12 m³, kostar 2 028 kr per månad. Hämtning och utkörning tillkommer.</p>
+
+          <h4>Det ingår</h4>
+          <p>Torr och låst förvaring, täckning av möbler, samt hämtning och leverans när du är redo. Du kommer åt sakerna efter överenskommelse.</p>
+          <p>Transport till och från magasinering i samband med flytt mellan bostäder är RUT-grundande. Själva förvaringen är det inte.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-8" role="dialog" aria-modal="true" aria-label="Praktisk hjälp hemma">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Praktisk hjälp hemma</h3>
+
+          <h4>Så räknar vi</h4>
+          <p>595 kr per timme för en person. Minsta debitering två timmar. Behövs två personer gäller flyttpriset, 1 195 kr per timme.</p>
+
+          <h4>Prisexempel</h4>
+          <p>Två timmars hjälp med att bära, rensa och sortera – 1 190 kr före avdrag.</p>
+
+          <h4>Det ingår</h4>
+          <p>Bärhjälp, rensning, sortering och montering eller nedmontering av möbler. Ska något köras bort tillkommer volympris för bortforslingen.</p>
+          <p>Montering av möbler i hemmet är RUT-grundande. RUT ger 50 procent av arbetskostnaden.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 495 kr, ingår vid uppdrag över 8 000 kr.</p>
+        </div>
+      </dialog>
       </div>
     </section>
 

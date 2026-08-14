@@ -48,6 +48,64 @@ if (siteHeader) {
   updateHeader();
 }
 
+/* ---------- Tjänstepaneler ----------
+   Varje kort öppnar en <dialog> som visas modalt. Elementet ger Esc-stängning
+   och fokusfälla av sig självt; här läggs klick utanför, scroll-lås och
+   återlämning av fokus till kortet ovanpå. */
+const serviceGrid = document.querySelector('.cards-services');
+const panels = document.querySelectorAll('.panel');
+
+if (serviceGrid && panels.length) {
+  let lastTrigger = null;
+
+  serviceGrid.addEventListener('click', (e) => {
+    const card = e.target.closest('.card[data-panel]');
+    if (!card) return;
+    const panel = document.getElementById(card.dataset.panel);
+    if (!panel || typeof panel.showModal !== 'function' || panel.open) return;
+
+    lastTrigger = card.querySelector('.card-cta') || card;
+    panel.showModal();
+    document.documentElement.style.overflow = 'hidden';
+
+    const close = panel.querySelector('.panel-close');
+    if (close) close.focus();
+  });
+
+  // Släpper scroll-låset och lämnar tillbaka fokus. Körs bara när ingen panel
+  // är öppen, så att en sen stängning inte låser upp bakom en nyöppnad panel.
+  // Idempotent – kan anropas flera gånger för samma stängning.
+  const releasePanel = () => {
+    if (document.querySelector('.panel[open]')) return;
+    document.documentElement.style.overflow = '';
+    const trigger = lastTrigger;
+    lastTrigger = null;
+    if (trigger) trigger.focus();
+  };
+
+  const closePanel = (panel) => {
+    panel.close();
+    releasePanel();
+  };
+
+  panels.forEach((panel) => {
+    // Klick på bakgrunden träffar dialogrutan själv, inte innehållet
+    panel.addEventListener('click', (e) => {
+      if (e.target === panel) closePanel(panel);
+    });
+
+    const close = panel.querySelector('.panel-close');
+    if (close) close.addEventListener('click', () => closePanel(panel));
+
+    // "Begär offert" leder till formuläret – panelen ska inte ligga kvar över det
+    const cta = panel.querySelector('.panel-btn');
+    if (cta) cta.addEventListener('click', () => closePanel(panel));
+
+    // Esc stänger dialogrutan på egen hand – då är close-händelsen enda signalen
+    panel.addEventListener('close', releasePanel);
+  });
+}
+
 /* ---------- Årtal i sidfoten ---------- */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
