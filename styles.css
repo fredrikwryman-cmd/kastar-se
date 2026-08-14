@@ -164,7 +164,11 @@ a:hover { text-decoration: underline; }
    tidigare låg max-width på containern, vilket centrerade hela hero:n. */
 .hero-inner { display: block; }
 .hero-copy  { max-width: 760px; }
-.hero h1 { color: #fff; }
+/* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
+   den inte tar hela hero-ytan, särskilt på mobil. */
+.hero h1 { color: #fff; font-size: clamp(1.8rem, 4.4vw, 3.2rem); }
+/* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
+.nowrap { white-space: nowrap; }
 .hero .eyebrow { color: var(--orange-badge); }
 .hero-copy .lead { color: var(--on-dark-body); font-size: 1.12rem; max-width: 46ch; }
 .lead { font-size: 1.05rem; }
