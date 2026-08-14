@@ -394,11 +394,11 @@ a:hover { text-decoration: underline; }
   /* Skåpets insida i procent av bildens mått (foto 1600x893). Justera dessa
      fyra tills den orange ytan ligger exakt innanför skåpets kanter — inget
      annat behöver ändras.
-     Uppmätt i bilden: vänster x=569, höger x=1455, topp y=158, botten y=622. */
-  --box-left: 35.56%;
-  --box-right: 90.94%;
-  --box-top: 17.69%;
-  --box-bottom: 69.65%;
+     Uppmätt i bil-ny.jpg: vänster x=557, höger x=1438, topp y=171, botten y=623. */
+  --box-left: 34.81%;
+  --box-right: 89.88%;
+  --box-top: 19.15%;
+  --box-bottom: 69.76%;
 }
 .truck-photo img{ width:100%; max-width:100%; height:auto; display:block; border-radius:6px; }
 .truck-load{
