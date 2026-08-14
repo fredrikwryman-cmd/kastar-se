@@ -218,7 +218,11 @@ a:hover { text-decoration: underline; }
   flex: 0 0 auto; width: 48px; height: 48px; border-radius: 6px;
   background: transparent; border: 2px solid var(--orange-badge); color: var(--orange-badge);
   display: grid; place-items: center; font-size: 1.3rem;
+  overflow: hidden;
 }
+/* Ikonbilden fyller hela rutan innanför ramen. height:100% krävs – annars slår
+   height-attributet igenom som presentationshint och bilden blir 240px hög. */
+.feature-icon img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 4px; }
 .feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: #fff; }
 .feature p { margin: 0; }
 
