@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /verktyg/
 
 Sitemap: https://kastar.se/sitemap.xml
