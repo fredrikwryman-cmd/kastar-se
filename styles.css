@@ -105,6 +105,24 @@ a:hover { text-decoration: underline; }
   position: sticky; top: 0; z-index: 50;
   background: var(--petrol);
   border-bottom: 1px solid rgba(255,255,255,.08);
+  /* Namngivna egenskaper, inte "all" – annars animeras även layoutvärden */
+  transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+/* Glaseffekt när sidan scrollats förbi 50px. Klassen sätts av script.js. */
+.site-header.scrolled {
+  background: rgba(var(--petrol-rgb), .85);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+/* Scroll-indikator längst upp i headern. Bredden styrs av --scroll-progress
+   (0–1) som script.js sätter på headern. */
+.site-header::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--orange);
+  transform: scaleX(var(--scroll-progress, 0)); transform-origin: left center;
+  pointer-events: none;
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 /* Logotypen är delad: maskoten är en bild, ordmärket och taglinen är riktig
@@ -131,10 +149,19 @@ a:hover { text-decoration: underline; }
 .site-footer .brand-tagline { font-size: 12px; }
 
 .nav { display: flex; align-items: center; gap: 1.7rem; }
-.nav a { color: var(--bg); font-weight: 600; font-size: .95rem; }
+.nav a { color: var(--bg); font-weight: 600; font-size: .95rem; position: relative; }
 .nav a:hover { color: var(--orange); text-decoration: none; }
+/* Understrykning som växer ut från mitten vid hover. Länkarna är fullt synliga
+   från start – linjen är det enda som animeras. */
+.nav a::after {
+  content: ''; position: absolute; left: 50%; right: 50%; bottom: -5px; height: 2px;
+  background: var(--orange); transition: left .2s ease, right .2s ease;
+}
+.nav a:hover::after { left: 0; right: 0; }
 .nav .nav-cta { color: #fff; }
 .nav .nav-cta:hover { color: #fff; }
+/* Knappen i menyn ska inte ha understrykning */
+.nav .nav-cta::after { content: none; }
 
 .nav-toggle {
   display: none; flex-direction: column; gap: 5px;
@@ -293,6 +320,20 @@ a:hover { text-decoration: underline; }
 .footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
 .footer-col a:hover { color: var(--orange-badge); }
+/* Tjänstekolumnen är andra barnet i .footer-inner (första är .footer-brand).
+   Vid hover glider en orange pil in från vänster och länken flyttar in lika
+   långt, så pilen hamnar där texten började. */
+.footer-inner .footer-col:nth-child(2) a {
+  position: relative;
+  transition: transform .2s ease, color .2s ease;
+}
+.footer-inner .footer-col:nth-child(2) a::before {
+  content: '→'; position: absolute; left: -18px; top: 0;
+  color: var(--orange); opacity: 0; transform: translateX(-6px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); color: var(--orange); }
+.footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; color: #9FB3B9; }
 .footer-bottom a { color: #9FB3B9; text-decoration: underline; }
 .footer-bottom a:hover { color: #fff; }
@@ -367,6 +408,8 @@ a:hover { text-decoration: underline; }
   }
   .nav.open { transform: translateY(0); pointer-events: auto; }
   .nav a { padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  /* I den utfällda mobilmenyn har länkarna redan avdelare – ingen understrykning */
+  .nav a::after { content: none; }
   .nav .nav-cta { margin-top: .75rem; border-bottom: 0; }
   .nav-toggle { display: flex; }
 }
@@ -571,3 +614,18 @@ a:hover { text-decoration: underline; }
 
 /* Ankarlänkar ska inte hamna bakom den fasta headern */
 section[id] { scroll-margin-top: 90px; }
+
+/* ==========================================================================
+   Reducerad rörelse – stänger av alla animationer och övergångar på sidan.
+   Ligger sist i filen så den vinner över allt ovanför.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

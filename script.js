@@ -18,6 +18,36 @@ if (toggle && nav) {
   });
 }
 
+/* ---------- Header: glaseffekt och scroll-indikator ----------
+   Båda delar en enda scroll-lyssnare, throttlad med requestAnimationFrame så
+   att layouten läses av högst en gång per bildruta. Saknas headern gör koden
+   ingenting – resten av filen ska fungera ändå. */
+const siteHeader = document.querySelector('.site-header');
+
+if (siteHeader) {
+  let ticking = false;
+
+  const updateHeader = () => {
+    const y = window.scrollY;
+    siteHeader.classList.toggle('scrolled', y > 50);
+
+    // Hur långt ned på sidan vi kommit, 0–1. Styr bredden på indikatorn.
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    siteHeader.style.setProperty('--scroll-progress', max > 0 ? Math.min(y / max, 1) : 0);
+
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateHeader);
+    }
+  }, { passive: true });
+
+  updateHeader();
+}
+
 /* ---------- Årtal i sidfoten ---------- */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
