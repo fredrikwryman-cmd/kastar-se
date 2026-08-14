@@ -106,7 +106,7 @@ a:hover { text-decoration: underline; }
   background: var(--petrol);
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.header-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 /* Logotypen är delad: maskoten är en bild, ordmärket och taglinen är riktig
    text. Då kan taglinen sättas i läsbar storlek och renderas skarpt i stället
    för att skalas ned till oläslighet i en bildfil.
@@ -114,21 +114,21 @@ a:hover { text-decoration: underline; }
    samma ton som header och sidfot, så den smälter in utan synlig ruta. */
 .brand { display: inline-flex; align-items: center; gap: .6rem; }
 .brand:hover { text-decoration: none; }
-.brand-mark { display: block; height: 44px; width: auto; }
+.brand-mark { display: block; height: 52px; width: auto; }
 .brand-text { display: flex; flex-direction: column; gap: 3px; line-height: 1; }
-/* 44.7px är inte en slump: det är den storlek där KASTAR.SE blir exakt lika
-   brett som taglinen under (255px), vilket är samma proportion som i den
-   ursprungliga bildloggan. Ändras taglinens storlek måste denna följa med. */
 .brand-name {
-  font-weight: 800; font-size: 44.7px; letter-spacing: -.02em;
+  font-weight: 800; font-size: 30px; letter-spacing: -.02em;
   text-transform: uppercase; color: var(--bg); white-space: nowrap;
 }
 .brand-tld { color: var(--orange); }
-/* Storleken är satt så att raden blir exakt lika bred som KASTAR.SE ovanför */
+/* Taglinen får vara bredare än ordmärket ovanför. */
 .brand-tagline {
-  font-weight: 500; font-size: 8.5px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--bg); opacity: .75; white-space: nowrap;
+  font-weight: 500; font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--bg); opacity: .8; white-space: nowrap;
 }
+/* Kortformen används bara i headern på små skärmar */
+.tag-short { display: none; }
+.site-footer .brand-tagline { font-size: 12px; }
 
 .nav { display: flex; align-items: center; gap: 1.7rem; }
 .nav a { color: var(--bg); font-weight: 600; font-size: .95rem; }
@@ -327,7 +327,7 @@ a:hover { text-decoration: underline; }
   .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
 
   .nav {
-    position: fixed; inset: 76px 0 auto 0;
+    position: fixed; inset: 68px 0 auto 0;
     flex-direction: column; align-items: stretch; gap: 0;
     background: var(--petrol); border-bottom: 1px solid rgba(255,255,255,.1);
     padding: .5rem 20px 1rem; box-shadow: var(--shadow);
@@ -337,15 +337,19 @@ a:hover { text-decoration: underline; }
   .nav a { padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
   .nav .nav-cta { margin-top: .75rem; border-bottom: 0; }
   .nav-toggle { display: flex; }
-  .brand-mark { height: 36px; }
 }
 
-/* Under 520px får taglinen inte plats bredvid hamburgaren – då visas bara
-   maskoten och ordmärket. Utan taglinen finns inget att matcha bredden mot,
-   så ordmärket går ner till 26px och headern behåller sin höjd. */
+/* Under 520px krymper brand-blocket och headerns tagline går över till
+   kortformen, så att allt får plats bredvid hamburgaren utan att wrappa. */
 @media (max-width: 520px) {
-  .brand-tagline { display: none; }
-  .brand-name { font-size: 26px; }
+  .brand-mark { height: 38px; }
+  .brand-name { font-size: 22px; }
+  .site-header .brand-tagline { font-size: 9px; }
+  .site-header .tag-full { display: none; }
+  .site-header .tag-short { display: inline; }
+  /* Sidfoten behåller taglinen i full längd, men 12px blir 349px bred och
+     spräcker 360px-skärmen – därför samma nedskalning som headern. */
+  .site-footer .brand-tagline { font-size: 9px; }
 }
 
 /* ==========================================================================
