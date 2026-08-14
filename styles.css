@@ -153,7 +153,7 @@ a:hover { text-decoration: underline; }
       rgba(var(--petrol-rgb), .96) 0%,
       rgba(var(--petrol-rgb), .88) 40%,
       rgba(var(--petrol-rgb), .55) 100%),
-    url("assets/hero.jpg");
+    url("assets/hero-ny.jpg");
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
@@ -320,7 +320,7 @@ a:hover { text-decoration: underline; }
       linear-gradient(180deg,
         rgba(var(--petrol-rgb), .92) 0%,
         rgba(var(--petrol-rgb), .88) 100%),
-      url("assets/hero.jpg");
+      url("assets/hero-ny.jpg");
     /* Cropen är smal på mobil – sikta på hörnet med flyttkartongerna
        i stället för den tomma väggen mitt i bilden. */
     background-position: 74% center;
