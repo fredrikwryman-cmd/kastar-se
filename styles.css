@@ -341,7 +341,7 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Footer (mörk petrol som originalet) ---------- */
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
-.footer-inner { display: grid; grid-template-columns: 1.2fr 1.15fr 1fr 1.1fr; gap: 2rem; }
+.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
 .footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
 .footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
@@ -360,9 +360,6 @@ a:hover { text-decoration: underline; }
 }
 .footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); color: var(--orange); }
 .footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
-@media (min-width: 861px) and (max-width: 1040px) {
-  .footer-inner { grid-template-columns: 1fr 1fr; }
-}
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; color: #9FB3B9; }
 .footer-bottom a { color: #9FB3B9; text-decoration: underline; }
 .footer-bottom a:hover { color: #fff; }
@@ -378,13 +375,14 @@ a:hover { text-decoration: underline; }
   text-align: center;
 }
 .footer-legal p { margin: 0 0 .25rem; }
+.footer-legal .orter { white-space: nowrap; }
 .footer-legal a { color: inherit; text-decoration: underline; }
 .footer-legal a:hover { color: #fff; }
 .footer-credit { margin-top: .75rem; }
 
 /* Textsidor (integritetspolicy) */
 .legal { max-width: 760px; margin: 0 auto; }
-.legal h1 { margin-bottom: 1.5rem; }
+.legal h1 { margin-bottom: 1.5rem; overflow-wrap: break-word; }
 .legal h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
 .legal p, .legal li { color: var(--body-c); }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
@@ -636,6 +634,9 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 560px) {
+  /* "Integritetspolicy" är ett enda långt ord som annars är bredare än
+     containern och drar upp horisontell scroll på mobil. */
+  .legal h1 { font-size: 1.8rem; }
   /* De tre punkterna hamnar på var sin rad här – tätare radavstånd så att
      sista raden inte hamnar bakom den fasta ring-baren vid sidans topp. */
   .hero-badges { gap: .5rem 1rem; }
