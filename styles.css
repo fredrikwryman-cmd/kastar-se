@@ -302,27 +302,6 @@ a:hover { text-decoration: underline; }
 .feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: #fff; }
 .feature p { margin: 0; }
 
-/* ---------- Omdömen (runda avatarer + orange citatbubbla, kräm botten) ---------- */
-.reviews { text-align: center; }
-.review { margin: 0; background: transparent; border: 0; padding: 0 1rem; }
-.review-avatar {
-  position: relative; width: 120px; height: 120px; margin: 0 auto 1.25rem;
-}
-.avatar-initials {
-  display: grid; place-items: center; width: 120px; height: 120px;
-  border-radius: 50%; background: var(--petrol); color: #fff;
-  font-weight: 800; font-size: 2rem; letter-spacing: .05em;
-}
-.quote-badge {
-  position: absolute; right: -4px; bottom: -2px;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: var(--orange-badge); color: #fff;
-  display: grid; place-items: center;
-  font-size: 1.9rem; font-weight: 800; line-height: 1; padding-top: .5rem;
-}
-.review footer { font-weight: 700; color: var(--ink); font-style: normal; margin-bottom: .6rem; font-size: 1.05rem; }
-.review p { font-style: italic; color: var(--body-c); margin: 0; }
-
 /* ---------- Kontakt (ljus sektion, vitt formulärkort) ---------- */
 #kontakt { background: var(--bg); }
 #kontakt h2, #kontakt h3 { color: var(--ink); }
@@ -362,7 +341,7 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Footer (mörk petrol som originalet) ---------- */
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
-.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+.footer-inner { display: grid; grid-template-columns: 1.2fr 1.15fr 1fr 1.1fr; gap: 2rem; }
 .footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
 .footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
@@ -381,6 +360,9 @@ a:hover { text-decoration: underline; }
 }
 .footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); color: var(--orange); }
 .footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
+@media (min-width: 861px) and (max-width: 1040px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; color: #9FB3B9; }
 .footer-bottom a { color: #9FB3B9; text-decoration: underline; }
 .footer-bottom a:hover { color: #fff; }
@@ -436,7 +418,6 @@ a:hover { text-decoration: underline; }
   .cards { grid-template-columns: 1fr; }
   /* Tjänsterna behåller 2x2 på surfplatta – de går till en kolumn först på mobil */
   .cards-services { grid-template-columns: repeat(2, 1fr); }
-  .reviews { gap: 2.5rem; }
   .features { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -655,6 +636,9 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 560px) {
+  /* De tre punkterna hamnar på var sin rad här – tätare radavstånd så att
+     sista raden inte hamnar bakom den fasta ring-baren vid sidans topp. */
+  .hero-badges { gap: .5rem 1rem; }
   .trust { grid-template-columns: 1fr; gap: 1.35rem; }
   .cards-services { grid-template-columns: 1fr; }
 }

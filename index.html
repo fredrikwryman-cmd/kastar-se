@@ -76,15 +76,15 @@
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "18:00"
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "07:00",
+        "closes": "19:00"
       },
       {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
-        "opens": "10:00",
-        "closes": "16:00"
+        "dayOfWeek": "Sunday",
+        "opens": "09:00",
+        "closes": "17:00"
       }
     ],
     "hasOfferCatalog": {
@@ -134,7 +134,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
   <!-- ============ HEADER / NAV ============ -->
@@ -152,7 +152,6 @@
         <a href="#priser">Priser</a>
         <a href="#tjanster">Tjänster</a>
         <a href="#varfor">Varför oss</a>
-        <a href="#omdomen">Omdömen</a>
         <a href="#kontakt">Kontakt</a>
         <a href="#kontakt" class="btn btn-primary btn-sm nav-cta">Boka offert</a>
       </nav>
@@ -176,9 +175,9 @@
             <a href="tel:0703433440" class="btn btn-light">Thom 070-343 34 40</a>
           </div>
           <ul class="hero-badges">
-            <li>✔ Snabbt på plats</li>
-            <li>✔ Miljövänlig återvinning</li>
-            <li>✔ Flexibla tider</li>
+            <li>✔ Fast pris innan vi börjar</li>
+            <li>✔ Avtalad tid är avtalad tid</li>
+            <li>✔ Inget skräp lämnas kvar</li>
           </ul>
         </div>
       </div>
@@ -237,8 +236,8 @@
             <div class="trust-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.3-2.9 7.6-7 8.5-4.1-.9-7-4.2-7-8.5V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
             </div>
-            <h3>Tryggt &amp; försäkrat</h3>
-            <p>F-skatt, ansvarsförsäkring och nöjda kunder.</p>
+            <h3>Fast pris innan vi börjar</h3>
+            <p>Du får priset skriftligt innan jobbet startar. Inga påslag efteråt.</p>
           </div>
 
           <div class="trust-item">
@@ -574,33 +573,6 @@
       </div>
     </section>
 
-    <!-- ============ OMDÖMEN ============ -->
-    <section class="section" id="omdomen">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Kundrecensioner</p>
-          <h2>Vad våra kunder säger</h2>
-        </div>
-        <div class="cards reviews">
-          <blockquote class="review">
-            <div class="review-avatar"><span class="avatar-initials">ES</span><span class="quote-badge">&rdquo;</span></div>
-            <footer>Emma S.</footer>
-            <p>"Kastar.se hjälpte mig att tömma min lägenhet snabbt och effektivt – helt bekymmersfritt!"</p>
-          </blockquote>
-          <blockquote class="review">
-            <div class="review-avatar"><span class="avatar-initials">JL</span><span class="quote-badge">&rdquo;</span></div>
-            <footer>Johan L.</footer>
-            <p>"Professionell och vänlig service med noggrann sortering och återvinning. Rekommenderas varmt!"</p>
-          </blockquote>
-          <blockquote class="review">
-            <div class="review-avatar"><span class="avatar-initials">CP</span><span class="quote-badge">&rdquo;</span></div>
-            <footer>Carina P.</footer>
-            <p>"Prisvärt och miljövänligt – Kastar.se gjorde processen smidig från start till slut."</p>
-          </blockquote>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ KONTAKT ============ -->
     <section class="section section-alt" id="kontakt">
       <div class="container contact-grid">
@@ -625,7 +597,7 @@
             </li>
             <li>
               <span class="ci-label">Öppettider</span>
-              <span>Mån–fre 8:00–18:00<br />Lör 10:00–16:00<br />Sön stängt</span>
+              <span>Mån–lör 07:00–19:00<br />Sön 09:00–17:00</span>
             </li>
           </ul>
         </div>
@@ -695,21 +667,27 @@
             <span class="brand-tagline">Tömning · Flytt · Demontering · Magasinering</span>
           </span>
         </div>
-        <p>Snabb, trygg och miljövänlig tömning av bostäder och lokaler.</p>
+        <p>Tömning, flytt, bortforsling, montering, demontering och magasinering i Stockholm och Uppsala.</p>
       </div>
       <div class="footer-col">
         <h4>Tjänster</h4>
         <a href="#tjanster">Möbler &amp; inventarier</a>
         <a href="#tjanster">Dödsbon &amp; bostäder</a>
         <a href="#tjanster">Garage, förråd &amp; kontor</a>
-        <a href="#tjanster">Mindre flyttar</a>
+        <a href="#tjanster">Flytt &amp; tungflytt</a>
+        <a href="#tjanster">Nedmontering &amp; rivning</a>
+        <a href="#tjanster">Magasinering</a>
       </div>
       <div class="footer-col">
         <h4>Kontakt</h4>
         <a href="tel:0703433440">Thom – 070-343 34 40</a>
         <a href="tel:0705614845">Fredrik – 070-561 48 45</a>
         <a href="mailto:boka@kastar.se">boka@kastar.se</a>
-        <span>Arlandastad</span>
+      </div>
+      <div class="footer-col">
+        <h4>Område</h4>
+        <span>Upplands Väsby · Knivsta · Arlandastad</span>
+        <span>Uppdrag i hela Stockholm och Uppsala med omnejd</span>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -722,8 +700,7 @@
            och organisationsnummer och ta sedan bort kommentarstecknen.
       <p>Kastar.se drivs av [Företagsnamn AB] · Org.nr: [559XXX-XXXX]</p>
       -->
-      <p>F-skatteregistrerad · Ansvarsförsäkrade</p>
-      <p>Arlandastad, Stockholms län</p>
+      <p>F-skatteregistrerad</p>
       <p class="footer-credit">Webbplats utvecklad av <a href="https://aimstudios.se">AiMstudios.se</a></p>
     </div>
   </footer>
