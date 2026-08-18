@@ -220,9 +220,14 @@ a:hover { text-decoration: underline; }
    grid-auto-rows: 1fr gör alla rader lika höga, så korten blir lika höga även
    när texterna är olika långa. */
 .cards-services { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
+/* Tio kort i fyra kolumner lämnar två på sista raden. De flyttas in en
+   kolumn så att raden hamnar mitt under de andra i stället för att bli
+   vänstertung. Gäller bara fyrkolumnsläget – smalare lägen delar jämnt. */
+.cards-services .card:nth-child(9) { grid-column: 2; }
 /* Surfplatta: två i bredd. Fyra kort blir för smala redan strax över 1000px. */
 @media (max-width: 1060px) {
   .cards-services { grid-template-columns: repeat(2, 1fr); }
+  .cards-services .card:nth-child(9) { grid-column: auto; }
 }
 .card {
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
@@ -451,6 +456,13 @@ a:hover { text-decoration: underline; }
   /* Sidfoten behåller taglinen i full längd, men 12px blir 349px bred och
      spräcker 360px-skärmen – därför samma nedskalning som headern. */
   .site-footer .brand-tagline { font-size: 9px; }
+}
+
+/* Under 360px räcker inte 9px heller – hela varumärkesraden blir bredare än
+   containern och drog upp horisontell scroll på 320px-skärmar. Ett steg till
+   ned, så ryms den utan att uppräkningen behöver brytas mitt itu. */
+@media (max-width: 360px) {
+  .site-footer .brand-tagline { font-size: 8px; letter-spacing: .03em; }
 }
 
 /* ==========================================================================
