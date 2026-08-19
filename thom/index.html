@@ -37,11 +37,13 @@
 
   <main class="kort">
     <!-- Medieruta 4:5. Filmen är stum och dekorativ, samma bildutsnitt som
-         Fredriks porträtt. WebM först och MP4 som reserv; posterbilden ligger
-         i rutan tills filmen har laddat. Har besökaren valt reducerad rörelse
-         stoppar kort.js autostarten och postern blir kvar. -->
+         Fredriks porträtt. Ingen loop: den spelar en gång och blir stående på
+         sista bildrutan, där Thom står vänd mot kameran. WebM först och MP4
+         som reserv; posterbilden ligger i rutan tills filmen har laddat. Har
+         besökaren valt reducerad rörelse stoppar kort.js autostarten och
+         postern blir kvar. -->
     <div class="kort-media">
-      <video autoplay muted loop playsinline preload="metadata"
+      <video autoplay muted playsinline preload="metadata"
              poster="/assets/kort-thom-poster.jpg" width="720" height="900"
              aria-label="Thom på Kastar.se vänder sig mot kameran och lägger armarna i kors.">
         <source src="/assets/kort-thom.webm" type="video/webm" />
