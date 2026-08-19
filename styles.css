@@ -116,6 +116,15 @@ a:hover { text-decoration: underline; }
 .btn-light:hover { background: #fff; }
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--petrol); }
 .btn-ghost:hover { background: var(--petrol); color: #fff; }
+/* Kantad knapp: samma form, storlek och radie som de fyllda, men med
+   genomskinlig botten och orange ram. Används för "Visa kort", som inte
+   ska konkurrera med den fyllda skicka-knappen i samma sektion. */
+.btn-outline { background: transparent; color: var(--orange-hover); border-color: var(--orange); }
+.btn-outline:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+/* Pilen glider fram vid hover, texten står stilla – samma grepp som på
+   tjänstekorten. */
+.btn .btn-pil { display: inline-block; transition: transform 150ms ease; }
+.btn:hover .btn-pil { transform: translateX(4px); }
 .btn-sm { padding: .6rem 1.2rem; font-size: .82rem; }
 .btn-block { width: 100%; }
 
@@ -344,6 +353,14 @@ a:hover { text-decoration: underline; }
 .contact-list a { font-size: 1.05rem; font-weight: 700; }
 /* Två telefonnummer under samma etikett behöver lite mer luft än radgapet */
 .contact-list li a + a { margin-top: .3rem; }
+/* Kortknappen ska vara lika bred som sin text, inte hela kolumnen, och
+   behålla knappstorleken – .contact-list a sätter annars 1.05rem. */
+.contact-list .btn { justify-self: start; margin-top: .6rem; font-size: .92rem; }
+/* .contact-list a sätter färgen på alla länkar – kortknappen ska behålla
+   sin orange text och bli vit först när den fylls vid hover. */
+.contact-list .btn-outline { color: var(--orange-hover); }
+.contact-list .btn-outline:hover { color: #fff; }
+.contact-list .btn + a { margin-top: 1rem; }
 
 .contact-form {
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
@@ -374,6 +391,10 @@ a:hover { text-decoration: underline; }
 .footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
 .footer-col a:hover { color: var(--orange-badge); }
+/* Små textlänkar till de digitala visitkorten, under kontaktuppgifterna */
+.footer-col .footer-kort { font-size: .85rem; color: #9FB3B9; }
+.footer-col a + .footer-kort { margin-top: .7rem; }
+.footer-col .footer-kort + .footer-kort { margin-top: .2rem; }
 /* Tjänstekolumnen är andra barnet i .footer-inner (första är .footer-brand).
    Vid hover glider en orange pil in från vänster och länken flyttar in lika
    långt, så pilen hamnar där texten började. */

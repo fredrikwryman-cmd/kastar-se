@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thom – Kastar.se</title>
+  <meta name="description" content="Digitalt visitkort för Thom på Kastar.se – transport och utförande. Ring 070-343 34 40, spara kontakten eller begär offert direkt." />
+  <link rel="canonical" href="https://kastar.se/thom" />
+
+  <link rel="icon" type="image/jpeg" href="/assets/logo-ikon.jpg" />
+  <link rel="apple-touch-icon" href="/assets/logo-ikon.jpg" />
+  <meta name="theme-color" content="#0E3A44" />
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:title" content="Thom – Kastar.se" />
+  <meta property="og:description" content="Transport och utförande. Ring 070-343 34 40 eller spara kontakten direkt från kortet." />
+  <meta property="og:type" content="profile" />
+  <meta property="og:url" content="https://kastar.se/thom" />
+  <meta property="og:locale" content="sv_SE" />
+  <meta property="og:site_name" content="Kastar.se" />
+  <meta property="og:image" content="https://kastar.se/assets/og-thom.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Thom – Kastar.se, transport och utförande, 070-343 34 40" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Thom – Kastar.se" />
+  <meta name="twitter:description" content="Transport och utförande. Ring 070-343 34 40 eller spara kontakten direkt från kortet." />
+  <meta name="twitter:image" content="https://kastar.se/assets/og-thom.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=7" />
+  <link rel="stylesheet" href="/kort.css?v=1" />
+</head>
+<body class="kort-sida">
+
+  <main class="kort">
+    <!-- Medieruta 4:5. Porträttfilmen är inte klar än – maskoten står som
+         platshållare. Bytet till <video class="kort-film"> beskrivs i kort.css
+         och ändrar inte layouten, rutan har redan sitt förhållande. -->
+    <div class="kort-media">
+      <img class="kort-platshallare" src="/assets/maskot-transp.png" width="229" height="220" alt="" />
+    </div>
+
+    <div class="kort-kropp">
+      <h1 class="kort-namn">Thom</h1>
+      <p class="kort-roll">Transport och utförande</p>
+      <p class="kort-ort">Kastar.se – Stockholm och Uppsala</p>
+
+      <a class="kort-tel" href="tel:0703433440">070-343 34 40</a>
+      <a class="kort-mejl" href="mailto:boka@kastar.se">boka@kastar.se</a>
+
+      <div class="kort-knappar">
+        <a class="btn btn-primary btn-block" href="/thom/thom.vcf" download>Spara kontakt</a>
+        <a class="btn btn-primary btn-block" href="tel:0703433440">Ring</a>
+        <a class="btn btn-primary btn-block" href="sms:0703433440">SMSA</a>
+        <a class="btn btn-ghost btn-block" href="/#kontakt">Begär offert</a>
+      </div>
+
+      <p class="kort-rad">Tömning, flytt, bortforsling och magasinering i Stockholm och Uppsala med omnejd.</p>
+
+      <button type="button" class="kort-dela" id="delaKnapp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+          <line x1="8.6" y1="10.5" x2="15.4" y2="6.5" /><line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
+        </svg>
+        Dela kortet
+      </button>
+      <p class="kort-status" id="delaStatus" role="status" aria-live="polite" hidden></p>
+
+      <div class="kort-fot">
+        <img class="kort-qr" src="/assets/qr-thom.png" width="90" height="90" alt="QR-kod till kastar.se/thom" />
+        <a class="kort-qr-lank" href="https://kastar.se/">kastar.se</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/kort.js?v=1"></script>
+</body>
+</html>

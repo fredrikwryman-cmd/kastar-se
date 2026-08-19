@@ -1,0 +1,133 @@
+/* ==========================================================================
+   Kastar.se – digitala visitkort (/fredrik och /thom)
+
+   Ligger ovanpå styles.css och lånar palett, typsnitt och knappar därifrån.
+   Sidorna har varken meny eller sidfot: bara kortet på petrolbotten.
+   ========================================================================== */
+
+body.kort-sida {
+  background: var(--petrol);
+  /* svh först i fallande ordning: mobilens adressfält ska inte klippa kortet */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  padding: clamp(1rem, 4vw, 2.5rem) clamp(.75rem, 4vw, 1.5rem);
+}
+
+/* På desktop svävar kortet mitt på skärmen, på mobil fyller det bredden
+   med luft kvar runt kanterna (paddingen på body). */
+.kort {
+  /* margin:auto i stället för place-items – då går kortets överkant alltid
+     att nå med scroll, även när kortet är högre än fönstret. */
+  margin: auto;
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 36, 46, .35);
+  overflow: hidden; /* medierutans övre hörn följer kortets radie */
+  text-align: center;
+}
+
+/* ---------- Medieruta 4:5 ----------
+   Rutan har fast förhållande och egen bakgrund, så porträttfilmen kan ta
+   platshållarens plats utan att något i layouten flyttar sig. Byt då
+
+     <img class="kort-platshallare" ... />
+   mot
+     <video class="kort-film" autoplay muted loop playsinline poster="..."></video>
+
+   Filmen fyller rutan via object-fit: cover; höjden är redan låst av 4:5. */
+.kort-media {
+  aspect-ratio: 4 / 5;
+  background: var(--petrol);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.kort-platshallare { width: 52%; max-width: 190px; height: auto; }
+.kort-film { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.kort-kropp { padding: clamp(1.4rem, 5vw, 1.9rem); }
+
+/* ---------- Namn och roll ---------- */
+.kort-namn {
+  margin: 0;
+  font-size: clamp(2rem, 9vw, 2.5rem);
+  line-height: 1.1;
+}
+.kort-roll {
+  margin: .6rem 0 0;
+  font-size: .95rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--petrol);
+}
+.kort-ort {
+  margin: .4rem 0 0;
+  font-size: .85rem; line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ---------- Telefon och mejl ---------- */
+.kort-tel {
+  /* Blockrad med bredd efter innehållet: egen rad, men klickytan sitter
+     kring texten och inte över hela kortets bredd. */
+  display: block; width: fit-content; margin: 1.3rem auto 0;
+  font-size: clamp(1.5rem, 7vw, 1.75rem); font-weight: 800;
+  line-height: 1.2; white-space: nowrap;
+  color: var(--orange-hover);
+}
+.kort-mejl {
+  display: block; width: fit-content; margin: .45rem auto 0;
+  font-size: .95rem; font-weight: 700;
+  color: var(--ink);
+}
+
+/* ---------- Knapparna ---------- */
+.kort-knappar { display: grid; gap: .55rem; margin-top: 1.5rem; }
+
+.kort-rad {
+  margin: 1.3rem 0 0;
+  font-size: .85rem; line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---------- Dela ---------- */
+.kort-dela {
+  width: 100%; margin-top: 1.1rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .75rem .5rem;
+  background: none; border: 0; border-radius: var(--radius-btn);
+  font: inherit; font-size: .82rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .0625em;
+  color: var(--petrol); cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, transform 100ms ease;
+}
+.kort-dela:hover { background: var(--bg); color: var(--orange-hover); }
+.kort-dela:active { transform: translateY(1px); }
+.kort-dela svg { width: 17px; height: 17px; flex: 0 0 auto; }
+
+.kort-status {
+  margin: .55rem 0 0;
+  font-size: .85rem; font-weight: 700;
+  color: var(--petrol);
+}
+.kort-status[hidden] { display: none; }
+
+/* ---------- QR ---------- */
+.kort-fot {
+  margin-top: 1.3rem; padding-top: 1.3rem;
+  border-top: 1px solid var(--line);
+  display: grid; justify-items: center; gap: .45rem;
+}
+.kort-qr { display: block; width: 90px; height: 90px; border-radius: 4px; }
+.kort-qr-lank {
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Samma träffyta som på resten av sidan: minst 44px på smal skärm. */
+@media (max-width: 700px) {
+  .kort-dela { min-height: 44px; }
+}

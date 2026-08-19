@@ -1,0 +1,3 @@
+# vCard-filerna måste ha CRLF enligt standarden. Utan raden nedan normaliserar
+# git dem till LF i repot, och det är repots version GitHub Pages serverar.
+*.vcf -text
