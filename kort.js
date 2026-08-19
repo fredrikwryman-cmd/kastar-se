@@ -1,7 +1,21 @@
-// Kastar.se – digitala visitkort: dela-knappen.
-// Delar sidans adress via systemets delningsruta. Saknas stödet kopieras
-// adressen till urklipp i stället och kortet svarar "Länk kopierad".
+// Kastar.se – digitala visitkort: porträttfilmen och dela-knappen.
 
+/* ---------- Reducerad rörelse ----------
+   Den som valt mindre rörelse i systemet ska inte få filmen igång av sig
+   själv. load() nollställer elementet, så posterbilden ligger kvar i rutan
+   i stället för en fryst filmruta. */
+const portrattfilm = document.querySelector('.kort-media video');
+
+if (portrattfilm && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  portrattfilm.removeAttribute('autoplay');
+  portrattfilm.autoplay = false;
+  portrattfilm.pause();
+  portrattfilm.load();
+}
+
+/* ---------- Dela ----------
+   Delar sidans adress via systemets delningsruta. Saknas stödet kopieras
+   adressen till urklipp i stället och kortet svarar "Länk kopierad". */
 const delaKnapp = document.getElementById('delaKnapp');
 const delaStatus = document.getElementById('delaStatus');
 
