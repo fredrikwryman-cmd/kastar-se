@@ -57,6 +57,15 @@ body.kort-sida {
   text-transform: uppercase; letter-spacing: .06em;
   color: var(--petrol);
 }
+/* Specialistraden mellan roll och ort: kortets kompetenser i punktlista.
+   Mindre grad än rollraden och i den dämpade tonen, så rollen behåller
+   tyngden. Orden sitter ihop med sin mittpunkt via &nbsp; i markupen –
+   bryts raden på smal skärm sker det därför alltid efter en mittpunkt. */
+.kort-spets {
+  margin: .35rem 0 0;
+  font-size: .78rem; font-weight: 600; line-height: 1.5;
+  color: var(--muted);
+}
 .kort-ort {
   margin: .4rem 0 0;
   font-size: .85rem; line-height: 1.5;
