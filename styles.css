@@ -240,6 +240,36 @@ a:hover { text-decoration: underline; }
 /* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
    den inte tar hela hero-ytan, särskilt på mobil. */
 .hero h1 { color: #fff; font-size: clamp(2.15rem, 5.2vw, 3.8rem); }
+/* ---------- Sista orden i hero-rubriken ----------
+   Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
+   gradientreglerna: klarar webbläsaren inte background-clip: text står
+   texten kvar i vanlig Kastar-orange i stället för att bli osynlig.
+   Alla tre färgstopp är samma orange i olika ljus – den mörka hover-tonen,
+   den ordinarie och en ljusare ton – så rörelsen läses som skiftande ljus,
+   inte som ett färgbyte. */
+.hero-gradient {
+  color: var(--orange);
+  background: linear-gradient(135deg, #D9731A 0%, #E8862E 50%, #F5A65C 100%);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* Exakt tre varv, och stannar sedan i utgångsläget. Rörelse som pågår
+     längre än fem sekunder skulle annars behöva gå att pausa. */
+  animation: gradient-shift 5s ease 3 forwards;
+}
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+/* Glöden används bara här på hela sidan. */
+.hero-glow {
+  text-shadow: 0 0 50px rgba(232,134,46,.55),
+               0 0 100px rgba(232,134,46,.35),
+               0 0 140px rgba(217,115,26,.25);
+}
+
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
 .nowrap { white-space: nowrap; }
 .hero .eyebrow { color: var(--orange-badge); }
@@ -788,6 +818,9 @@ section[id] { scroll-margin-top: 90px; }
    Ligger sist i filen så den vinner över allt ovanför.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
+  /* Gradienten och glöden i hero-rubriken ligger kvar – det är bara
+     rörelsen som ska bort. */
+  .hero-gradient { animation: none !important; background-position: 0% 50%; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
