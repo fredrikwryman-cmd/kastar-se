@@ -18,6 +18,44 @@ if (toggle && nav) {
   });
 }
 
+/* ---------- Hero: bakgrundsfilm ----------
+   Filmen är dekorativ och stum. Pausknappen växlar mellan paus och spela och
+   byter både tecken och etikett. Går filmen inte att spela döljs elementet och
+   posterbilden på .hero blir kvar. */
+const heroFilm = document.querySelector('.hero-video');
+const heroPaus = document.querySelector('.hero-pause');
+
+if (heroFilm) {
+  const mindreRorelse = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  heroFilm.addEventListener('error', () => {
+    heroFilm.hidden = true;
+    if (heroPaus) heroPaus.hidden = true;
+  }, true);
+
+  if (mindreRorelse) {
+    // CSS döljer filmen; här stoppas den så den inte avkodas i onödan.
+    heroFilm.removeAttribute('autoplay');
+    heroFilm.autoplay = false;
+    heroFilm.pause();
+  } else if (heroPaus) {
+    heroPaus.addEventListener('click', () => {
+      if (heroFilm.paused) {
+        // play() returnerar ett löfte som kan avslås – fånga det, annars
+        // hamnar avslaget i konsolen.
+        const spel = heroFilm.play();
+        if (spel && spel.catch) spel.catch(() => {});
+        heroPaus.textContent = 'II';
+        heroPaus.setAttribute('aria-label', 'Pausa bakgrundsfilm');
+      } else {
+        heroFilm.pause();
+        heroPaus.textContent = '\u25BA';
+        heroPaus.setAttribute('aria-label', 'Spela bakgrundsfilm');
+      }
+    });
+  }
+}
+
 /* ---------- Header: glaseffekt och scroll-indikator ----------
    Båda delar en enda scroll-lyssnare, throttlad med requestAnimationFrame så
    att layouten läses av högst en gång per bildruta. Saknas headern gör koden

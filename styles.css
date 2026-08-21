@@ -205,25 +205,59 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Hero (foto + mörk petrol-overlay, vit versal rubrik) ---------- */
 .hero {
-  /* Fallback om bilden inte laddar – texten står då mot solid petrol som förut */
+  position: relative;
+  overflow: hidden;
+  /* Sista utvägen: laddar varken film eller posterbild står texten mot solid
+     petrol, precis som förut. */
   background-color: var(--petrol);
-  /* Gradienten är nästan solid där texten står och tunnas ut åt höger,
-     så motivet syns utan att kontrasten mot den vita rubriken tappar. */
-  background-image:
-    linear-gradient(100deg,
-      rgba(var(--petrol-rgb), .96) 0%,
-      rgba(var(--petrol-rgb), .88) 40%,
-      rgba(var(--petrol-rgb), .55) 100%),
-    url("assets/hero-ny.jpg");
   background-size: cover;
-  background-position: center right;
+  background-position: center;
   background-repeat: no-repeat;
   padding: clamp(4rem, 9vw, 7.5rem) 0;
 }
+/* Filmen fyller hela sektionen och ligger underst. */
+.hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-video[hidden] { display: none; }
+/* Mörkt lager mellan film och text. Utan det varierar läsbarheten med vad som
+   råkar synas i bilden just då. */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(14, 58, 68, .55) 0%,
+    rgba(14, 58, 68, .35) 45%,
+    rgba(14, 58, 68, .65) 100%);
+}
+/* Pausknappen: nere till höger, över både film och lager. */
+.hero-pause {
+  position: absolute; right: 16px; bottom: 16px;
+  z-index: 3;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .5);
+  background: rgba(14, 58, 68, .55);
+  color: #fff;
+  font: inherit; font-size: 13px; line-height: 1;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background-color 150ms ease, border-color 150ms ease, transform 100ms ease;
+}
+.hero-pause:hover { background: rgba(232, 134, 46, .85); border-color: var(--orange); }
+.hero-pause:active { transform: translateY(1px); }
+.hero-pause[hidden] { display: none; }
 /* Containern håller full bredd så hero-texten börjar vid samma vänsterkant som
    loggan och sektionerna nedanför. Textkolumnen begränsas i stället på .hero-copy –
    tidigare låg max-width på containern, vilket centrerade hela hero:n. */
-.hero-inner { display: block; }
+.hero-inner { display: block; position: relative; z-index: 2; }
 .hero-copy  { max-width: 760px; }
 /* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
    den inte tar hela hero-ytan, särskilt på mobil. */
@@ -544,19 +578,6 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Responsivt ---------- */
 @media (max-width: 860px) {
-  /* På mobil går texten över hela bredden – då räcker inte en gradient åt höger.
-     Vi lägger den lodrätt och håller den tät hela vägen. */
-  .hero {
-    background-image:
-      linear-gradient(180deg,
-        rgba(var(--petrol-rgb), .92) 0%,
-        rgba(var(--petrol-rgb), .88) 100%),
-      url("assets/hero-ny.jpg");
-    /* Cropen är smal på mobil – sikta på hörnet med flyttkartongerna
-       i stället för den tomma väggen mitt i bilden. */
-    background-position: 74% center;
-  }
-
   .cards { grid-template-columns: 1fr; }
   /* Tjänsterna behåller 2x2 på surfplatta – de går till en kolumn först på mobil */
   .cards-services { grid-template-columns: repeat(2, 1fr); }
@@ -827,6 +848,10 @@ section[id] { scroll-margin-top: 90px; }
   /* Gradienten och glöden i hero-rubriken ligger kvar – det är bara
      rörelsen som ska bort. */
   .hero-gradient { animation: none !important; background-position: 0% 50%; }
+  /* Ingen bakgrundsfilm och ingen pausknapp. Posterbilden tar filmens plats
+     som vanlig bakgrund, så sektionen aldrig står tom. */
+  .hero-video, .hero-pause { display: none !important; }
+  .hero { background-image: url("assets/hero-poster.jpg"); }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
