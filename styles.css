@@ -244,20 +244,20 @@ a:hover { text-decoration: underline; }
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
    texten kvar i vanlig Kastar-orange i stället för att bli osynlig.
-   Fem färgstopp med ett smalt ljust band mellan 35 och 65 procent. Bandet
-   är varmt i tonen men mycket ljusare än resten, och det är ljusskillnaden
-   som syns som ett skimmer när gradienten sveper. Ändarna är den mörka
-   hover-tonen, så texten läses som orange hela vägen. */
+   Fem färgstopp: texten är vit och cream, med ett smalt orange band mellan
+   35 och 65 procent. Bandet sveper över bokstäverna som ett varmt ljus.
+   Glöden bakom texten är fortfarande orange och ger samma varma sken runt
+   de vita bokstäverna. */
 .hero-gradient {
-  color: var(--orange);
+  color: var(--bg);
   background: linear-gradient(115deg,
-              #D9731A 0%,
-              #E8862E 35%,
-              #FFE3C4 50%,
-              #E8862E 65%,
-              #D9731A 100%);
+              #FAF5EF 0%,
+              #FFFFFF 35%,
+              #E8862E 50%,
+              #FFFFFF 65%,
+              #FAF5EF 100%);
   background-size: 250% 250%;
-  background-position: 100% 50%;
+  background-position: 0% 50%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -266,14 +266,25 @@ a:hover { text-decoration: underline; }
   animation: gradient-shift 5s ease 3 forwards;
 }
 @keyframes gradient-shift {
-  0%, 100% { background-position: 100% 50%; }
-  50%      { background-position: 0% 50%; }
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 /* Glöden används bara här på hela sidan. */
 .hero-glow {
   text-shadow: 0 0 50px rgba(232,134,46,.55),
                0 0 100px rgba(232,134,46,.35),
                0 0 140px rgba(217,115,26,.25);
+}
+
+/* Runda punkter mellan orden i hero-rubriken. Punkten är tyngre och sitter
+   högre än mittpunkten, så den får mindre grad och lyfts optiskt till mitten
+   av versalhöjden. Värdena är i em och följer därför med i alla brytpunkter. */
+.hero h1 .prick {
+  font-size: .58em;
+  /* Punktens bläck ligger 8–16 px över baslinjen vid rubrikens grad, medan
+     versalhöjden är 42 px. Lyftet 0.255em av punktens egen grad flyttar den
+     till 21 px, alltså exakt mitten av versalhöjden. */
+  vertical-align: .255em;
 }
 
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
@@ -826,7 +837,7 @@ section[id] { scroll-margin-top: 90px; }
 @media (prefers-reduced-motion: reduce) {
   /* Gradienten och glöden i hero-rubriken ligger kvar – det är bara
      rörelsen som ska bort. */
-  .hero-gradient { animation: none !important; background-position: 100% 50%; }
+  .hero-gradient { animation: none !important; background-position: 0% 50%; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
