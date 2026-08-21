@@ -48,12 +48,14 @@ body.kort-sida {
 /* ---------- Namn och roll ---------- */
 .kort-namn {
   margin: 0;
-  font-size: clamp(2rem, 9vw, 2.5rem);
-  line-height: 1.1;
+  font-size: clamp(1.8rem, 8vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.12;
 }
 .kort-roll {
   margin: .6rem 0 0;
-  font-size: .95rem; font-weight: 700;
+  font-size: .95rem; font-weight: 500;
   text-transform: uppercase; letter-spacing: .06em;
   color: var(--petrol);
 }
@@ -63,12 +65,12 @@ body.kort-sida {
    bryts raden på smal skärm sker det därför alltid efter en mittpunkt. */
 .kort-spets {
   margin: .35rem 0 0;
-  font-size: .78rem; font-weight: 600; line-height: 1.5;
+  font-size: .78rem; font-weight: 300; line-height: 1.5;
   color: var(--muted);
 }
 .kort-ort {
   margin: .4rem 0 0;
-  font-size: .85rem; line-height: 1.5;
+  font-size: .85rem; font-weight: 300; line-height: 1.5;
   color: var(--muted);
 }
 
@@ -77,13 +79,13 @@ body.kort-sida {
   /* Blockrad med bredd efter innehållet: egen rad, men klickytan sitter
      kring texten och inte över hela kortets bredd. */
   display: block; width: fit-content; margin: 1.3rem auto 0;
-  font-size: clamp(1.5rem, 7vw, 1.75rem); font-weight: 800;
+  font-size: clamp(1.4rem, 6.4vw, 1.6rem); font-weight: 700; letter-spacing: -.02em;
   line-height: 1.2; white-space: nowrap;
   color: var(--orange-hover);
 }
 .kort-mejl {
   display: block; width: fit-content; margin: .45rem auto 0;
-  font-size: .95rem; font-weight: 700;
+  font-size: .95rem; font-weight: 500;
   color: var(--ink);
 }
 
@@ -102,7 +104,7 @@ body.kort-sida {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   padding: .75rem .5rem;
   background: none; border: 0; border-radius: var(--radius-btn);
-  font: inherit; font-size: .82rem; font-weight: 700;
+  font: inherit; font-size: .82rem; font-weight: 500;
   text-transform: uppercase; letter-spacing: .0625em;
   color: var(--petrol); cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease, transform 100ms ease;
@@ -113,7 +115,7 @@ body.kort-sida {
 
 .kort-status {
   margin: .55rem 0 0;
-  font-size: .85rem; font-weight: 700;
+  font-size: .85rem; font-weight: 500;
   color: var(--petrol);
 }
 .kort-status[hidden] { display: none; }
@@ -126,7 +128,7 @@ body.kort-sida {
 }
 .kort-qr { display: block; width: 90px; height: 90px; border-radius: 4px; }
 .kort-qr-lank {
-  font-size: .8rem; font-weight: 700;
+  font-size: .8rem; font-weight: 500;
   letter-spacing: .04em; text-transform: uppercase;
   color: var(--muted);
 }

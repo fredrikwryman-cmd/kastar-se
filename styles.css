@@ -5,7 +5,7 @@
    - Krämvita mellansektioner #FAF5EF med svarta versala rubriker
    - ORANGE knappar #E8862E (nästan raka hörn, versal fet text, vit text)
    - Sekundärknapp: krämvit med mörk text
-   - Montserrat överallt. H1/H2 versala, vikt 800.
+   - Space Grotesk överallt, vikt 300–700. H1/H2 versala, vikt 700.
    ========================================================================== */
 
 :root {
@@ -39,7 +39,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Space Grotesk", system-ui, sans-serif;
   color: var(--body-c);
   background: var(--bg);
   font-size: 16px;
@@ -48,37 +48,25 @@ body {
 }
 
 h1, h2, h3, h4 { color: var(--ink); margin: 0 0 .5em; }
-/* Bebas Neue bär hero-rubriken och sektionsrubrikerna. Allt annat versalt –
-   knappar, orange etiketter, meny, kort- och panelrubriker, sidfotens
-   kolumnrubriker och visitkorten – stannar i Montserrat. Därför undantas
-   .kort-namn, som är visitkortens förnamn.
-   font-synthesis-weight stänger av webbläsarens konstgjorda fetstil: Bebas
-   finns bara i en vikt och blir smetig om den fetas maskinellt. Montserrat i
-   reservledet har en riktig 800:a och påverkas inte, så sidan ser rätt ut
-   även om Bebas inte hinner laddas. */
-h1:not(.kort-namn),
-h2 {
-  font-family: "Bebas Neue", Montserrat, sans-serif;
-  font-synthesis-weight: none;
-  letter-spacing: .022em;   /* Bebas sitter tätt */
-}
-/* Graderna är uppskruvade mot tidigare: Bebas är smalare och lättare än
-   Montserrat 800 och behöver mer storlek för samma tyngd på sidan.
-   Radavståndet hålls över 1.1 så ringen på Å och prickarna på Ä och Ö
-   får plats ovanför versalhöjden. */
+/* Rubriker i vikt 700 – Space Grotesks tyngsta – och tajt satta med
+   -.02em. Space Grotesk är bredare än både Montserrat och Bebas i samma
+   grad, så graderna är nedskruvade så att rubrikerna inte spräcker
+   layouten. Versala etiketter och knapptexter har kvar sin positiva
+   spärrning; den negativa gäller bara det som väger 700. */
+h1, h2, h3, h4 { letter-spacing: -.02em; }
 h1 {
-  font-size: clamp(2.6rem, 5.9vw, 4rem);
-  font-weight: 800;
+  font-size: clamp(1.9rem, 4.2vw, 2.9rem);
+  font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.14;
+  line-height: 1.16;
 }
 h2 {
-  font-size: clamp(1.9rem, 3.8vw, 2.7rem);
-  font-weight: 800;
+  font-size: clamp(1.45rem, 2.9vw, 2.05rem);
+  font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.18;
+  line-height: 1.22;
 }
-h3 { font-size: 1.25rem; font-weight: 700; line-height: 1.375; }
+h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
 p  { margin: 0 0 1rem; }
 a  { color: var(--orange-hover); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -89,7 +77,7 @@ a:hover { text-decoration: underline; }
   text-transform: uppercase;
   letter-spacing: .063em;
   font-size: .82rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--orange);
   margin: 0 0 .5rem;
 }
@@ -107,7 +95,7 @@ a:hover { text-decoration: underline; }
   gap: .5rem;
   padding: .95rem 1.9rem;
   border-radius: var(--radius-btn);
-  font-weight: 700; font-size: .92rem;
+  font-weight: 500; font-size: .92rem;
   text-transform: uppercase; letter-spacing: .0625em;
   border: 2px solid transparent;
   cursor: pointer;
@@ -181,7 +169,7 @@ a:hover { text-decoration: underline; }
 .brand-mark { display: block; height: 52px; width: auto; }
 .brand-text { display: flex; flex-direction: column; gap: 3px; line-height: 1; }
 .brand-name {
-  font-weight: 800; font-size: 30px; letter-spacing: -.02em;
+  font-weight: 700; font-size: 30px; letter-spacing: -.02em;
   text-transform: uppercase; color: var(--bg); white-space: nowrap;
 }
 .brand-tld { color: var(--orange); }
@@ -195,7 +183,7 @@ a:hover { text-decoration: underline; }
 .site-footer .brand-tagline { font-size: 12px; }
 
 .nav { display: flex; align-items: center; gap: 1.7rem; }
-.nav a { color: var(--bg); font-weight: 600; font-size: .95rem; position: relative; }
+.nav a { color: var(--bg); font-weight: 500; font-size: .95rem; position: relative; }
 .nav a:hover { color: var(--orange); text-decoration: none; }
 /* Understrykning som växer ut från mitten vid hover. Länkarna är fullt synliga
    från start – linjen är det enda som animeras. */
@@ -239,7 +227,7 @@ a:hover { text-decoration: underline; }
 .hero-copy  { max-width: 760px; }
 /* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
    den inte tar hela hero-ytan, särskilt på mobil. */
-.hero h1 { color: #fff; font-size: clamp(2.15rem, 5.2vw, 3.8rem); }
+.hero h1 { color: #fff; font-size: clamp(1.65rem, 3.7vw, 2.6rem); }
 /* ---------- Sista orden i hero-rubriken ----------
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
@@ -281,10 +269,11 @@ a:hover { text-decoration: underline; }
    av versalhöjden. Värdena är i em och följer därför med i alla brytpunkter. */
 .hero h1 .prick {
   font-size: .58em;
-  /* Punktens bläck ligger 8–16 px över baslinjen vid rubrikens grad, medan
-     versalhöjden är 42 px. Lyftet 0.255em av punktens egen grad flyttar den
-     till 21 px, alltså exakt mitten av versalhöjden. */
-  vertical-align: .255em;
+  /* Omräknat för Space Grotesk: punktens bläck ligger 3–9 px över baslinjen
+     vid rubrikens grad, medan versalhöjden är 30 px. Lyftet 0.373em av
+     punktens egen grad flyttar den till 15 px, alltså exakt mitten av
+     versalhöjden. Måtten är i em och följer med i alla brytpunkter. */
+  vertical-align: .373em;
 }
 
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
@@ -343,7 +332,7 @@ a:hover { text-decoration: underline; }
 .card-cta {
   display: inline-block; text-align: center;
   margin-top: 1.1rem; padding: 0; background: none; border: 0;
-  font: inherit; font-size: .8rem; font-weight: 800; line-height: 1.5;
+  font: inherit; font-size: .8rem; font-weight: 500; line-height: 1.5;
   text-transform: uppercase; letter-spacing: .03em;
   color: var(--orange-hover); cursor: pointer;
 }
@@ -374,18 +363,18 @@ a:hover { text-decoration: underline; }
 .panel-close:active { transform: translateY(1px); }
 .panel-title {
   margin: 0 2.5rem .25rem 0;
-  font-size: 1.35rem; font-weight: 800; color: var(--ink);
+  font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em; color: var(--ink);
 }
 .panel h4 {
   margin: 1.6rem 0 .4rem;
-  font-size: .82rem; font-weight: 800; letter-spacing: .06em;
+  font-size: .82rem; font-weight: 500; letter-spacing: .06em;
   text-transform: uppercase; color: var(--orange-hover);
 }
 .panel p { margin: 0 0 .75rem; font-size: .95rem; line-height: 1.7; }
 .panel-list { margin: 0 0 .75rem; padding-left: 1.15rem; font-size: .95rem; line-height: 1.7; }
 .panel-list li { margin-bottom: .2rem; }
 .panel-btn { margin-top: 1.4rem; }
-.panel-note { margin: 1.1rem 0 0; font-size: .8rem; line-height: 1.6; color: var(--muted); }
+.panel-note { margin: 1.1rem 0 0; font-size: .8rem; font-weight: 300; line-height: 1.6; color: var(--muted); }
 .card h3 { margin-bottom: .5rem; }
 .card p { margin: 0; }
 
@@ -422,7 +411,7 @@ a:hover { text-decoration: underline; }
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   padding: 1.05rem 1.25rem;
   list-style: none; cursor: pointer;
-  font-size: 1rem; font-weight: 700; line-height: 1.45; color: var(--ink);
+  font-size: 1rem; font-weight: 500; line-height: 1.45; color: var(--ink);
   transition: background-color 150ms ease, color 150ms ease;
 }
 .faq-fraga::-webkit-details-marker { display: none; }
@@ -454,7 +443,7 @@ a:hover { text-decoration: underline; }
 .contact-info .lead { max-width: 42ch; color: var(--body-c); }
 .contact-list { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 1.1rem; }
 .contact-list li { display: grid; gap: .1rem; }
-.ci-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .063em; color: var(--orange); font-weight: 700; }
+.ci-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .063em; color: var(--orange); font-weight: 500; }
 .contact-list a, .contact-list span { color: var(--ink); }
 .contact-list a { font-size: 1.05rem; font-weight: 700; }
 /* Två telefonnummer under samma etikett behöver lite mer luft än radgapet */
@@ -473,13 +462,13 @@ a:hover { text-decoration: underline; }
   padding: 2rem; box-shadow: var(--shadow);
 }
 .field { margin-bottom: 1rem; }
-.field label { display: block; font-weight: 700; font-size: .88rem; margin-bottom: .35rem; color: var(--ink); }
+.field label { display: block; font-weight: 500; font-size: .88rem; margin-bottom: .35rem; color: var(--ink); }
 .field input, .field textarea {
   width: 100%; padding: .8rem .95rem; border: 1px solid var(--line); border-radius: var(--radius-btn);
   font: inherit; color: var(--ink); background: #fff; transition: border-color .15s;
 }
 .field input:focus, .field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,134,46,.18); }
-.form-alt { text-align: center; font-size: .9rem; color: var(--muted); margin: 1rem 0 0; }
+.form-alt { text-align: center; font-size: .9rem; font-weight: 300; color: var(--muted); margin: 1rem 0 0; }
 
 /* Bekräftelse/fel efter att formuläret skickats */
 .form-status {
@@ -494,11 +483,11 @@ a:hover { text-decoration: underline; }
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
 .footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
-.footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .063em; }
+.footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
 .footer-col a:hover { color: var(--orange-badge); }
 /* Små textlänkar till de digitala visitkorten, under kontaktuppgifterna */
-.footer-col .footer-kort { font-size: .85rem; color: #9FB3B9; }
+.footer-col .footer-kort { font-size: .85rem; font-weight: 300; color: #9FB3B9; }
 .footer-col a + .footer-kort { margin-top: .7rem; }
 .footer-col .footer-kort + .footer-kort { margin-top: .2rem; }
 /* Tjänstekolumnen är andra barnet i .footer-inner (första är .footer-brand).
@@ -515,7 +504,7 @@ a:hover { text-decoration: underline; }
 }
 .footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); color: var(--orange); }
 .footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; color: #9FB3B9; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; font-weight: 300; color: #9FB3B9; }
 .footer-bottom a { color: #9FB3B9; text-decoration: underline; }
 .footer-bottom a:hover { color: #fff; }
 
@@ -538,11 +527,11 @@ a:hover { text-decoration: underline; }
 /* Textsidor (integritetspolicy) */
 .legal { max-width: 760px; margin: 0 auto; }
 .legal h1 { margin-bottom: 1.5rem; overflow-wrap: break-word; }
-.legal h2 { font-size: 1.35rem; margin: 2rem 0 .5rem; }
+.legal h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
 .legal p, .legal li { color: var(--body-c); }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
 .legal li { margin-bottom: .35rem; }
-.legal .updated { font-size: .85rem; color: var(--muted); }
+.legal .updated { font-size: .85rem; font-weight: 300; color: var(--muted); }
 /* Avvikande, mindre ruta för friskrivningar sist på en textsida */
 .legal-note {
   margin: 2.5rem 0 0;
@@ -551,7 +540,7 @@ a:hover { text-decoration: underline; }
   border-left: 3px solid var(--orange);
   border-radius: var(--radius-btn);
 }
-.legal-note p { margin: 0; font-size: .85rem; line-height: 1.65; color: var(--muted); }
+.legal-note p { margin: 0; font-size: .85rem; font-weight: 300; line-height: 1.65; color: var(--muted); }
 
 /* ---------- Responsivt ---------- */
 @media (max-width: 860px) {
@@ -676,14 +665,14 @@ a:hover { text-decoration: underline; }
 .calc-label {
   justify-self: start;
   background: var(--petrol); color: #fff;
-  font-weight: 800; font-size: .82rem; letter-spacing: .06em;
+  font-weight: 500; font-size: .82rem; letter-spacing: .06em;
   text-transform: uppercase; padding: .35rem .85rem; border-radius: 4px;
   margin-bottom: .4rem;
 }
 .calc-vol  { font-weight: 700; color: var(--ink); font-size: 1rem; }
-.calc-from { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-top: .5rem; }
+.calc-from { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 500; margin-top: .5rem; }
 .calc-price {
-  font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; color: var(--orange-hover);
+  font-size: clamp(2rem, 4.4vw, 2.7rem); font-weight: 700; letter-spacing: -.02em; color: var(--orange-hover);
   line-height: 1.1; font-variant-numeric: tabular-nums;
 }
 .calc-desc { color: var(--body-c); font-size: .95rem; margin-top: .35rem; }
@@ -709,7 +698,7 @@ a:hover { text-decoration: underline; }
 /* --steg sätts av script.js efter antalet steg i TIERS */
 .calc-steps { display: grid; grid-template-columns: repeat(var(--steg, 6), 1fr); gap: .4rem; }
 .calc-steps button {
-  font: inherit; font-size: .78rem; font-weight: 700; text-transform: uppercase;
+  font: inherit; font-size: .78rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: .03em; padding: .5rem .25rem; cursor: pointer;
   background: var(--bg); color: var(--muted);
   border: 1px solid var(--line); border-radius: 4px;
@@ -737,11 +726,11 @@ a:hover { text-decoration: underline; }
 .trust-icon svg { width: 30px; height: 30px; }
 .trust-item h3 {
   margin: 0 0 .3rem;
-  font-size: .82rem; font-weight: 800;
+  font-size: .82rem; font-weight: 700; letter-spacing: -.02em;
   text-transform: uppercase; letter-spacing: .05em;
   line-height: 1.35; color: var(--ink);
 }
-.trust-item p { margin: 0; font-size: .88rem; line-height: 1.55; color: var(--muted); }
+.trust-item p { margin: 0; font-size: .88rem; font-weight: 300; line-height: 1.55; color: var(--muted); }
 
 /* Så går det till */
 /* Samma 900px som .calc och .trust – hela prissektionen delar kant */
@@ -750,14 +739,14 @@ a:hover { text-decoration: underline; }
 .step-num {
   display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto .9rem;
   border-radius: 50%; background: var(--orange); color: #fff;
-  font-weight: 800; font-size: 1.4rem;
+  font-weight: 700; font-size: 1.4rem; letter-spacing: -.02em;
 }
 .step h3 { margin-bottom: .4rem; font-size: 1.1rem; }
 .step p  { margin: 0; color: var(--body-c); }
 
 .price-note {
   max-width: 720px; margin: 2.5rem auto 0; text-align: center;
-  font-size: .85rem; color: var(--muted); line-height: 1.6;
+  font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.6;
 }
 
 /* ==========================================================================
@@ -791,7 +780,7 @@ a:hover { text-decoration: underline; }
   .mobile-bar a {
     display: flex; align-items: center; justify-content: center;
     padding: .8rem .5rem; border-radius: var(--radius-btn);
-    font-weight: 700; font-size: .92rem; text-transform: uppercase; letter-spacing: .05em;
+    font-weight: 500; font-size: .92rem; text-transform: uppercase; letter-spacing: .05em;
     text-decoration: none;
     transition: background-color 150ms ease, transform 100ms ease;
   }
@@ -819,7 +808,7 @@ a:hover { text-decoration: underline; }
 @media (max-width: 560px) {
   /* "Integritetspolicy" är ett enda långt ord som annars är bredare än
      containern och drar upp horisontell scroll på mobil. */
-  .legal h1 { font-size: 2.1rem; }
+  .legal h1 { font-size: 1.7rem; }
   /* De tre punkterna hamnar på var sin rad här – tätare radavstånd så att
      sista raden inte hamnar bakom den fasta ring-baren vid sidans topp. */
   .hero-badges { gap: .5rem 1rem; }
