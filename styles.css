@@ -244,13 +244,19 @@ a:hover { text-decoration: underline; }
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
    texten kvar i vanlig Kastar-orange i stället för att bli osynlig.
-   Alla tre färgstopp är samma orange i olika ljus – den mörka hover-tonen,
-   den ordinarie och en ljusare ton – så rörelsen läses som skiftande ljus,
-   inte som ett färgbyte. */
+   Fem färgstopp med ett smalt ljust band mellan 35 och 65 procent. Bandet
+   är varmt i tonen men mycket ljusare än resten, och det är ljusskillnaden
+   som syns som ett skimmer när gradienten sveper. Ändarna är den mörka
+   hover-tonen, så texten läses som orange hela vägen. */
 .hero-gradient {
   color: var(--orange);
-  background: linear-gradient(135deg, #D9731A 0%, #E8862E 50%, #F5A65C 100%);
-  background-size: 200% 200%;
+  background: linear-gradient(115deg,
+              #D9731A 0%,
+              #E8862E 35%,
+              #FFE3C4 50%,
+              #E8862E 65%,
+              #D9731A 100%);
+  background-size: 250% 250%;
   background-position: 0% 50%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
