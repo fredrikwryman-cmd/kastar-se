@@ -53,7 +53,7 @@ Hela avläsningen med raden kvar:
               <span class="calc-label" id="calcLabel">8 m³</span>
               <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
-              <span class="calc-price" id="calcPrice">4 195 kr</span>
+              <span class="calc-price" id="calcPrice">3 495 kr</span>
               <!-- Döljs tills RUT_LABOUR_SHARE i script.js är satt -->
               <span class="rut-price" id="calcRutPrice" hidden></span>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
