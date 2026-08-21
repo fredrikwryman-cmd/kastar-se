@@ -6,9 +6,15 @@ detta som sista steg utan att fråga först:
 
     git -C "%USERPROFILE%\Downloads\kastar-site" push origin main
 
-Fredrik godkänner kommandot i dialogrutan. Om kommandot hänger eller
-timar ut: avbryt, säg det rakt ut och be honom köra samma rad i sitt
-eget CMD-fönster. Försök inte med alternativa push-varianter.
+Fredrik godkänner kommandot i dialogrutan. Försök inte med alternativa
+push-varianter.
+
+Pushen ska alltid köras i Bash-skalet, aldrig i PowerShell. I PowerShell
+saknas inloggningen och git svarar "could not read Username for
+https://github.com".
+
+Hänger pushen ändå: vänta max 60 sekunder, avbryt, och be Fredrik köra
+raden i sitt eget CMD-fönster. Vänta inte fem minuter.
 
 ## Parallellt arbete
 När ett direktiv innehåller flera delar som rör OLIKA filer, kör dem
