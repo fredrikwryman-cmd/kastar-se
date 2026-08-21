@@ -48,17 +48,35 @@ body {
 }
 
 h1, h2, h3, h4 { color: var(--ink); margin: 0 0 .5em; }
+/* Bebas Neue bär hero-rubriken och sektionsrubrikerna. Allt annat versalt –
+   knappar, orange etiketter, meny, kort- och panelrubriker, sidfotens
+   kolumnrubriker och visitkorten – stannar i Montserrat. Därför undantas
+   .kort-namn, som är visitkortens förnamn.
+   font-synthesis-weight stänger av webbläsarens konstgjorda fetstil: Bebas
+   finns bara i en vikt och blir smetig om den fetas maskinellt. Montserrat i
+   reservledet har en riktig 800:a och påverkas inte, så sidan ser rätt ut
+   även om Bebas inte hinner laddas. */
+h1:not(.kort-namn),
+h2 {
+  font-family: "Bebas Neue", Montserrat, sans-serif;
+  font-synthesis-weight: none;
+  letter-spacing: .022em;   /* Bebas sitter tätt */
+}
+/* Graderna är uppskruvade mot tidigare: Bebas är smalare och lättare än
+   Montserrat 800 och behöver mer storlek för samma tyngd på sidan.
+   Radavståndet hålls över 1.1 så ringen på Å och prickarna på Ä och Ö
+   får plats ovanför versalhöjden. */
 h1 {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-size: clamp(2.6rem, 5.9vw, 4rem);
   font-weight: 800;
   text-transform: uppercase;
-  line-height: 1.25;
+  line-height: 1.14;
 }
 h2 {
-  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  font-size: clamp(1.9rem, 3.8vw, 2.7rem);
   font-weight: 800;
   text-transform: uppercase;
-  line-height: 1.4;
+  line-height: 1.18;
 }
 h3 { font-size: 1.25rem; font-weight: 700; line-height: 1.375; }
 p  { margin: 0 0 1rem; }
@@ -221,7 +239,7 @@ a:hover { text-decoration: underline; }
 .hero-copy  { max-width: 760px; }
 /* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
    den inte tar hela hero-ytan, särskilt på mobil. */
-.hero h1 { color: #fff; font-size: clamp(1.8rem, 4.4vw, 3.2rem); }
+.hero h1 { color: #fff; font-size: clamp(2.15rem, 5.2vw, 3.8rem); }
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
 .nowrap { white-space: nowrap; }
 .hero .eyebrow { color: var(--orange-badge); }
@@ -473,7 +491,7 @@ a:hover { text-decoration: underline; }
 /* Textsidor (integritetspolicy) */
 .legal { max-width: 760px; margin: 0 auto; }
 .legal h1 { margin-bottom: 1.5rem; overflow-wrap: break-word; }
-.legal h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
+.legal h2 { font-size: 1.35rem; margin: 2rem 0 .5rem; }
 .legal p, .legal li { color: var(--body-c); }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
 .legal li { margin-bottom: .35rem; }
@@ -754,7 +772,7 @@ a:hover { text-decoration: underline; }
 @media (max-width: 560px) {
   /* "Integritetspolicy" är ett enda långt ord som annars är bredare än
      containern och drar upp horisontell scroll på mobil. */
-  .legal h1 { font-size: 1.8rem; }
+  .legal h1 { font-size: 2.1rem; }
   /* De tre punkterna hamnar på var sin rad här – tätare radavstånd så att
      sista raden inte hamnar bakom den fasta ring-baren vid sidans topp. */
   .hero-badges { gap: .5rem 1rem; }
