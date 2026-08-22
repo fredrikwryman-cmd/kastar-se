@@ -224,17 +224,19 @@ a:hover { text-decoration: underline; }
   pointer-events: none;
 }
 .hero-video[hidden] { display: none; }
-/* Mörkt lager mellan film och text. Utan det varierar läsbarheten med vad som
-   råkar synas i bilden just då. */
+/* Sidans ursprungliga hero-filter, oförändrat, men flyttat från
+   background-image på .hero till ett eget lager – annars hamnar det bakom
+   filmen. Gradienten är nästan solid där texten står och tunnas ut åt höger,
+   så motivet syns utan att kontrasten mot den vita rubriken tappar. */
 .hero::after {
   content: '';
   position: absolute; inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg,
-    rgba(14, 58, 68, .55) 0%,
-    rgba(14, 58, 68, .35) 45%,
-    rgba(14, 58, 68, .65) 100%);
+  background: linear-gradient(100deg,
+    rgba(var(--petrol-rgb), .96) 0%,
+    rgba(var(--petrol-rgb), .88) 40%,
+    rgba(var(--petrol-rgb), .55) 100%);
 }
 /* Pausknappen: nere till höger, över både film och lager. */
 .hero-pause {
@@ -785,6 +787,14 @@ a:hover { text-decoration: underline; }
 .mobile-bar { display: none; }
 
 @media (max-width: 860px) {
+  /* På mobil går texten över hela bredden – då räcker inte en gradient åt
+     höger. Originalets lodräta variant, oförändrad. */
+  .hero::after {
+    background: linear-gradient(180deg,
+      rgba(var(--petrol-rgb), .92) 0%,
+      rgba(var(--petrol-rgb), .88) 100%);
+  }
+
   .calc-truck { grid-template-columns: 1fr; gap: 1.25rem; }
   .calc-steps { grid-template-columns: repeat(3, 1fr); }
   .trust { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1.25rem; }
