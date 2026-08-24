@@ -72,7 +72,8 @@
   .tline b{color:#fff; font-weight:600}
   .tbig{display:flex; justify-content:space-between; align-items:baseline; margin-top:6px}
   .tbig span{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#9FB4B9}
-  .tbig strong{font-size:28px; font-weight:800; color:var(--orange); line-height:1}
+  .tbig strong{font-size:34px; font-weight:800; color:var(--orange); line-height:1}
+  .tsplit{font-size:12px; color:#9FB4B9; margin:4px 0 0}
   .btns{display:flex; gap:8px; margin-top:10px}
   button{
     flex:1; padding:12px; font-size:14px; font-weight:700; border:0; border-radius:6px;
@@ -111,6 +112,20 @@
 </header>
 
 <div class="wrap">
+
+  <!-- 0. INSTÄLLNINGAR -->
+  <details class="card">
+    <summary>Inställningar</summary>
+    <div class="body">
+      <div class="row">
+        <label>Arbetsandel av timpris med bil
+          <span class="hint">Procent. Bil och drivmedel ger aldrig avdrag – resten bokförs som transport.</span>
+        </label>
+        <input type="number" id="arbandel" min="0" max="100" step="5" value="70">
+      </div>
+      <p class="note">Gäller flytthjälp och tungflytt. Nedmontering och praktisk hjälp är arbete fullt ut.</p>
+    </div>
+  </details>
 
   <!-- 1. BORTFORSLING -->
   <details class="card" open>
@@ -203,7 +218,21 @@
     </div>
   </details>
 
-  <!-- 7. PRAKTISK HJÄLP -->
+  <!-- 7. BUDTRANSPORT -->
+  <details class="card">
+    <summary>Budtransport <span class="sum-amt" data-sum="bud"></span></summary>
+    <div class="body">
+      <div class="row">
+        <label>Antal uppdrag
+          <span class="hint">995 kr per uppdrag, Stockholm och Uppsala</span>
+        </label>
+        <input type="number" id="bud" min="0" step="1" value="0">
+      </div>
+      <p class="note">Ren transport. Ger inget avdrag.</p>
+    </div>
+  </details>
+
+  <!-- 8. PRAKTISK HJÄLP -->
   <details class="card">
     <summary>Praktisk hjälp hemma <span class="sum-amt" data-sum="hjalp"></span></summary>
     <div class="body">
@@ -213,11 +242,17 @@
         </label>
         <input type="number" id="hjalph" min="0" step="0.5" value="0">
       </div>
+      <div class="row">
+        <label>Timmar, två personer
+          <span class="hint">995 kr per timme, minst 2 timmar</span>
+        </label>
+        <input type="number" id="hjalph2" min="0" step="0.5" value="0">
+      </div>
       <p class="note">Montering av möbler i hemmet är RUT-grundande.</p>
     </div>
   </details>
 
-  <!-- 8. TILLÄGG -->
+  <!-- 9. TILLÄGG -->
   <details class="card">
     <summary>Tillägg <span class="sum-amt" data-sum="till"></span></summary>
     <div class="body">
@@ -236,7 +271,7 @@
     </div>
   </details>
 
-  <!-- 9. MARGINALKOLL -->
+  <!-- 10. MARGINALKOLL -->
   <details class="card">
     <summary>Marginalkoll <span class="sum-amt" data-sum="marg"></span></summary>
     <div class="body">
@@ -254,11 +289,13 @@
 
 <div class="total">
   <div class="inner">
-    <div class="tline"><span>Arbete, ROT-grundande</span><b id="tRot">0 kr</b></div>
-    <div class="tline"><span>Arbete, RUT-grundande</span><b id="tRut">0 kr</b></div>
-    <div class="tline"><span>Transport och avfall</span><b id="tTrans">0 kr</b></div>
-    <div class="tbig"><span>Kund betalar</span><strong id="tTot">0 kr</strong></div>
-    <div class="tline" style="margin-top:6px"><span>Efter avdrag, om kunden är berättigad</span><b id="tEfter">0 kr</b></div>
+    <div class="tline"><span>Listpris inkl moms</span><b id="tTot">0 kr</b></div>
+    <div class="tline"><span>Arbete, ROT-grundande · avdrag 30 %</span><b id="tRot">0 kr</b></div>
+    <div class="tline"><span>Arbete, RUT-grundande · avdrag 50 %</span><b id="tRut">0 kr</b></div>
+    <div class="tline"><span>Transport och avfall, inget avdrag</span><b id="tTrans">0 kr</b></div>
+    <div class="tbig"><span>Kund betalar efter avdrag</span><strong id="tEfter">0 kr</strong></div>
+    <p class="tsplit" id="tSplit">Du fakturerar 0 kr, Skatteverket betalar 0 kr</p>
+    <div class="flag bad" id="takflag">Beräknat ROT-avdrag överstiger 50 000 kr per person och år.</div>
     <div class="btns">
       <button id="copy">Skapa offerttext</button>
       <button class="ghost" id="reset">Nollställ</button>
@@ -284,6 +321,17 @@
   function calc(){
     var lines = [];
     var rot = 0, rut = 0, trans = 0, ovr = 0;
+
+    // Timpriset "två personer med bil" innehåller bilen, och bil och drivmedel
+    // ger aldrig avdrag. Bara arbetsandelen bokförs som RUT-grundande, resten
+    // som transport. Gäller flytthjälp och tungflytt.
+    var andelEl = document.getElementById('arbandel');
+    var andel = andelEl ? (parseFloat(andelEl.value) || 0) : 70;
+    andel = Math.min(100, Math.max(0, andel));
+    // Rakna i hela procent och dela sist: 5 485 * 0.7 blir 3 839,4999 i
+    // flyttal, medan 5 485 * 70 / 100 blir exakt 3 839,5 och avrundas som
+    // for hand.
+    var arbandel = function(belopp){ return Math.round(belopp * andel / 100); };
 
     // Bortforsling
     var v = parseInt(document.getElementById('vol').value, 10) || 0;
@@ -320,14 +368,18 @@
       var deb = Math.max(3, fh);
       sumFlytt = deb * 995;
       lines.push(['Flytthjälp, ' + deb + ' tim (2 pers)', sumFlytt]);
-      rut += sumFlytt;
+      var flyttArb = arbandel(sumFlytt);
+      rut += flyttArb;
+      trans += sumFlytt - flyttArb;
     }
 
     // Tungflytt
     var ts = num('tungst'), tv = num('tungvan'), sumTung = 0;
     if (ts > 0) { sumTung += ts * 2495; lines.push(['Tungflytt, ' + ts + ' föremål', ts * 2495]); }
     if (tv > 0) { sumTung += tv * 495; lines.push([tv + ' våning' + (tv > 1 ? 'ar' : '') + ' utan hiss', tv * 495]); }
-    rut += sumTung;
+    var tungArb = arbandel(sumTung);
+    rut += tungArb;
+    trans += sumTung - tungArb;
 
     // Magasinering
     var m3 = num('magm3'), man = num('magman'), sumMag = 0;
@@ -338,14 +390,27 @@
       ovr += sumMag;
     }
 
-    // Praktisk hjälp
-    var hh = num('hjalph'), sumHjalp = 0;
+    // Budtransport – ren transport, inget avdrag
+    var bud = num('bud'), sumBud = 0;
+    if (bud > 0) {
+      sumBud = bud * 995;
+      lines.push(['Budtransport × ' + bud, sumBud]);
+      trans += sumBud;
+    }
+
+    // Praktisk hjälp – arbete fullt ut
+    var hh = num('hjalph'), hh2 = num('hjalph2'), sumHjalp = 0;
     if (hh > 0) {
       var dh = Math.max(2, hh);
-      sumHjalp = dh * 495;
-      lines.push(['Praktisk hjälp, ' + dh + ' tim', sumHjalp]);
-      rut += sumHjalp;
+      sumHjalp += dh * 495;
+      lines.push(['Praktisk hjälp, ' + dh + ' tim (1 pers)', dh * 495]);
     }
+    if (hh2 > 0) {
+      var dh2 = Math.max(2, hh2);
+      sumHjalp += dh2 * 995;
+      lines.push(['Praktisk hjälp, ' + dh2 + ' tim (2 pers)', dh2 * 995]);
+    }
+    rut += sumHjalp;
 
     // Delsumma före tillägg
     var del = rot + rut + trans + ovr;
@@ -367,10 +432,16 @@
     var total = rot + rut + trans + ovr - rab;
     if (total < 0) total = 0;
 
-    // Avdrag
-    var rotAvd = Math.round(rot * 0.30);
-    var rutAvd = Math.round(rut * 0.50);
+    // Avdrag med tak: ROT högst 50 000 kr per person och år, RUT högst 75 000,
+    // och tillsammans högst 75 000. Går summan över det gemensamma taket
+    // trimmas ROT först, så det större RUT-avdraget behålls.
+    var rotRatt = Math.round(rot * 0.30);
+    var rutRatt = Math.round(rut * 0.50);
+    var rotAvd = Math.min(rotRatt, 50000);
+    var rutAvd = Math.min(rutRatt, 75000);
+    if (rotAvd + rutAvd > 75000) rotAvd = Math.max(0, 75000 - rutAvd);
     var efter = total - rotAvd - rutAvd;
+    if (efter < 0) efter = 0;
 
     // Marginal
     var mantim = num('mantim'), kosttim = num('kosttim');
@@ -405,16 +476,22 @@
     setSum('flytt', sumFlytt);
     setSum('tung', sumTung);
     setSum('mag', sumMag);
+    setSum('bud', sumBud);
     setSum('hjalp', sumHjalp);
     setSum('till', sumTill);
     var margEl = document.querySelector('[data-sum="marg"]');
     if (margEl) margEl.textContent = (mantim > 0 && exmoms > 0) ? Math.round(tbProc) + ' %' : '';
 
-    document.getElementById('tRot').textContent = kr(rot);
-    document.getElementById('tRut').textContent = kr(rut);
-    document.getElementById('tTrans').textContent = kr(trans);
     document.getElementById('tTot').textContent = kr(total);
+    document.getElementById('tRot').textContent = rot > 0 ? kr(rot) + ' · avdrag ' + kr(rotAvd) : kr(0);
+    document.getElementById('tRut').textContent = rut > 0 ? kr(rut) + ' · avdrag ' + kr(rutAvd) : kr(0);
+    document.getElementById('tTrans').textContent = kr(trans + ovr);
     document.getElementById('tEfter').textContent = kr(efter);
+    document.getElementById('tSplit').textContent =
+      'Du fakturerar ' + kr(efter) + ', Skatteverket betalar ' + kr(rotAvd + rutAvd);
+
+    var tf = document.getElementById('takflag');
+    tf.className = 'flag bad' + (rotRatt > 50000 ? ' on' : '');
 
     return {lines:lines, rot:rot, rut:rut, trans:trans, total:total, rotAvd:rotAvd, rutAvd:rutAvd, efter:efter};
   }
@@ -458,7 +535,8 @@
 
   document.getElementById('reset').addEventListener('click', function(){
     document.querySelectorAll('input[type=number]').forEach(function(el){
-      el.value = (el.id === 'kosttim' || el.id === 'deponi') ? '' : 0;
+      if (el.id === 'arbandel') el.value = 70;
+      else el.value = (el.id === 'kosttim' || el.id === 'deponi') ? '' : 0;
     });
     document.getElementById('vol').value = '0';
     document.getElementById('fram').value = 'auto';
