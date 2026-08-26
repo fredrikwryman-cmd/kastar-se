@@ -232,6 +232,27 @@ a:hover { text-decoration: underline; }
   object-position: center right;
   z-index: 0;
 }
+/* Lokalt mörkerlager, målat före gradienten och i samma skikt. Den nya
+   stillbilden är ljusare i övre vänstra hörnet än filmen var, så etiketten och
+   punktraden tappade kontrast. Radialen mörkar hörnet där etikett och rubrik
+   står, den lodräta tonen nederkanten där punktraden står, och båda tonar ut
+   mot mitten och höger så att kartongerna och säckkärran inte påverkas.
+   Etikettens orange och ::after-gradienten är därför orörda. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(150% 100% at 0% 0%,
+      rgba(9, 47, 56, .55) 0%,
+      rgba(9, 47, 56, .28) 45%,
+      rgba(9, 47, 56, 0) 85%),
+    linear-gradient(to top,
+      rgba(9, 47, 56, .42) 0%,
+      rgba(9, 47, 56, 0) 22%);
+}
 /* Sidans ursprungliga hero-filter, oförändrat, men flyttat från
    background-image på .hero till ett eget lager – annars hamnar det bakom
    filmen. Gradienten är nästan solid där texten står och tunnas ut åt höger,
@@ -304,7 +325,9 @@ a:hover { text-decoration: underline; }
 
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
 .nowrap { white-space: nowrap; }
-.hero .eyebrow { color: var(--orange-badge); }
+/* Varumärkets orange, inte badge-tonen: #E8862E ger 4,62:1 mot petrol,
+   #ED7D31 bara 4,44:1. */
+.hero .eyebrow { color: var(--orange); }
 .hero-copy .lead { color: var(--on-dark-body); font-size: 1.12rem; max-width: 46ch; }
 .lead { font-size: 1.05rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin: 1.75rem 0 1.5rem; }
