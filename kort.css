@@ -81,7 +81,7 @@ body.kort-sida {
   display: block; width: fit-content; margin: 1.3rem auto 0;
   font-size: clamp(1.4rem, 6.4vw, 1.6rem); font-weight: 700; letter-spacing: -.02em;
   line-height: 1.2; white-space: nowrap;
-  color: var(--orange-hover);
+  color: var(--orange-ink);
 }
 .kort-mejl {
   display: block; width: fit-content; margin: .45rem auto 0;
@@ -109,7 +109,7 @@ body.kort-sida {
   color: var(--petrol); cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease, transform 100ms ease;
 }
-.kort-dela:hover { background: var(--bg); color: var(--orange-hover); }
+.kort-dela:hover { background: var(--bg); color: var(--orange-ink); }
 .kort-dela:active { transform: translateY(1px); }
 .kort-dela svg { width: 17px; height: 17px; flex: 0 0 auto; }
 

@@ -15,12 +15,11 @@
   --petrol-deep:  #092F38;  /* footer / djupare ton */
   --petrol-black: #00242E;
   --orange:       #E8862E;  /* knappfärg (secondary-tonen på sidan) */
-  --orange-hover: #D9731A;
   /* Orange text på ljus botten. #E8862E ger bara 2,66:1 mot vitt och
-     2,46:1 mot krämvitt, #D9731A 3,27 respektive 3,02 – båda under
-     gränsen. #A85610 ger 5,25:1 mot vitt och 4,84:1 mot krämvitt och
-     klarar därmed 4,5:1 på båda bottnarna. Gäller bara TEXT; orange som
-     ifylld knappfärg är oförändrad. */
+     2,46:1 mot krämvitt – under gränsen. #A85610 ger 5,25:1 mot vitt
+     och 4,84:1 mot krämvitt och klarar därmed 4,5:1 på båda bottnarna.
+     Gäller bara TEXT; orange som ifylld knappfärg är oförändrad.
+     Två orangea toner finns, inga fler – se Färgpalett i CLAUDE.md. */
   --orange-ink:   #A85610;
   --bg:           #FAF5EF;  /* krämvit sektionsbakgrund */
   --bg-card:      #FFFFFF;
@@ -73,21 +72,24 @@ h2 {
 }
 h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
 p  { margin: 0 0 1rem; }
-/* Lankar star pa ljus botten. #D9731A ger bara 3,27:1 mot vitt och
-   3,02:1 mot krämvitt – #A85610 klarar 5,25 respektive 4,84. Länkar på
-   mörk botten sätter sin egen färg (.nav a, .footer-col a,
-   .footer-bottom a, .footer-legal a) och påverkas inte. */
+/* Länkar står på ljus botten, där #A85610 klarar 5,25:1 mot vitt och
+   4,84:1 mot krämvitt. Länkar på mörk botten sätter sin egen färg
+   (.nav a, .footer-col a, .footer-bottom a, .footer-legal a) och
+   påverkas inte. */
 a  { color: var(--orange-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 
+/* Basfallet är en etikett på krämvit sektionsbotten, där --orange bara
+   ger 2,46:1. Mörka lägen sätter om färgen själva: .hero .eyebrow och
+   .section-alt .eyebrow. */
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: .063em;
   font-size: .82rem;
   font-weight: 500;
-  color: var(--orange);
+  color: var(--orange-ink);
   margin: 0 0 .5rem;
 }
 
@@ -123,8 +125,9 @@ a:hover { text-decoration: underline; }
 /* Medan formuläret skickas: knappen dämpas och slutar reagera på hover */
 .btn:disabled { opacity: .65; cursor: progress; transform: none; box-shadow: none; }
 /* Petroltext på orange, inte vit. Vit ger 2,66:1 och underkänns;
-   #092F38 mot #E8862E ger 5,34:1. Hovringen byter INTE bakgrund – #D9731A
-   med petroltext hamnar på 4,35:1 och faller under gränsen. I stället lyfts
+   #092F38 mot #E8862E ger 5,34:1. Hovringen byter INTE bakgrund – den
+   mörkare hovringstonen vi hade förut hamnade på 4,35:1 med petroltext
+   och föll under gränsen, och är nu borta ur paletten. I stället lyfts
    knappen och skuggan fördjupas, så kontrasten är densamma i alla lägen.
    Skuggan går i knappens egen orange – bara primärknappen bär tyngd.
    rgba(232,134,46) är samma färg som --orange, ingen ny kulör. */
@@ -852,7 +855,7 @@ a:hover { text-decoration: underline; }
    centrerad, så noten centreras på samma sätt och hålls smalare än raden runt
    62 tecken för läsbarhet. Dämpad och mindre än .lead: den ska läsa som en
    underrad till rubriken, inte konkurrera med den. Länken står på krämvit
-   botten och använder därför --orange-ink, inte --orange-hover. */
+   botten och använder därför --orange-ink. */
 .pris-avdragsnot {
   max-width: 62ch; margin: .9rem auto 0;
   text-align: center; font-size: .88rem; line-height: 1.6; color: var(--muted);
@@ -1036,7 +1039,9 @@ a:hover { text-decoration: underline; }
   }
   .mobile-bar a:hover { text-decoration: none; }
   .mobile-bar a:active { transform: translateY(1px); }
-  .mb-call  { background: var(--orange); color: #fff; }
+  /* Samma resonemang som .btn-primary: vit på orange ger 2,66:1,
+     petroltext 5,34:1. */
+  .mb-call  { background: var(--orange); color: var(--petrol-deep); }
   .mb-quote { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.5); }
 }
 
