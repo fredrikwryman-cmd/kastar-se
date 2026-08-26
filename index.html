@@ -285,12 +285,14 @@
   </script>
 
   <!-- Hero-bilden är en CSS-bakgrund – hämta den tidigt så första intrycket inte fördröjs -->
-  <link rel="preload" as="image" href="assets/hero-poster.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/hero.jpg"
+        imagesrcset="assets/hero-1200.jpg 1200w, assets/hero.jpg 2000w"
+        imagesizes="100vw" fetchpriority="high" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <!-- ============ HEADER / NAV ============ -->
@@ -322,13 +324,13 @@
   <main>
     <!-- ============ HERO (mörk petrol som på nuvarande sida) ============ -->
     <section class="hero">
-      <!-- Bakgrundsfilmen ligger bakom allt innehåll. Den är stum, dekorativ och
-           utanför tabbordningen; posterbilden syns tills filmen laddat och blir
-           kvar om filen saknas eller om besökaren valt reducerad rörelse. -->
-      <video class="hero-video" src="assets/hero.mp4" poster="assets/hero-poster.jpg"
-             autoplay muted loop playsinline preload="metadata"
-             aria-hidden="true" tabindex="-1"></video>
-      <button class="hero-pause" type="button" aria-label="Pausa bakgrundsfilm">II</button>
+      <!-- Bakgrundsbilden ligger bakom allt innehåll. Tomt alt: bilden är
+           dekorativ, allt innehåll står i texten ovanpå. Den är sidans
+           LCP-element och laddas därför med hög prioritet. -->
+      <img class="hero-bild" src="assets/hero.jpg"
+           srcset="assets/hero-1200.jpg 1200w, assets/hero.jpg 2000w"
+           sizes="100vw" alt="" width="2000" height="1116"
+           fetchpriority="high" decoding="async">
 
       <div class="container hero-inner">
         <div class="hero-copy">
@@ -1327,7 +1329,7 @@
     <a href="#kontakt" class="mb-quote">Få pris</a>
   </div>
 
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
