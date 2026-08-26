@@ -16,6 +16,12 @@
   --petrol-black: #00242E;
   --orange:       #E8862E;  /* knappfärg (secondary-tonen på sidan) */
   --orange-hover: #D9731A;
+  /* Orange text på ljus botten. #E8862E ger bara 2,66:1 mot vitt och
+     2,46:1 mot krämvitt, #D9731A 3,27 respektive 3,02 – båda under
+     gränsen. #A85610 ger 5,25:1 mot vitt och 4,84:1 mot krämvitt och
+     klarar därmed 4,5:1 på båda bottnarna. Gäller bara TEXT; orange som
+     ifylld knappfärg är oförändrad. */
+  --orange-ink:   #A85610;
   --orange-badge: #ED7D31;  /* citatbubbla i omdömen */
   --bg:           #FAF5EF;  /* krämvit sektionsbakgrund */
   --bg-card:      #FFFFFF;
@@ -468,6 +474,173 @@ a:hover { text-decoration: underline; }
 @media (max-width: 560px) {
   .faq-fraga { padding: .95rem 1rem; font-size: .95rem; }
   .faq-svar { padding: 0 1rem 1.1rem; }
+}
+
+/* ---------- Prisvisning (belopp, RUT-etikett, prislista, långdistans) ---------- */
+/* Komponenten används både i vita paneler (<dialog class="panel">) och direkt
+   i krämvita sektioner. Därför sätts ingen egen bakgrund någonstans här –
+   allt vilar på den botten som råkar ligga under. */
+.pris {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+/* Ordningen låses explicit i stället för att lita på markupen. Beloppet ska
+   alltid läsas först, etiketten därefter och ordinariepriset sist, oavsett
+   hur raderna råkar hamna i HTML vid en framtida ändring. */
+.pris__netto  { order: 1; }
+.pris__badge  { order: 2; }
+.pris__brutto { order: 3; }
+
+/* Beloppet är kortets tyngdpunkt. 1.9rem mot bruttots .82rem ger kvoten
+   1.9 / .82 = 2,32 – kravet är minst 2,2, så det finns marginal. Ändras den
+   ena graden måste den andra följa med, annars faller kvoten under gränsen. */
+.pris__netto {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--orange-ink);
+}
+/* Enheten är underordnad beloppet och skalas därför i em, inte rem – då
+   följer den med automatiskt om beloppet ändrar grad. */
+.pris__enhet {
+  font-size: .55em;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: inherit;
+}
+
+/* Etiketten är en länk till villkoren, inte en knapp. Petrol på ljus orange
+   botten i stället för orange text – orange på orange skulle inte nå 4,5:1. */
+.pris__badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  background: rgba(232, 134, 46, .18);
+  color: var(--petrol);
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+/* Bara bottnen mörknar vid hover – texten byter aldrig färg, så kontrasten
+   kan inte försämras av interaktionen. Fokusringen kommer från sidans
+   globala :focus-visible och ska inte överstyras här. */
+.pris__badge:hover { background: rgba(232, 134, 46, .3); text-decoration: none; }
+.pris__badge--fast { background: rgba(110, 123, 129, .16); color: var(--body-c); }
+.pris__badge--fast:hover { background: rgba(110, 123, 129, .26); }
+
+/* INGEN genomstrykning. Ett överstruket pris läses som rea, och ordinariepriset
+   gäller fortfarande för den som inte har RUT – att stryka över det vore
+   vilseledande. Storleken och den dämpade tonen räcker för att visa vad som
+   är huvudpriset. */
+.pris__brutto {
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+/* ---- Prislista: rad med tjänstenamn till vänster och pris till höger ---- */
+.prisrad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+/* Sista raden får ingen linje – annars ser listan avhuggen ut mot det som
+   kommer efter. */
+.prislista .prisrad:last-child { border-bottom: 0; }
+.prisrad__namn { color: var(--ink); font-size: 1rem; line-height: 1.5; }
+
+@media (max-width: 560px) {
+  /* Namn och pris får inte plats bredvid varandra utan att beloppet krymper
+     eller namnet bryts i småbitar. Staplade i stället, priset direkt under
+     namnet och allt vänsterställt. */
+  .prisrad {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .35rem;
+  }
+}
+
+/* ---- Långdistanstabell ---- */
+.langd-tabell { display: grid; gap: 0; }
+.langd-rad {
+  display: grid;
+  grid-template-columns: 1.7fr .8fr 1fr 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: .85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.langd-tabell .langd-rad:last-child { border-bottom: 0; }
+.langd-rad--rubrik {
+  font-size: .72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+/* RUT-priset är det tal folk letar efter, så det får samma vikt och färg som
+   beloppet i .pris och lyfts över de övriga cellerna. */
+.langd-netto { font-size: 1.15rem; font-weight: 800; color: var(--orange-ink); }
+
+@media (max-width: 700px) {
+  /* Fyra kolumner ryms inte utan att texten antingen krymper till oläslighet
+     eller drar upp horisontell scroll. Varje rad blir i stället ett litet
+     kort där cellerna får sina etiketter ur data-etikett – rubrikraden
+     behövs då inte längre. */
+  .langd-tabell { gap: .75rem; }
+  .langd-rad--rubrik { display: none; }
+  .langd-rad {
+    grid-template-columns: 1fr;
+    gap: .2rem;
+    padding: .9rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+  }
+  .langd-tabell .langd-rad:last-child { border: 1px solid var(--line); }
+  .langd-rad span {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: .75rem;
+  }
+  /* Etiketten först i cellen. Den krymper före värdet, så även 320px räcker. */
+  .langd-rad span::before {
+    content: attr(data-etikett);
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: .72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+  /* Första cellen är sträckan och står som rubrik i kortet – den behöver
+     ingen etikett bredvid sig. */
+  .langd-rad span:first-child {
+    display: block;
+    margin-bottom: .35rem;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .langd-rad span:first-child::before { content: none; }
+}
+
+/* ---- Villkorsblock som etiketterna länkar till ---- */
+/* section[id] längre ned sätter redan scroll-margin-top: 90px, vilket räcker
+   med gott om marginal mot headerns 68px. Upprepas inte här. */
+.villkor {
+  max-width: 780px;
+  margin: 0 auto;
+  color: var(--body-c);
+  line-height: 1.8;
 }
 
 /* ---------- Kontakt (ljus sektion, vitt formulärkort) ---------- */

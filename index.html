@@ -290,7 +290,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
 </head>
 <body>
   <!-- ============ HEADER / NAV ============ -->
@@ -373,6 +373,7 @@
               <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
               <span class="calc-price" id="calcPrice">3 495 kr</span>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
             </div>
           </div>
@@ -441,7 +442,74 @@
           </div>
         </div>
 
+        <div class="prislista">
+          <div class="prisrad">
+            <div class="prisrad__namn">Framkörning, ingår vid uppdrag över 6 000 kr</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">395 kr</div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Bomkörning</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">1 500 kr</div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Rivningsavfall, per påbörjat 100 kg</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">295 kr</div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+        </div>
+
         <p class="price-note reveal">Priserna är frånpriser inklusive moms. Extra kostnad kan tillkomma vid mycket tungt material, långa bäravstånd, många trappor eller särskilda avfallsavgifter.</p>
+      </div>
+    </section>
+
+
+    <!-- ============ LÅNGDISTANSFLYTT ============ -->
+    <section class="section" id="langdistans">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Långdistansflytt</p>
+          <h2>Hela vägen, med priset utskrivet</h2>
+          <p class="lead">Arbete på ordinarie timpris plus 15 kr per kilometer enkel väg utanför Stockholms och Uppsala län. Samma bil och samma personal hela vägen.</p>
+        </div>
+
+        <div class="prislista">
+          <div class="prisrad">
+            <div class="prisrad__namn">Arbete, två personer med bil</div>
+            <div class="pris">
+              <div class="pris__netto">645 kr<span class="pris__enhet">/tim</span></div>
+              <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+              <div class="pris__brutto">Ordinarie 995 kr/tim</div>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Kilometer enkel väg</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">15 kr<span class="pris__enhet">/km</span></div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="langd-tabell">
+          <div class="langd-rad langd-rad--rubrik">
+            <span>Sträcka</span><span>Avstånd</span><span>Ordinarie</span><span>Efter RUT</span>
+          </div>
+          <div class="langd-rad"><span data-etikett="Sträcka">Stockholm–Uppsala</span><span data-etikett="Avstånd">70 km</span><span data-etikett="Ordinarie">6 025 kr</span><span class="langd-netto" data-etikett="Efter RUT">3 537 kr</span></div>
+          <div class="langd-rad"><span data-etikett="Sträcka">Stockholm–Sundsvall</span><span data-etikett="Avstånd">390 km</span><span data-etikett="Ordinarie">10 825 kr</span><span class="langd-netto" data-etikett="Efter RUT">8 337 kr</span></div>
+          <div class="langd-rad"><span data-etikett="Sträcka">Stockholm–Göteborg</span><span data-etikett="Avstånd">470 km</span><span data-etikett="Ordinarie">12 025 kr</span><span class="langd-netto" data-etikett="Efter RUT">9 537 kr</span></div>
+          <div class="langd-rad"><span data-etikett="Sträcka">Stockholm–Malmö</span><span data-etikett="Avstånd">615 km</span><span data-etikett="Ordinarie">14 200 kr</span><span class="langd-netto" data-etikett="Efter RUT">11 712 kr</span></div>
+        </div>
+
+        <p class="langd-not">Exemplen gäller en tvårumslägenhet med fem timmars lastning och lossning.</p>
+        <p class="langd-arg">Avdraget gäller arbetet med lastning och lossning. Körning, bil och drivmedel ger aldrig rutavdrag – därför blir avdraget mindre ju längre flytten är. Vi visar det rakt av istället för att räkna med halva totalpriset.</p>
       </div>
     </section>
 
@@ -551,6 +619,51 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Bortforsling av möbler och inventarier</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">2 m³ – några få saker</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">1 295 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">4 m³ – en kvarts bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">2 195 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">8 m³ – en halv bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">3 495 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">10 m³</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">4 395 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">12 m³ – tre kvarts bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">5 195 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">16 m³ – fullastad bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">6 995 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>Vi räknar på volym — hur stor del av bilen dina saker tar. Du får ett fast pris innan vi börjar, baserat på bilder du skickar eller vad du beskriver. Varje nivå rymmer upp till 100 kg per kubikmeter.</p>
 
@@ -570,6 +683,16 @@
         <div class="panel-inner">
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Tömning av bostäder och dödsbon</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Volympris, 2–16 m³</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">1 295–6 995 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
 
           <h4>Så räknar vi</h4>
           <p>Samma volympris som bortforsling. Vi kommer gärna ut och tittar först, kostnadsfritt, så att priset står fast. Ska något sparas, skänkas eller säljas vidare går vi igenom det tillsammans innan vi börjar.</p>
@@ -591,6 +714,23 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Bortforsling från garage, förråd och kontor</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Volympris, 2–16 m³</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">1 295–6 995 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Tungt innehåll, per påbörjat 100 kg</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">295 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>Volympris precis som för bohag. Är innehållet ovanligt tungt — verktyg, metall, byggrester — räknar vi istället på vikt, 295 kr per påbörjat 100 kg. Vi säger vilket som gäller innan vi börjar, aldrig efteråt.</p>
 
@@ -610,6 +750,17 @@
         <div class="panel-inner">
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Flytthjälp</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Flytthjälp, två personer med bil</div>
+              <div class="pris">
+                <div class="pris__netto">645 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie 995 kr/tim</div>
+              </div>
+            </div>
+          </div>
 
           <h4>Så räknar vi</h4>
           <p>Timpris för två personer med bil, 995 kr per timme. Minsta debitering tre timmar. Vi räknar från att vi är på plats till att vi är klara.</p>
@@ -631,6 +782,25 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Tungflytt och pianoflytt</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Piano eller kassaskåp, entréplan</div>
+              <div class="pris">
+                <div class="pris__netto">från 1 622 kr</div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie från 2 495 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Per våning utan hiss</div>
+              <div class="pris">
+                <div class="pris__netto">247 kr</div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie 495 kr</div>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>Fast pris per föremål. Piano eller kassaskåp från 2 495 kr inom samma ort, entréplan till entréplan. Tillägg 495 kr per våning utan hiss. Föremål över 300 kg och trånga bärvägar offereras separat efter bilder.</p>
 
@@ -650,6 +820,72 @@
         <div class="panel-inner">
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Nedmontering och rivning</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Timpris, två personer</div>
+              <div class="pris">
+                <div class="pris__netto">766 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie 1 095 kr/tim</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Nedmontering av kök</div>
+              <div class="pris">
+                <div class="pris__netto">från 2 306 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie från 3 295 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Kök inklusive kakel ovanför bänk</div>
+              <div class="pris">
+                <div class="pris__netto">från 3 496 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie från 4 995 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Parkettgolv, per rum upp till 20 m²</div>
+              <div class="pris">
+                <div class="pris__netto">från 1 956 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie från 2 795 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Klinker på golv, per rum upp till 10 m²</div>
+              <div class="pris">
+                <div class="pris__netto">från 3 846 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie från 5 495 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Icke-bärande gipsvägg, per löpmeter</div>
+              <div class="pris">
+                <div class="pris__netto">416 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie 595 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Garderober och inbyggda möbler</div>
+              <div class="pris">
+                <div class="pris__netto">från 1 326 kr</div>
+                <a class="pris__badge" href="#villkor">efter ROT 30 %</a>
+                <div class="pris__brutto">Ordinarie från 1 895 kr</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Rivningsmassor, per påbörjat 100 kg</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">295 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
 
           <h4>Så räknar vi</h4>
           <p>Fast pris på arbetet, och bortforslingen separat på vikt. Rivningsmassor väger fem till tio gånger mer än bohag, därför räknar vi dem på vikt och inte på volym — 295 kr per påbörjat 100 kg, minst 995 kr.</p>
@@ -679,6 +915,16 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Magasinering</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Magasinering, per m³ och månad</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">139 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>139 kr per kubikmeter och månad. Minimum fyra kubikmeter och en månad. Hämtning och utkörning tillkommer enligt volympriset för bortforsling.</p>
 
@@ -698,6 +944,25 @@
         <div class="panel-inner">
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Praktisk hjälp hemma</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Praktisk hjälp, en person</div>
+              <div class="pris">
+                <div class="pris__netto">247 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie 495 kr/tim</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Praktisk hjälp, två personer</div>
+              <div class="pris">
+                <div class="pris__netto">497 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie 995 kr/tim</div>
+              </div>
+            </div>
+          </div>
 
           <h4>Så räknar vi</h4>
           <p>495 kr per timme för en person. Minsta debitering två timmar. Behövs två personer gäller flyttpriset, 995 kr per timme.</p>
@@ -719,6 +984,16 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Budtransport</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Budtransport inom Stockholm och Uppsala</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">från 995 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>Priset sätts efter sträcka och hur mycket plats godset tar. Skicka länken till annonsen eller en bild, så får du ett fast pris innan vi åker.</p>
 
@@ -739,6 +1014,24 @@
           <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
           <h3 class="panel-title">Långdistansflytt</h3>
 
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Arbete, två personer med bil</div>
+              <div class="pris">
+                <div class="pris__netto">645 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge" href="#villkor">efter RUT 50 %</a>
+                <div class="pris__brutto">Ordinarie 995 kr/tim</div>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Kilometer enkel väg utanför länen</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">15 kr<span class="pris__enhet">/km</span></div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
           <h4>Så räknar vi</h4>
           <p>Timpris för två personer med bil, 995 kr per timme, plus kilometerersättning för sträckan. Du får ett fast takpris innan vi åker, så priset aldrig springer iväg.</p>
 
@@ -753,6 +1046,14 @@
           <p class="panel-note">Alla priser är inklusive moms och utan avdrag. Framkörning 395 kr, ingår vid uppdrag över 6 000 kr.</p>
         </div>
       </dialog>
+      </div>
+    </section>
+
+    <!-- ============ VILLKOR FÖR AVDRAGEN ============ -->
+    <section class="section section-alt" id="villkor">
+      <div class="container villkor">
+        <h2>Villkor för rot och rut</h2>
+        <p>Rutavdraget är 50 % av arbetskostnaden, rotavdraget 30 %. Bil, drivmedel, flyttkartonger, magasinhyra och avfallshantering ger aldrig avdrag. Rotavdrag kräver att du äger bostaden och att byggnaden är minst fem år gammal – hyresrätt ger inget rotavdrag. Taket är 50 000 kr per person och år för rot och 75 000 kr för rut, med 75 000 kr som gemensamt tak. Avdraget dras direkt på fakturan och förutsätter att du har utrymme kvar för året. Bortforsling till återvinning ger inget avdrag.</p>
       </div>
     </section>
 
