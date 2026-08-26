@@ -9,8 +9,8 @@
   <link rel="canonical" href="https://kastar.se/" />
 
   <!-- Favicon, hemskärmsikoner och appmanifest -->
-  <link rel="icon" type="image/jpeg" href="assets/logo-ikon.jpg" />
-  <link rel="apple-touch-icon" href="assets/logo-ikon.jpg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-180.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0E3A44" />
 
@@ -285,16 +285,17 @@
   </script>
 
   <!-- Hero-bilden är en CSS-bakgrund – hämta den tidigt så första intrycket inte fördröjs -->
-  <link rel="preload" as="image" href="assets/hero.jpg"
-        imagesrcset="assets/hero-1200.jpg 1200w, assets/hero.jpg 2000w"
+  <link rel="preload" as="image" href="assets/hero-1600.webp"
+        imagesrcset="assets/hero-800.webp 800w, assets/hero-1600.webp 1600w"
         imagesizes="100vw" fetchpriority="high" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=29" />
+  <link rel="stylesheet" href="styles.css?v=30" />
 </head>
 <body>
+  <a class="skip" href="#main">Hoppa till innehållet</a>
   <!-- ============ HEADER / NAV ============ -->
   <header class="site-header" id="top">
     <div class="container header-inner">
@@ -321,14 +322,14 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <!-- ============ HERO (mörk petrol som på nuvarande sida) ============ -->
     <section class="hero">
       <!-- Bakgrundsbilden ligger bakom allt innehåll. Tomt alt: bilden är
            dekorativ, allt innehåll står i texten ovanpå. Den är sidans
            LCP-element och laddas därför med hög prioritet. -->
-      <img class="hero-bild" src="assets/hero.jpg"
-           srcset="assets/hero-1200.jpg 1200w, assets/hero.jpg 2000w"
+      <img class="hero-bild" src="assets/hero-1600.webp"
+           srcset="assets/hero-800.webp 800w, assets/hero-1600.webp 1600w"
            sizes="100vw" alt="" width="2000" height="1116"
            fetchpriority="high" decoding="async">
 
@@ -404,7 +405,9 @@
           <!-- Lastbil som fylls -->
           <div class="calc-truck">
             <div class="truck-photo">
-              <img src="assets/bil-ny.jpg" alt="Vit skåpbil med Kastar.se-logga, sedd från sidan"
+              <img src="assets/bil-ny-1000.webp" alt="Vit skåpbil med Kastar.se-logga, sedd från sidan"
+                   srcset="assets/bil-ny-500.webp 500w, assets/bil-ny-1000.webp 1000w"
+                   sizes="(max-width: 860px) 90vw, 40vw"
                    width="1600" height="893" loading="lazy" decoding="async">
               <div class="truck-load" id="truckLoad" aria-hidden="true"></div>
             </div>
@@ -553,7 +556,10 @@
         </div>
         <div class="cards cards-services">
           <article class="card" data-panel="panel-1">
-            <img class="card-img" src="assets/tjanst-1.jpg" alt="Tomt rum med mörkgrön vägg där en orange fåtölj, uppställda trälister och en stapel trästolar står kvar mot väggen" width="1200" height="900" />
+            <img class="card-img" src="assets/tjanst-1-800.webp"
+                 srcset="assets/tjanst-1-400.webp 400w, assets/tjanst-1-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Tomt rum med mörkgrön vägg där en orange fåtölj, uppställda trälister och en stapel trästolar står kvar mot väggen" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Bortforsling av möbler och inventarier</h3>
               <p>Vi hämtar och transporterar bort möbler och inventarier för att frigöra utrymme i ditt hem eller företag.</p>
@@ -562,7 +568,10 @@
           </article>
 
           <article class="card" data-panel="panel-2">
-            <img class="card-img" src="assets/tjanst-2.jpg" alt="Rum i en tömd bostad med matbord, stolar, tom bokhylla och staplade flyttkartonger vid väggen" width="1200" height="900" />
+            <img class="card-img" src="assets/tjanst-2-800.webp"
+                 srcset="assets/tjanst-2-400.webp 400w, assets/tjanst-2-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Rum i en tömd bostad med matbord, stolar, tom bokhylla och staplade flyttkartonger vid väggen" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Tömning av bostäder och dödsbon</h3>
               <p>Vi hjälper med tömning av hela bostäder och dödsbon på ett respektfullt och effektivt sätt.</p>
@@ -571,7 +580,10 @@
           </article>
 
           <article class="card" data-panel="panel-3">
-            <img class="card-img" src="assets/tjanst-3.jpg" alt="Garage med öppen port där en bokhylla, en hoprullad matta och staplade förvaringslådor står kvar" width="1200" height="900" />
+            <img class="card-img" src="assets/tjanst-3-800.webp"
+                 srcset="assets/tjanst-3-400.webp 400w, assets/tjanst-3-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Garage med öppen port där en bokhylla, en hoprullad matta och staplade förvaringslådor står kvar" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Bortforsling från garage, förråd och kontor</h3>
               <p>Snabb och smidig bortforsling från garage, förråd och kontorslokaler för en renare arbets- och förvaringsmiljö.</p>
@@ -580,7 +592,10 @@
           </article>
 
           <article class="card" data-panel="panel-4">
-            <img class="card-img" src="assets/tjanst-4.jpg" alt="Staplade flyttkartonger märkta Kastar.se i ett tomt rum, med hopvikt flyttfilt och tejprulle på golvet" width="1200" height="900" />
+            <img class="card-img" src="assets/tjanst-4-800.webp"
+                 srcset="assets/tjanst-4-400.webp 400w, assets/tjanst-4-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Staplade flyttkartonger märkta Kastar.se i ett tomt rum, med hopvikt flyttfilt och tejprulle på golvet" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Flytthjälp</h3>
               <p>Från etta till villa, från kontor till lager. Vi flyttar allt som ska med, och tar hand om det som inte ska följa med.</p>
@@ -589,7 +604,10 @@
           </article>
 
           <article class="card" data-panel="panel-5">
-            <img class="card-img" src="assets/tjanst-5.jpg" alt="Ett piano fastspänt med spännband på en flyttvagn i en hall intill en trappa, med flyttfiltar uppställda mot väggen" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-5-800.webp"
+                 srcset="assets/tjanst-5-400.webp 400w, assets/tjanst-5-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Ett piano fastspänt med spännband på en flyttvagn i en hall intill en trappa, med flyttfiltar uppställda mot väggen" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Tungflytt och pianoflytt</h3>
               <p>Piano, kassaskåp och andra tunga pjäser flyttas säkert med rätt utrustning och vana – även genom trapphus där det är ont om plats.</p>
@@ -598,7 +616,10 @@
           </article>
 
           <article class="card" data-panel="panel-6">
-            <img class="card-img" src="assets/tjanst-6.jpg" alt="Rum under nedmontering med nedtagna skivor och köksluckor lutade mot väggen och skruvdragare på skyddspapp på golvet" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-6-800.webp"
+                 srcset="assets/tjanst-6-400.webp 400w, assets/tjanst-6-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Rum under nedmontering med nedtagna skivor och köksluckor lutade mot väggen och skruvdragare på skyddspapp på golvet" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Nedmontering och rivning</h3>
               <p>Vi monterar ned kök, golv och icke-bärande väggar – och kör bort allt direkt, så du slipper container och flera leverantörer.</p>
@@ -607,7 +628,10 @@
           </article>
 
           <article class="card" data-panel="panel-7">
-            <img class="card-img" src="assets/tjanst-7.jpg" alt="Magasin med staplade flyttkartonger märkta Kastar.se och en inplastad fåtölj" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-7-800.webp"
+                 srcset="assets/tjanst-7-400.webp 400w, assets/tjanst-7-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Magasin med staplade flyttkartonger märkta Kastar.se och en inplastad fåtölj" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Magasinering</h3>
               <p>Behöver du förvara bohaget en period? Vi hämtar, magasinerar och levererar tillbaka när du är redo – tryggt och torrt.</p>
@@ -616,7 +640,10 @@
           </article>
 
           <article class="card" data-panel="panel-8">
-            <img class="card-img" src="assets/tjanst-8.jpg" alt="Delar till en möbel utlagda på skyddspapper på golvet tillsammans med beslag och skruvmejsel, bredvid staplade kartonger" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-8-800.webp"
+                 srcset="assets/tjanst-8-400.webp 400w, assets/tjanst-8-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Delar till en möbel utlagda på skyddspapper på golvet tillsammans med beslag och skruvmejsel, bredvid staplade kartonger" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Praktisk hjälp hemma</h3>
               <p>Hjälp med det tunga och tidsödande – bära, rensa, sortera och montera inför flytt, försäljning eller visning.</p>
@@ -625,7 +652,10 @@
           </article>
 
           <article class="card" data-panel="panel-9">
-            <img class="card-img" src="assets/tjanst-9.jpg?v=2" alt="Inplastat kylskåp fastspänt med orange spännband på en pirra i en hall med öppen ytterdörr, med en hopvikt flyttfilt på golvet" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-9-800.webp"
+                 srcset="assets/tjanst-9-400.webp 400w, assets/tjanst-9-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Inplastat kylskåp fastspänt med orange spännband på en pirra i en hall med öppen ytterdörr, med en hopvikt flyttfilt på golvet" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Budtransport</h3>
               <p>Köpt något som ska hämtas? Vi hämtar hos säljaren och levererar hem till dörren – möbler, vitvaror, byggmaterial eller enstaka paket. Fast pris efter sträcka och storlek.</p>
@@ -634,7 +664,10 @@
           </article>
 
           <article class="card" data-panel="panel-10">
-            <img class="card-img" src="assets/tjanst-10.jpg?v=2" alt="Flyttbil märkt Kastar.se på en landsväg i solnedgång" width="1200" height="900" loading="lazy" />
+            <img class="card-img" src="assets/tjanst-10-800.webp"
+                 srcset="assets/tjanst-10-400.webp 400w, assets/tjanst-10-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Flyttbil märkt Kastar.se på en landsväg i solnedgång" width="1200" height="900" loading="lazy" decoding="async" />
             <div class="card-body">
               <h3>Långdistansflytt</h3>
               <p>Flytt till en annan stad? Vi kör hela vägen med samma bil och samma personal, från lastning till urlastning. Inga omlastningar och ingen väntan på en terminal.</p>
@@ -1092,28 +1125,28 @@
         </div>
         <div class="features">
           <div class="feature">
-            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-1.png" alt="" width="240" height="240" /></div>
+            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-1-192.webp" srcset="assets/varfor-1-96.webp 96w, assets/varfor-1-192.webp 192w" sizes="48px" alt="" width="240" height="240" loading="lazy" decoding="async" /></div>
             <div>
               <h3>Fast pris innan vi börjar</h3>
               <p>Du får priset skriftligt innan jobbet startar. Inga påslag efteråt och inga överraskningar på fakturan.</p>
             </div>
           </div>
           <div class="feature">
-            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-2.png" alt="" width="240" height="240" /></div>
+            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-2-192.webp" srcset="assets/varfor-2-96.webp 96w, assets/varfor-2-192.webp 192w" sizes="48px" alt="" width="240" height="240" loading="lazy" decoding="async" /></div>
             <div>
               <h3>Avtalad tid är avtalad tid</h3>
               <p>Vår flexibilitet gäller även kvällar och helger. Drar något över hör du det från oss innan du behöver ringa och fråga.</p>
             </div>
           </div>
           <div class="feature">
-            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-3.png" alt="" width="240" height="240" /></div>
+            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-3-192.webp" srcset="assets/varfor-3-96.webp 96w, assets/varfor-3-192.webp 192w" sizes="48px" alt="" width="240" height="240" loading="lazy" decoding="async" /></div>
             <div>
               <h3>Inget skräp lämnas kvar</h3>
               <p>Vi lämnar utrymmet tomt och sopat. Flyttstädning ingår inte, men du ska aldrig behöva plocka undan efter oss.</p>
             </div>
           </div>
           <div class="feature">
-            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-4.png" alt="" width="240" height="240" /></div>
+            <div class="feature-icon" aria-hidden="true"><img src="assets/varfor-4-192.webp" srcset="assets/varfor-4-96.webp 96w, assets/varfor-4-192.webp 192w" sizes="48px" alt="" width="240" height="240" loading="lazy" decoding="async" /></div>
             <div>
               <h3>Återbruk först, deponi sist</h3>
               <p>Det som går att skänka eller återvinna sorteras ut. Du får veta vart sakerna tar vägen.</p>

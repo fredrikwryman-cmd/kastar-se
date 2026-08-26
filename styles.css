@@ -27,7 +27,10 @@
 
   --ink:          #111111;  /* svarta rubriker på ljus botten */
   --body-c:       #3A4A50;
-  --muted:        #6E7B81;
+  /* Grå brödtext. #6E7B81 gav bara 4,36:1 mot vitt och 4,02:1 mot
+     krämvitt – underkänt på båda. #647177 ger 5,04:1 mot vitt och
+     4,65:1 mot krämvitt och håller därmed 4,5:1 på båda bottnarna. */
+  --muted:        #647177;
   --on-dark:      #FFFFFF;
   --on-dark-body: #E7EEF0;
 
@@ -96,6 +99,30 @@ a:hover { text-decoration: underline; }
 /* ---------- Fokus (tangentbord) ---------- */
 /* Samma ring överallt. Orange syns både mot krämvitt och mot petrol. */
 :focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* Skip-link. Får INTE döljas med display:none eller visibility:hidden –
+   då plockas den ur tabbordningen och går inte att nå med tangentbord.
+   Den flyttas därför utanför skärmen med position:absolute och hämtas
+   tillbaka vid :focus. z-index 100 lägger den över den klistrade
+   headern (z-index 50) och den mobila knappraden (z-index 60). */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: .75rem 1.25rem;
+  background: var(--petrol-deep);
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius-btn);
+}
+.skip:focus {
+  left: .5rem;
+  top: .5rem;
   outline: 3px solid var(--orange);
   outline-offset: 3px;
 }
@@ -887,7 +914,8 @@ a:hover { text-decoration: underline; }
   /* Skåpets insida i procent av bildens mått (foto 1600x893). Justera dessa
      fyra tills den orange ytan ligger exakt innanför skåpets kanter — inget
      annat behöver ändras.
-     Uppmätt i bil-ny.jpg: vänster x=557, höger x=1438, topp y=171, botten y=623. */
+     Uppmätt i källbilden 1600x893 (nu bil-ny-1000.webp): vänster x=557,
+     höger x=1438, topp y=171, botten y=623. */
   --box-left: 34.81%;
   --box-right: 89.88%;
   --box-top: 19.15%;

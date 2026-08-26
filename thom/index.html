@@ -7,8 +7,8 @@
   <meta name="description" content="Digitalt visitkort för Thom på Kastar.se – transport och utförande. Ring 070-343 34 40, spara kontakten eller begär offert direkt." />
   <link rel="canonical" href="https://kastar.se/thom" />
 
-  <link rel="icon" type="image/jpeg" href="/assets/logo-ikon.jpg" />
-  <link rel="apple-touch-icon" href="/assets/logo-ikon.jpg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-180.png" />
   <meta name="theme-color" content="#0E3A44" />
 
   <!-- Open Graph / social sharing -->
@@ -30,30 +30,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=29" />
-  <link rel="stylesheet" href="/kort.css?v=5" />
+  <link rel="stylesheet" href="/styles.css?v=30" />
+  <link rel="stylesheet" href="/kort.css?v=6" />
 </head>
 <body class="kort-sida">
+  <a class="skip" href="#main">Hoppa till innehållet</a>
 
-  <main class="kort">
+  <div class="kort">
     <!-- Medieruta 4:5. Filmen är stum och dekorativ, samma bildutsnitt som
          Fredriks porträtt. Ingen loop: den spelar en gång och blir stående på
          sista bildrutan, där Thom står vänd mot kameran. WebM först och MP4
          som reserv; posterbilden ligger i rutan tills filmen har laddat. Har
          besökaren valt reducerad rörelse stoppar kort.js autostarten och
          postern blir kvar. -->
-    <div class="kort-media">
+    <header class="kort-media">
       <video autoplay muted playsinline preload="metadata"
-             poster="/assets/kort-thom-poster.jpg" width="720" height="900"
+             poster="/assets/kort-thom-poster-900.webp" width="720" height="900"
              aria-label="Thom på Kastar.se vänder sig mot kameran och lägger armarna i kors.">
         <source src="/assets/kort-thom.webm" type="video/webm" />
         <source src="/assets/kort-thom.mp4" type="video/mp4" />
-        <img src="/assets/kort-thom-poster.jpg" width="900" height="1125"
+        <img src="/assets/kort-thom-poster-900.webp"
+             srcset="/assets/kort-thom-poster-450.webp 450w, /assets/kort-thom-poster-900.webp 900w"
+             sizes="(max-width: 560px) 92vw, 420px" width="900" height="1125"
              alt="Thom på Kastar.se i orange arbetströja, med armarna i kors." />
       </video>
-    </div>
+    </header>
 
-    <div class="kort-kropp">
+    <main class="kort-kropp" id="main">
       <h1 class="kort-namn">Thom</h1>
       <p class="kort-roll">Transport och utförande</p>
       <p class="kort-spets">Transport&nbsp;· Tunga&nbsp;lyft&nbsp;· Flytt&nbsp;· Utförande</p>
@@ -80,12 +83,13 @@
       </button>
       <p class="kort-status" id="delaStatus" role="status" aria-live="polite" hidden></p>
 
-      <div class="kort-fot">
-        <img class="kort-qr" src="/assets/qr-thom.png" width="90" height="90" alt="QR-kod till kastar.se/thom" />
-        <a class="kort-qr-lank" href="https://kastar.se/">kastar.se</a>
-      </div>
-    </div>
-  </main>
+    </main>
+
+    <footer class="kort-fot">
+      <img class="kort-qr" src="/assets/qr-thom.png" width="90" height="90" alt="QR-kod till kastar.se/thom" />
+      <a class="kort-qr-lank" href="https://kastar.se/">kastar.se</a>
+    </footer>
+  </div>
 
   <script src="/kort.js?v=2"></script>
 </body>
