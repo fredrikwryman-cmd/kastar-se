@@ -680,12 +680,15 @@ a:hover { text-decoration: underline; }
 /* ---- Villkorsblock som etiketterna länkar till ---- */
 /* section[id] längre ned sätter redan scroll-margin-top: 90px, vilket räcker
    med gott om marginal mot headerns 68px. Upprepas inte här. */
+/* Villkoren är numera ett underavsnitt sist i ROT och RUT-sektionen, inte en
+   egen sektion. Toppmarginalen skiljer det från knappen ovanför. */
 .villkor {
   max-width: 780px;
-  margin: 0 auto;
+  margin: 3rem auto 0;
   color: var(--body-c);
   line-height: 1.8;
 }
+.villkor h3 { margin-bottom: .6rem; }
 
 /* ---------- Kontakt (ljus sektion, vitt formulärkort) ----------
    Bakgrunden kommer från .section-cream i markupen, inte härifrån. */
@@ -987,9 +990,11 @@ a:hover { text-decoration: underline; }
 /* Samma 900px som .calc och .trust – hela prissektionen delar kant */
 .steps { max-width: 900px; margin: 3rem auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .step { text-align: center; padding: 0 1rem; }
+/* Samma resonemang som .btn-primary: vit på orange ger 2,66:1 och underkänns,
+   petroltext (#092F38 mot #E8862E) ger 5,34:1. Bakgrunden är oförändrad. */
 .step-num {
   display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto .9rem;
-  border-radius: 50%; background: var(--orange); color: #fff;
+  border-radius: 50%; background: var(--orange); color: var(--petrol-deep);
   font-weight: 700; font-size: 1.4rem; letter-spacing: -.02em;
 }
 .step h3 { margin-bottom: .4rem; font-size: 1.1rem; }
@@ -1077,8 +1082,10 @@ a:hover { text-decoration: underline; }
   .cards-services { grid-template-columns: 1fr; }
 }
 
-/* Ankarlänkar ska inte hamna bakom den fasta headern */
-section[id] { scroll-margin-top: 90px; }
+/* Ankarlänkar ska inte hamna bakom den fasta headern: den är 68px hög, och
+   90px ger marginal ovanför målet. Rubriker med id omfattas också, eftersom
+   ett underavsnitt kan bära ankaret på sin rubrik i stället för på sektionen. */
+section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 
 /* ==========================================================================
    Reducerad rörelse – stänger av alla animationer och övergångar på sidan.
