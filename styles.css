@@ -73,7 +73,11 @@ h2 {
 }
 h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
 p  { margin: 0 0 1rem; }
-a  { color: var(--orange-hover); text-decoration: none; }
+/* Lankar star pa ljus botten. #D9731A ger bara 3,27:1 mot vitt och
+   3,02:1 mot krämvitt – #A85610 klarar 5,25 respektive 4,84. Länkar på
+   mörk botten sätter sin egen färg (.nav a, .footer-col a,
+   .footer-bottom a, .footer-legal a) och påverkas inte. */
+a  { color: var(--orange-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
@@ -130,7 +134,7 @@ a:hover { text-decoration: underline; }
 /* Kantad knapp: samma form, storlek och radie som de fyllda, men med
    genomskinlig botten och orange ram. Används för "Visa kort", som inte
    ska konkurrera med den fyllda skicka-knappen i samma sektion. */
-.btn-outline { background: transparent; color: var(--orange-hover); border-color: var(--orange); }
+.btn-outline { background: transparent; color: var(--orange-ink); border-color: var(--orange); }
 .btn-outline:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
 /* Pilen glider fram vid hover, texten står stilla – samma grepp som på
    tjänstekorten. */
@@ -481,7 +485,7 @@ a:hover { text-decoration: underline; }
   transition: background-color 150ms ease, color 150ms ease;
 }
 .faq-fraga::-webkit-details-marker { display: none; }
-.faq-fraga:hover { background: var(--bg); color: var(--orange-hover); }
+.faq-fraga:hover { background: var(--bg); color: var(--orange-ink); }
 /* Pilen är två kanter som bildar en vinkel. Den pekar nedåt när frågan är
    stängd och roterar uppåt när den öppnas. */
 .faq-tecken {
@@ -686,7 +690,7 @@ a:hover { text-decoration: underline; }
 .contact-list .btn { justify-self: start; margin-top: .6rem; font-size: .92rem; }
 /* .contact-list a sätter färgen på alla länkar – kortknappen ska behålla
    sin orange text och bli vit först när den fylls vid hover. */
-.contact-list .btn-outline { color: var(--orange-hover); }
+.contact-list .btn-outline { color: var(--orange-ink); }
 .contact-list .btn-outline:hover { color: #fff; }
 .contact-list .btn + a { margin-top: 1rem; }
 
