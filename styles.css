@@ -22,7 +22,6 @@
      klarar därmed 4,5:1 på båda bottnarna. Gäller bara TEXT; orange som
      ifylld knappfärg är oförändrad. */
   --orange-ink:   #A85610;
-  --orange-badge: #ED7D31;  /* citatbubbla i omdömen */
   --bg:           #FAF5EF;  /* krämvit sektionsbakgrund */
   --bg-card:      #FFFFFF;
   --line:         #E5DED6;
@@ -253,6 +252,7 @@ a:hover { text-decoration: underline; }
       rgba(9, 47, 56, .42) 0%,
       rgba(9, 47, 56, 0) 22%);
 }
+
 /* Sidans ursprungliga hero-filter, oförändrat, men flyttat från
    background-image på .hero till ett eget lager – annars hamnar det bakom
    filmen. Gradienten är nästan solid där texten står och tunnas ut åt höger,
@@ -325,9 +325,20 @@ a:hover { text-decoration: underline; }
 
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
 .nowrap { white-space: nowrap; }
-/* Varumärkets orange, inte badge-tonen: #E8862E ger 4,62:1 mot petrol,
-   #ED7D31 bara 4,44:1. */
-.hero .eyebrow { color: var(--orange); }
+/* Etiketten står mot fotot, och ovanför mörkerlagret ligger .hero::after –
+   därför kan ingen gradientjustering styra vad som lyser igenom bakom den.
+   Egen solid platta i stället: #E8862E mot #092F38 ger 5,34:1 vid varje
+   bredd, oberoende av bild och glöd. Typsnitt, grad, versaler och
+   bokstavsmellanrum ärvs oförändrat från .eyebrow. */
+.hero .eyebrow {
+  display: inline-block;
+  background: var(--petrol-deep);
+  color: var(--orange);
+  padding: 6px 12px;
+  border-radius: 999px;
+  position: relative;
+  z-index: 2;
+}
 .hero-copy .lead { color: var(--on-dark-body); font-size: 1.12rem; max-width: 46ch; }
 .lead { font-size: 1.05rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin: 1.75rem 0 1.5rem; }
@@ -338,7 +349,7 @@ a:hover { text-decoration: underline; }
 .section-alt { background: var(--petrol); }
 .section-alt h2, .section-alt h3 { color: #fff; }
 .section-alt p { color: var(--on-dark-body); }
-.section-alt .eyebrow { color: var(--orange-badge); }
+.section-alt .eyebrow { color: var(--orange); }
 .section-head { max-width: 700px; margin: 0 auto 2.75rem; text-align: center; }
 .section-head h2 { margin: 0 0 .5rem; }
 .section-head .lead { color: var(--muted); }
@@ -432,7 +443,7 @@ a:hover { text-decoration: underline; }
 .feature { display: flex; gap: 1.1rem; align-items: flex-start; }
 .feature-icon {
   flex: 0 0 auto; width: 48px; height: 48px; border-radius: 6px;
-  background: transparent; border: 2px solid var(--orange-badge); color: var(--orange-badge);
+  background: transparent; border: 2px solid var(--orange); color: var(--orange);
   display: grid; place-items: center; font-size: 1.3rem;
   overflow: hidden;
 }
@@ -701,7 +712,7 @@ a:hover { text-decoration: underline; }
 .footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
 .footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
-.footer-col a:hover { color: var(--orange-badge); }
+.footer-col a:hover { color: var(--orange); }
 /* Små textlänkar till de digitala visitkorten, under kontaktuppgifterna */
 .footer-col .footer-kort { font-size: .85rem; font-weight: 300; color: #9FB3B9; }
 .footer-col a + .footer-kort { margin-top: .7rem; }

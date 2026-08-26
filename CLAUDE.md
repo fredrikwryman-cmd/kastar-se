@@ -35,3 +35,12 @@ Villkor:
 - Kontrollen av responsivitet, konsolfel och strukturerad data görs av
   huvudagenten efter att alla delar är sammanförda, aldrig av
   delagenterna var för sig.
+
+## Färgpalett
+
+Tre orangea toner finns, inga fler. Ny orange hexkod får aldrig införas.
+#E8862E — var(--orange) — ytor, knappar, linjer, och text mot mörk petrolbotten. Ger 4,62:1 mot #0E3A44.
+#A85610 — var(--orange-ink) — text mot vit eller krämvit botten. Ger 4,84:1 mot #FAF5EF.
+Petrol #0E3A44, petrol djup #092F38, krämvit #FAF5EF.
+Använd alltid CSS-variabeln, aldrig hexkoden direkt i en regel.
+Innan en orange färg används som text: kontrollera kontrasten mot den faktiska bakgrunden, inte mot den avsedda. Kravet är 4,5:1.
