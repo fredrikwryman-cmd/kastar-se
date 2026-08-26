@@ -289,17 +289,18 @@
         imagesrcset="assets/hero-800.webp 800w, assets/hero-1600.webp 1600w"
         imagesizes="100vw" fetchpriority="high" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=30" />
+  <!-- Typsnittet hostas lokalt. Google levererar Space Grotesk som EN variabel
+       fil för alla vikter, så en enda hämtning täcker 300–700. -->
+  <link rel="preload" as="font" type="font/woff2"
+        href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css?v=31" />
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
   <!-- ============ HEADER / NAV ============ -->
   <header class="site-header" id="top">
     <div class="container header-inner">
-      <a href="#top" class="brand" aria-label="Kastar.se – till toppen av sidan">
+      <a href="#top" class="brand">
         <img class="brand-mark" src="assets/maskot-transp.png" width="229" height="220" alt="" />
         <span class="brand-text">
           <span class="brand-name">Kastar<span class="brand-tld">.se</span></span>
@@ -354,6 +355,10 @@
     <!-- ============ TRYGGHETSRAD ============ -->
     <section class="section section-cream" id="trygghet">
       <div class="container">
+        <!-- Rubriken är dold för ögat men läses av skärmläsare. Utan den
+             hoppar nivåerna från hero-rubrikens h1 direkt till korten h3. -->
+        <h2 class="sr-only">Därför väljer du Kastar.se</h2>
+
         <!-- Trust-rad -->
         <div class="trust reveal">
           <div class="trust-item">

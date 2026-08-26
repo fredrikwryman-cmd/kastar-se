@@ -27,10 +27,11 @@
   <meta name="twitter:description" content="Transport och utförande. Ring 070-343 34 40 eller spara kontakten direkt från kortet." />
   <meta name="twitter:image" content="https://kastar.se/assets/og-thom.jpg" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=30" />
+  <!-- Typsnittet hostas lokalt. Google levererar Space Grotesk som EN variabel
+       fil för alla vikter, så en enda hämtning täcker 300–700. -->
+  <link rel="preload" as="font" type="font/woff2"
+        href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css?v=31" />
   <link rel="stylesheet" href="/kort.css?v=6" />
 </head>
 <body class="kort-sida">

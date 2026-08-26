@@ -12,17 +12,18 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0E3A44" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=30" />
+  <!-- Typsnittet hostas lokalt. Google levererar Space Grotesk som EN variabel
+       fil för alla vikter, så en enda hämtning täcker 300–700. -->
+  <link rel="preload" as="font" type="font/woff2"
+        href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css?v=31" />
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="top">
     <div class="container header-inner">
-      <a href="index.html" class="brand" aria-label="Kastar.se">
+      <a href="index.html" class="brand">
         <img class="brand-mark" src="assets/maskot-transp.png" width="229" height="220" alt="" />
         <span class="brand-text">
           <span class="brand-name">Kastar<span class="brand-tld">.se</span></span>
