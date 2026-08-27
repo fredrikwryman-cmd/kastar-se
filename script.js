@@ -272,3 +272,108 @@ if ('IntersectionObserver' in window && revealEls.length) {
 } else {
   revealEls.forEach((el) => el.classList.add('in'));
 }
+
+/* ---------- Parallax på hero ----------
+   Bakgrundslagret förflyttas nedåt och skalas upp svagt medan hero-innehållet
+   tonar ut. Allt är bundet direkt till scrollpositionen – ingen easing och
+   ingen eftersläpning, så rörelsen följer fingret exakt.
+
+   Det är .hero-media som transformeras, aldrig bilden: object-fit räknas mot
+   elementets egen storlek, så en scale() på <img> hade tänjt motivet i stället
+   för att zooma det. Gradientlagren ligger kvar på sektionen och står stilla.
+
+   Ingen tom yta kan uppstå. Vid progress p har sektionen rullat p gånger sin
+   egen höjd uppåt, medan lagret bara flyttats 0,25 × höjden nedåt – remsan som
+   blottas i sektionens överkant hamnar alltid ovanför viewportens kant, och
+   nederkanten klipps av overflow: hidden på .hero. */
+const heroSektion = document.querySelector('.hero');
+const heroLager = document.querySelector('.hero-media');
+const heroInnehall = document.querySelector('.hero-inner');
+
+if (heroSektion && heroLager && heroInnehall) {
+  const FORFLYTTNING = 0.25;   // andel av lagrets höjd vid full progress
+  const SKALA = 0.10;          // 1 → 1,10
+  const UTTONAD_VID = 0.6;     // innehållet helt uttonat vid 60 % av sträckan
+
+  // Ett CSS-mediavillkor når inte inline-stilar satta härifrån, så vi frågar
+  // om reducerad rörelse i JavaScript och lyssnar på ändringar.
+  const rorelse = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  let vantar = false;      // spärr: högst en bildruta i kö åt gången
+  let lyssnar = false;
+  let klickAv = false;
+
+  const nollstall = () => {
+    heroLager.style.transform = '';
+    heroInnehall.style.opacity = '';
+    heroInnehall.style.pointerEvents = '';
+    klickAv = false;
+  };
+
+  const uppdatera = () => {
+    vantar = false;
+
+    const ruta = heroSektion.getBoundingClientRect();
+    // Utanför vy: rör ingenting alls. En inaktuell transform kan inte synas
+    // när sektionen inte är på skärmen, och vi slipper räkna i onödan.
+    if (ruta.bottom <= 0 || ruta.top >= window.innerHeight) return;
+
+    const hojd = ruta.height || 1;
+    // 0 när sektionens överkant når viewportens topp,
+    // 1 när nederkanten gör det.
+    let p = -ruta.top / hojd;
+    if (p < 0) p = 0;
+    else if (p > 1) p = 1;
+
+    // Endast transform och opacity skrivs – aldrig något som utlöser omflöde.
+    const flytt = FORFLYTTNING * hojd * p;
+    const skala = 1 + SKALA * p;
+    heroLager.style.transform =
+      'translate3d(0,' + flytt.toFixed(2) + 'px,0) scale(' + skala.toFixed(4) + ')';
+
+    let opacitet = 1 - p / UTTONAD_VID;
+    if (opacitet < 0) opacitet = 0;
+    heroInnehall.style.opacity = opacitet.toFixed(3);
+
+    // Uttonat innehåll ska inte gå att klicka på – knapparna ligger annars
+    // kvar som osynliga träffytor över sektionen.
+    const skaVaraAv = opacitet === 0;
+    if (skaVaraAv !== klickAv) {
+      heroInnehall.style.pointerEvents = skaVaraAv ? 'none' : 'auto';
+      klickAv = skaVaraAv;
+    }
+  };
+
+  const begar = () => {
+    if (vantar) return;
+    vantar = true;
+    window.requestAnimationFrame(uppdatera);
+  };
+
+  const stallOm = () => {
+    if (rorelse.matches) {
+      if (lyssnar) {
+        window.removeEventListener('scroll', begar);
+        window.removeEventListener('resize', begar);
+        lyssnar = false;
+      }
+      nollstall();
+      return;
+    }
+    if (!lyssnar) {
+      window.addEventListener('scroll', begar, { passive: true });
+      window.addEventListener('resize', begar, { passive: true });
+      lyssnar = true;
+    }
+    begar();
+  };
+
+  if (rorelse.addEventListener) {
+    rorelse.addEventListener('change', stallOm);
+  } else if (rorelse.addListener) {
+    // Safari före 14
+    rorelse.addListener(stallOm);
+  }
+
+  stallOm();
+}

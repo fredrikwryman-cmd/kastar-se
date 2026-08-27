@@ -314,12 +314,27 @@ a:hover { text-decoration: underline; }
    bildens högra halva och rubriken på den vänstra, så beskärningen hålls åt
    höger – då är det det tomma vänsterpartiet som offras först när skärmen
    smalnar, aldrig motivet. */
+/* Parallax-lagret. Det är LAGRET som script.js transformerar, aldrig bilden.
+   Skälet: object-fit: cover räknas om mot elementets EGEN storlek, så en
+   scale() lagd på själva <img> hade tänjt motivet i stället för att zooma
+   det. Lagret bär därför positioneringen och bilden fyller bara ut lagret.
+   will-change: transform lyfter lagret till ett eget kompositlager, så att
+   rullningen inte tvingar fram en ommålning av resten av sektionen.
+   Gradientlagren .hero::before och .hero::after ligger kvar på själva
+   sektionen och står alltså stilla – mörkerlagret följer inte med i
+   transformen. */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  will-change: transform;
+}
 .hero-bild {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center right;
-  z-index: 0;
+  display: block;
 }
 /* Lokalt mörkerlager, målat före gradienten och i samma skikt. Den nya
    stillbilden är ljusare i övre vänstra hörnet än filmen var, så etiketten och
@@ -1170,6 +1185,11 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   /* Gradienten och glöden i hero-rubriken ligger kvar – det är bara
      rörelsen som ska bort. */
   .hero-gradient { animation: none !important; background-position: 0% 50%; }
+  /* Skyddsnät. script.js sätter normalt aldrig någon stil alls när reducerad
+     rörelse är påslaget – raderna nedan finns bara ifall en inline-transform
+     skulle ha hunnit sättas innan mediavillkoret slog till. */
+  .hero-media { transform: none !important; }
+  .hero-inner { opacity: 1 !important; pointer-events: auto !important; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
