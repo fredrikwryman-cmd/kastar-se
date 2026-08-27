@@ -265,7 +265,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 /* Logotypen är delad: maskoten är en bild, ordmärket och taglinen är riktig
    text. Då kan taglinen sättas i läsbar storlek och renderas skarpt i stället
    för att skalas ned till oläslighet i en bildfil.
-   maskot.png är beskuren tight och har petrolplattan (#0E3A44) inbakad i exakt
+   maskot-transp.png är beskuren tight och har petrolplattan (#0E3A44) inbakad i
    samma ton som header och sidfot, så den smälter in utan synlig ruta. */
 .brand { display: inline-flex; align-items: center; gap: .6rem; }
 .brand:hover { text-decoration: none; }
