@@ -58,10 +58,12 @@
 
   --ink:          #111111;  /* svarta rubriker på ljus botten */
   --body-c:       #3A4A50;
-  /* Grå brödtext. #6E7B81 gav bara 4,36:1 mot vitt och 4,02:1 mot
-     krämvitt – underkänt på båda. #647177 ger 5,04:1 mot vitt och
-     4,65:1 mot krämvitt och håller därmed 4,5:1 på båda bottnarna. */
-  --muted:        #647177;
+  /* Grå brödtext. Förra tonen #647177 klarade vitt och krämvitt, men gav
+     bara 4,21:1 mot den varmare ytfärgen #F1EAE0 i faktarutan (.legal-note)
+     – underkänt. #5B6A70 ger 5,61:1 mot vitt, 5,18:1 mot krämvitt #FAF5EF
+     och 4,70:1 mot #F1EAE0. Den mörkare tonen valdes just för att även
+     klara ytfärgen #F1EAE0, så 4,5:1 håller på alla tre bottnarna. */
+  --muted:        #5B6A70;
   --on-dark:      #FFFFFF;
   --on-dark-body: #E7EEF0;
 
@@ -113,6 +115,14 @@ p  { margin: 0 0 1rem; }
    påverkas inte. */
 a  { color: var(--orange-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
+/* Färg ensam räcker inte som signal för en länk i löptext: kravet är 3:1 mot
+   omgivande text och mejllänken låg på 1,75:1. Understrykning löser det utan
+   att röra färgen. Avgränsat till <p> inuti <main>, så knappar, navigering,
+   sidfot och kortsidorna inte påverkas – de är redan visuellt urskiljbara. */
+body:not(.kort-sida) main p a:not(.btn) {
+  text-decoration: underline;
+  text-underline-offset: 2.5px;
+}
 
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 

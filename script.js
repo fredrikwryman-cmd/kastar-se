@@ -55,7 +55,8 @@ if (siteHeader) {
 const serviceGrid = document.querySelector('.cards-services');
 const panels = document.querySelectorAll('.panel');
 
-if (serviceGrid && panels.length) {
+function initPaneler() {
+  if (!serviceGrid || !panels.length) return;
   let lastTrigger = null;
 
   serviceGrid.addEventListener('click', (e) => {
@@ -175,7 +176,8 @@ function renderTier(i) {
   });
 }
 
-if (range && loadEl) {
+function initKalkylator() {
+  if (!range || !loadEl) return;
   range.max = TIERS.length - 1;
   buildSteps();
 
@@ -377,3 +379,28 @@ if (heroSektion && heroLager && heroInnehall) {
 
   stallOm();
 }
+
+/* ---------- Uppskjuten initiering ----------
+   Tjänstepanelerna och priskalkylatorn syns inte på första skärmen, men deras
+   uppsättning är det tyngsta script.js gör: tio dialogrutor med fokushantering,
+   scroll-lås och ARIA-koppling, plus sex knappar som byggs ur TIERS. Kört direkt
+   låg det i vägen för hero-renderingen. Nu väntar det tills huvudtråden är ledig.
+
+   requestIdleCallback med timeout: 1000 garanterar att det körs inom en sekund
+   även om tråden aldrig blir riktigt ledig. setTimeout är reserv för Safari,
+   som saknar requestIdleCallback.
+
+   Mobilmenyn, headern och hero-parallaxen initieras INTE härifrån – de hör till
+   första skärmen och ska svara direkt. */
+const narDetArLugnt = (fn) => {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(fn, { timeout: 1000 });
+  } else {
+    setTimeout(fn, 150);
+  }
+};
+
+narDetArLugnt(() => {
+  initPaneler();
+  initKalkylator();
+});
