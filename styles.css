@@ -2,27 +2,30 @@
    Den externa länken var renderingsblockerande och krävde uppkoppling mot en
    främmande domän innan sidan kunde målas – nu ligger filen i assets/fonts/.
 
-   Google levererar Space Grotesk som EN variabel fil med axeln wght 300–700
-   (avläst i fvar-tabellen). Samma fil låg bakom alla fem viktvarianterna i
-   deras stilmall, så en enda regel med viktintervall räcker: 22 kB täcker
-   300, 400, 500, 600 och 700. Fem separata regler hade laddat samma 22 kB
-   upp till fem gånger.
+   Snittet är Asap: samma snitt som logotypens ordmärke är satt i. Det var
+   hela skälet till bytet – rubriker, navigation och brödtext möter nu loggan
+   i exakt samma bokstavsformer i stället för att ligga snubblande nära.
+
+   Filen är EN variabel fil med EN enda axel, wght 100–900 (avläst i
+   fvar-tabellen). Någon breddaxel finns inte, så font-stretch sätts aldrig.
+   Hela viktskalan ligger i samma fil, alltså räcker en enda regel med
+   viktintervall – separata regler per vikt hade laddat samma fil om och om
+   igen. Att axeln når 900 betyder också att font-weight: 800 längre ned i
+   filen nu är en ÄKTA vikt; tidigare syntetiserade webbläsaren den, eftersom
+   det förra snittets axel tog slut redan vid 700.
 
    font-display: swap gör att texten syns direkt i reservsnittet (system-ui)
    och byts när filen är inne, i stället för att vara osynlig under hämtningen.
 
    Relativ url() nedan löses mot STILMALLENS plats (repots rot), inte mot
-   sidans, så samma sökväg fungerar även från /fredrik och /thom.
-
-   Axeln slutar vid 700. font-weight: 800 längre ned i filen syntetiseras
-   därför av webbläsaren, precis som den gjorde med Google-versionen. */
+   sidans, så samma sökväg fungerar även från /fredrik och /thom. */
 @font-face {
-  font-family: "Space Grotesk";
+  font-family: "Asap";
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("assets/fonts/space-grotesk-variable.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("assets/fonts/asap-variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ==========================================================================
@@ -32,7 +35,8 @@
    - Krämvita mellansektioner #FAF5EF med svarta versala rubriker
    - ORANGE knappar #E8862E (nästan raka hörn, versal fet text, vit text)
    - Sekundärknapp: krämvit med mörk text
-   - Space Grotesk överallt, vikt 300–700. H1/H2 versala, vikt 700.
+   - Asap överallt – samma snitt som logotypens ordmärke – med axeln
+     wght 100–900. H1/H2 versala, vikt 700.
    ========================================================================== */
 
 :root {
@@ -73,7 +77,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Asap", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--body-c);
   background: var(--bg);
   font-size: 16px;
@@ -82,10 +86,11 @@ body {
 }
 
 h1, h2, h3, h4 { color: var(--ink); margin: 0 0 .5em; }
-/* Rubriker i vikt 700 – Space Grotesks tyngsta – och tajt satta med
-   -.02em. Space Grotesk är bredare än både Montserrat och Bebas i samma
-   grad, så graderna är nedskruvade så att rubrikerna inte spräcker
-   layouten. Versala etiketter och knapptexter har kvar sin positiva
+/* Rubriker i vikt 700 – halvfet, inte Asaps tyngsta, eftersom axeln
+   fortsätter upp till 900 – och tajt satta med -.02em. Graderna skruvades en
+   gång ned för att rubrikerna inte skulle spräcka layouten, och de ligger
+   kvar: Asap är smalare i samma grad, så marginalen mot kanterna är om något
+   större nu. Versala etiketter och knapptexter har kvar sin positiva
    spärrning; den negativa gäller bara det som väger 700. */
 h1, h2, h3, h4 { letter-spacing: -.02em; }
 h1 {
@@ -401,10 +406,12 @@ a:hover { text-decoration: underline; }
    av versalhöjden. Värdena är i em och följer därför med i alla brytpunkter. */
 .hero h1 .prick {
   font-size: .58em;
-  /* Omräknat för Space Grotesk: punktens bläck ligger 3–9 px över baslinjen
-     vid rubrikens grad, medan versalhöjden är 30 px. Lyftet 0.373em av
-     punktens egen grad flyttar den till 15 px, alltså exakt mitten av
-     versalhöjden. Måtten är i em och följer med i alla brytpunkter. */
+  /* Värdet är uppmätt, men det mättes för Space Grotesk och inte för Asap:
+     punktens bläck låg då 3–9 px över baslinjen vid rubrikens grad, medan
+     versalhöjden var 30 px. Lyftet 0.373em av punktens egen grad flyttade
+     den till 15 px, alltså exakt mitten av versalhöjden. Asap ritar sin
+     punkt på egen höjd, så lyftet bör mätas om mot det nya snittet. Måtten
+     är i em och följer med i alla brytpunkter. */
   vertical-align: .373em;
 }
 
@@ -812,7 +819,7 @@ a:hover { text-decoration: underline; }
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
 .footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
-.footer-col h4 { color: #fff; margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
+.footer-col h3 { color: #fff; margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
 .footer-col a:hover { color: var(--orange); }
 /* Små textlänkar till de digitala visitkorten, under kontaktuppgifterna */
