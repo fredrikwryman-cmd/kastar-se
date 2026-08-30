@@ -89,6 +89,11 @@ function initPaneler() {
     releasePanel();
   };
 
+  // Bevakar open-attributet på dialogerna. Slår till både när en panel öppnas
+  // och när den stängs – releasePanel avbryter själv så länge någon panel är
+  // öppen, så bara den sista stängningen släpper låset.
+  const oppetVakt = new MutationObserver(releasePanel);
+
   panels.forEach((panel) => {
     // Klick på bakgrunden träffar dialogrutan själv, inte innehållet
     panel.addEventListener('click', (e) => {
@@ -108,8 +113,12 @@ function initPaneler() {
       link.addEventListener('click', () => closePanel(panel));
     });
 
-    // Esc stänger dialogrutan på egen hand – då är close-händelsen enda signalen
+    // Esc och webbläsarens egen stängning går inte via closePanel. Dialogens
+    // close-händelse levereras inte pålitligt i alla lägen, så låset kopplas
+    // till open-attributet i stället: det försvinner vid VARJE stängning,
+    // oavsett väg. close-händelsen får ligga kvar som extra sele.
     panel.addEventListener('close', releasePanel);
+    oppetVakt.observe(panel, { attributes: true, attributeFilter: ['open'] });
   });
 }
 
