@@ -1,18 +1,19 @@
 /* Typsnittet hostas lokalt i stället för att hämtas från fonts.googleapis.com.
-   Den externa länken var renderingsblockerande och krävde uppkoppling mot en
-   främmande domän innan sidan kunde målas – nu ligger filen i assets/fonts/.
+   Den externa länken var renderingsblockerande: webbläsaren fick öppna en
+   uppkoppling mot en främmande domän och vänta in svaret innan sidan kunde
+   målas. Nu ligger filen i assets/fonts/ och hämtas från samma värd som
+   allt annat.
 
-   Snittet är Asap: samma snitt som logotypens ordmärke är satt i. Det var
-   hela skälet till bytet – rubriker, navigation och brödtext möter nu loggan
-   i exakt samma bokstavsformer i stället för att ligga snubblande nära.
+   Snittet är Space Grotesk. Filen är EN variabel fil med EN enda axel,
+   wght 300–700 (avläst i fvar-tabellen: min 300, default 300, max 700).
+   Någon breddaxel finns inte, så font-stretch sätts aldrig. Hela viktskalan
+   ligger i samma fil, alltså räcker en enda regel med viktintervall –
+   separata regler per vikt hade laddat samma fil om och om igen.
 
-   Filen är EN variabel fil med EN enda axel, wght 100–900 (avläst i
-   fvar-tabellen). Någon breddaxel finns inte, så font-stretch sätts aldrig.
-   Hela viktskalan ligger i samma fil, alltså räcker en enda regel med
-   viktintervall – separata regler per vikt hade laddat samma fil om och om
-   igen. Att axeln når 900 betyder också att font-weight: 800 längre ned i
-   filen nu är en ÄKTA vikt; tidigare syntetiserade webbläsaren den, eftersom
-   det förra snittets axel tog slut redan vid 700.
+   Axeln tar slut vid 700. Vikter över 700 finns alltså inte att hämta i
+   filen; ber stilmallen om 800 syntetiserar webbläsaren en falsk fetstil
+   genom att förtjocka konturerna. Därför är 700 den tyngsta vikt som
+   används någonstans i den här filen.
 
    font-display: swap gör att texten syns direkt i reservsnittet (system-ui)
    och byts när filen är inne, i stället för att vara osynlig under hämtningen.
@@ -20,23 +21,23 @@
    Relativ url() nedan löses mot STILMALLENS plats (repots rot), inte mot
    sidans, så samma sökväg fungerar även från /fredrik och /thom. */
 @font-face {
-  font-family: "Asap";
+  font-family: "Space Grotesk";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 300 700;
   font-display: swap;
-  src: url("assets/fonts/asap-variable.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("assets/fonts/space-grotesk-variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ==========================================================================
-   Kastar.se – stilmall
+   Bohagsbolaget.se – stilmall
    Färger, typsnitt och stil hämtade från befintliga www.kastar.se:
    - Mörk petrol #0E3A44 som sektionsbakgrund med vit text (hero, "varför oss", footer)
    - Krämvita mellansektioner #FAF5EF med svarta versala rubriker
    - ORANGE knappar #E8862E (nästan raka hörn, versal fet text, vit text)
    - Sekundärknapp: krämvit med mörk text
-   - Asap överallt – samma snitt som logotypens ordmärke – med axeln
-     wght 100–900. H1/H2 versala, vikt 700.
+   - Space Grotesk överallt, med axeln wght 300–700. H1/H2 versala,
+     vikt 700 – axelns toppvikt, alltså ingen syntetisk fetstil.
    ========================================================================== */
 
 :root {
@@ -79,7 +80,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: "Asap", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--body-c);
   background: var(--bg);
   font-size: 16px;
@@ -88,12 +89,11 @@ body {
 }
 
 h1, h2, h3, h4 { color: var(--ink); margin: 0 0 .5em; }
-/* Rubriker i vikt 700 – halvfet, inte Asaps tyngsta, eftersom axeln
-   fortsätter upp till 900 – och tajt satta med -.02em. Graderna skruvades en
-   gång ned för att rubrikerna inte skulle spräcka layouten, och de ligger
-   kvar: Asap är smalare i samma grad, så marginalen mot kanterna är om något
-   större nu. Versala etiketter och knapptexter har kvar sin positiva
-   spärrning; den negativa gäller bara det som väger 700. */
+/* Rubriker i vikt 700 – Space Grotesks tyngsta vikt, eftersom axeln slutar
+   där – och tajt satta med -.02em. Graderna skruvades en gång ned för att
+   rubrikerna inte skulle spräcka layouten, och de ligger kvar. Versala
+   etiketter och knapptexter har kvar sin positiva spärrning; den negativa
+   gäller bara det som väger 700. */
 h1, h2, h3, h4 { letter-spacing: -.02em; }
 h1 {
   font-size: clamp(1.9rem, 4.2vw, 2.9rem);
@@ -393,7 +393,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 /* ---------- Sista orden i hero-rubriken ----------
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
-   texten kvar i vanlig Kastar-orange i stället för att bli osynlig.
+   texten kvar i vanlig Bohagsbolaget-orange i stället för att bli osynlig.
    Fem färgstopp: texten är vit och cream, med ett smalt orange band mellan
    35 och 65 procent. Bandet sveper över bokstäverna som ett varmt ljus.
    Glöden bakom texten är fortfarande orange och ger samma varma sken runt
@@ -431,12 +431,11 @@ body:not(.kort-sida) main p a:not(.btn) {
    av versalhöjden. Värdena är i em och följer därför med i alla brytpunkter. */
 .hero h1 .prick {
   font-size: .58em;
-  /* Värdet är uppmätt, men det mättes för Space Grotesk och inte för Asap:
-     punktens bläck låg då 3–9 px över baslinjen vid rubrikens grad, medan
-     versalhöjden var 30 px. Lyftet 0.373em av punktens egen grad flyttade
-     den till 15 px, alltså exakt mitten av versalhöjden. Asap ritar sin
-     punkt på egen höjd, så lyftet bör mätas om mot det nya snittet. Måtten
-     är i em och följer med i alla brytpunkter. */
+  /* Värdet är uppmätt för Space Grotesk, som sidan åter är satt i: punktens
+     bläck låg 3–9 px över baslinjen vid rubrikens grad, medan versalhöjden
+     var 30 px. Lyftet 0.373em av punktens egen grad flyttade den till 15 px,
+     alltså exakt mitten av versalhöjden. Måtten är i em och följer därför
+     med i alla brytpunkter. */
   vertical-align: .373em;
 }
 
@@ -645,7 +644,7 @@ body:not(.kort-sida) main p a:not(.btn) {
    ena graden måste den andra följa med, annars faller kvoten under gränsen. */
 .pris__netto {
   font-size: 1.9rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.1;
   color: var(--orange-ink);
 }
@@ -736,7 +735,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 }
 /* RUT-priset är det tal folk letar efter, så det får samma vikt och färg som
    beloppet i .pris och lyfts över de övriga cellerna. */
-.langd-netto { font-size: 1.15rem; font-weight: 800; color: var(--orange-ink); }
+.langd-netto { font-size: 1.15rem; font-weight: 700; color: var(--orange-ink); }
 
 @media (max-width: 700px) {
   /* Fyra kolumner ryms inte utan att texten antingen krymper till oläslighet
@@ -943,6 +942,43 @@ body:not(.kort-sida) main p a:not(.btn) {
   /* Sidfoten behåller taglinen i full längd, men 12px blir 349px bred och
      spräcker 360px-skärmen – därför samma nedskalning som headern. */
   .site-footer .brand-tagline { font-size: 9px; }
+}
+
+/* Ordmärket är riktig text, aldrig en bild, och "Bohagsbolaget.se" är en
+   sammansättning. Under och vid 480px bryts den där fogen sitter:
+
+       BOHAGS
+       BOLAGET.SE
+
+   Markupen har ett .brand-ord per led, utan blanksteg mellan spanarna, så
+   leden flyter ihop till en enda rad så länge .brand-name är inline – det
+   är läget över 480px, där white-space: nowrap dessutom garanterar en rad.
+   Här görs .brand-name i stället till en flexkolumn: varje .brand-ord blir
+   ett flexobjekt och därmed en egen rad. Ingen text dupliceras och inget
+   döljs – samma noder, bara en annan radbrytning.
+
+   line-height 1.04 håller ihop de två raderna: 2 × 1.04 × 22px = 45,8px,
+   plus 3px gap och 9px tagline ger 57,8px, vilket ryms i headerns 68px.
+   Med normal radhöjd hade blocket blivit ~66px och tryckt mot kanterna.
+
+   .brand behåller align-items: center. Maskoten är 38px och textblocket
+   57,8px, så maskoten centreras optiskt mot de två raderna; flex-start
+   hade tryckt upp den i linje med enbart översta raden.
+
+   Graden ligger kvar på 22px från 520px-steget. Uppmätt i den variabla
+   filen vid wght 700 är "BOLAGET.SE" 5,578em efter spärrningen -.02em,
+   alltså 123px vid 22px – smalare än headerns tagline (~160px vid 9px),
+   som därmed styr brand-blockets bredd. På 320px lämnar maskot 38px +
+   gap 10px + 160px tagline + 40px containerpadding + ~40px hamburgare
+   drygt 30px luft, så ordmärket tränger inte undan menyknappen. Någon
+   ytterligare nedskalning av .brand-name behövs alltså inte. */
+@media (max-width: 480px) {
+  .site-header .brand-name,
+  .site-footer .brand-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.04;
+  }
 }
 
 /* Under 360px räcker inte 9px heller – hela varumärkesraden blir bredare än

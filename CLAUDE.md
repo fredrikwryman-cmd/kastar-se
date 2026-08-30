@@ -1,4 +1,4 @@
-# Kastar.se – instruktioner
+# Bohagsbolaget.se – instruktioner
 
 ## Push
 Efter varje avslutad uppgift, när ändringarna är committade, kör alltid

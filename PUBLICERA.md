@@ -1,4 +1,4 @@
-# Publicera kastar.se på GitHub Pages – utan driftstopp
+# Publicera bohagsbolaget.se på GitHub Pages – utan driftstopp
 
 Guiden är i tre delar: **A)** lägg upp koden på GitHub, **B)** slå på GitHub
 Pages, **C)** peka om domänen i Loopia. Ordningen är viktig – vi gör klart och
@@ -20,13 +20,13 @@ testar allt *innan* vi rör domänen, så att sidan aldrig ligger nere.
    ```bash
    git init
    git add .
-   git commit -m "Första versionen av kastar.se"
+   git commit -m "Första versionen av bohagsbolaget.se"
    git branch -M main
    git remote add origin https://github.com/fredrikwryman-cmd/kastar-se.git
    git push -u origin main
    ```
 
-Nu ligger koden på GitHub. Detta påverkar INTE din nuvarande sida på kastar.se.
+Nu ligger koden på GitHub. Detta påverkar INTE din nuvarande sida på bohagsbolaget.se.
 
 ---
 
@@ -39,11 +39,11 @@ Nu ligger koden på GitHub. Detta påverkar INTE din nuvarande sida på kastar.s
    **https://fredrikwryman-cmd.github.io/kastar-se/**
    Öppna den och kontrollera att allt ser rätt ut.
 5. Fortfarande i **Settings → Pages**, fältet **Custom domain**: skriv
-   `kastar.se` och tryck **Save**.
-   (Filen `CNAME` i repot innehåller redan `kastar.se`, så detta stämmer.)
+   `bohagsbolaget.se` och tryck **Save**.
+   (Filen `CNAME` i repot innehåller redan `bohagsbolaget.se`, så detta stämmer.)
    GitHub börjar nu göra en "DNS check" som blir grön när steg C är klart.
 
-> Din sida på kastar.se rullar hela tiden vidare hos Loopia tills vi byter DNS.
+> Din sida på bohagsbolaget.se rullar hela tiden vidare hos Loopia tills vi byter DNS.
 
 ---
 
@@ -53,10 +53,10 @@ Detta är själva "flytten". Så länge du INTE säger upp SiteBuilder samma dag
 ligger sidan uppe hela tiden – gammal trafik går till Loopia, ny trafik till
 GitHub, tills allt slagit igenom.
 
-1. Logga in i Loopias **Kundzon** → välj domänen **kastar.se**.
+1. Logga in i Loopias **Kundzon** → välj domänen **bohagsbolaget.se**.
 2. Om domänen är låst till konfigurationen **"Sitebuilder"**: välj att ändra
    till egna DNS-inställningar / **DNS-editor** (så du kan redigera poster).
-   Rör INTE e-post-/MX-posterna – de ska vara kvar så att boka@kastar.se funkar.
+   Rör INTE e-post-/MX-posterna – de ska vara kvar så att boka@bohagsbolaget.se funkar.
 3. Öppna **DNS-editorn**. Under **@** (rot-domänen):
    - Ta bort ev. befintlig A-post/CNAME som pekar mot Sitebuilder.
    - Lägg till **fyra A-poster** som pekar mot GitHub:
@@ -81,9 +81,9 @@ GitHub, tills allt slagit igenom.
 ### Slutkoll
 - Gå tillbaka till **GitHub → Settings → Pages**. När DNS-checken är grön,
   bocka i **Enforce HTTPS** (kan dröja upp till 24 h innan valet går att klicka).
-- Surfa till **https://kastar.se** (i inkognitofönster) och kontrollera att den
+- Surfa till **https://bohagsbolaget.se** (i inkognitofönster) och kontrollera att den
   nya sidan visas med hänglås.
-- Testa att skicka/ta emot mail på boka@kastar.se – ska fungera oförändrat.
+- Testa att skicka/ta emot mail på boka@bohagsbolaget.se – ska fungera oförändrat.
 
 ### När allt fungerar
 Först då kan du **säga upp / nedgradera Loopia SiteBuilder**. Behåll domänen och
@@ -101,7 +101,7 @@ behövs.
 - **Om du hellre deployar via en Actions-workflow** (som på ditt
   `-ad-byggprojekt`): det går lika bra. Lägg din vanliga "Deploy to GitHub
   Pages"-workflow i `.github/workflows/`, sätt Pages-källan till "GitHub Actions"
-  istället för "branch", och lägg custom domain `kastar.se` på samma ställe. DNS-
+  istället för "branch", och lägg custom domain `bohagsbolaget.se` på samma ställe. DNS-
   stegen i del C är identiska oavsett vilken deploy-metod du väljer.
 - **Framtida ändringar:** öppna repot i Claude Code, ändra, och kör
   `git add . && git commit -m "..." && git push`. Sidan uppdateras automatiskt

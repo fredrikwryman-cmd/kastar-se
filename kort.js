@@ -1,4 +1,4 @@
-// Kastar.se – digitala visitkort: porträttfilmen och dela-knappen.
+// Bohagsbolaget.se – digitala visitkort: porträttfilmen och dela-knappen.
 
 /* ---------- Reducerad rörelse ----------
    Den som valt mindre rörelse i systemet ska inte få filmen igång av sig

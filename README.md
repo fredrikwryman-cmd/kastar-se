@@ -1,6 +1,6 @@
-# Kastar.se
+# Bohagsbolaget.se
 
-Webbplats för Kastar.se, ett företag i Arlandastad som utför tömning,
+Webbplats för Bohagsbolaget.se, ett företag i Arlandastad som utför tömning,
 bortforsling, flytt, montering och magasinering i Stockholm och Uppsala med
 omnejd.
 
@@ -38,7 +38,7 @@ filerna.
 - **Bilder i WebP** med `srcset` och `sizes` i två bredder per motiv, satta
   efter uppmätta renderade mått i stället för källfilens storlek. Hero-bilden
   har `fetchpriority="high"`; allt under första skärmen är `loading="lazy"`.
-- **Typsnittet hostas lokalt.** Asap ligger som en variabel woff2 i
+- **Typsnittet hostas lokalt.** Space Grotesk ligger som en variabel woff2 i
   `assets/fonts/`, med `preload` i `<head>` och `font-display: swap`. Ingen
   uppkoppling mot en främmande domän behövs innan sidan kan målas.
 - **Noll renderingsblockerande resurser.** Den externa typsnittslänken var den

@@ -105,7 +105,7 @@ Raden står nu i stället som:
 ## 5. script.js – konstanten och kommentaren överst i filen
 
 **Satt i:** allra överst i `script.js`, **mellan** filkommentaren
-(`// Kastar.se – mobilmeny, …`) och avsnittet `/* ---------- Mobilmeny …`
+(`// Bohagsbolaget.se – mobilmeny, …`) och avsnittet `/* ---------- Mobilmeny …`
 (rad 3–16, inklusive tom rad efter).
 
 ```js

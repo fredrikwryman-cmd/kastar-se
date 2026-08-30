@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /verktyg/
 
-Sitemap: https://kastar.se/sitemap.xml
+Sitemap: https://bohagsbolaget.se/sitemap.xml
