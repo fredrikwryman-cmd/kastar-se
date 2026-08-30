@@ -45,3 +45,15 @@ Petrol #0E3A44, petrol djup #092F38, krämvit #FAF5EF.
 Använd alltid CSS-variabeln, aldrig hexkoden direkt i en regel.
 Innan en orange färg används som text: kontrollera kontrasten mot den faktiska bakgrunden, inte mot den avsedda. Kravet är 4,5:1.
 Primärknappen är petroltext på orange: var(--petrol-deep) mot var(--orange) ger 5,34:1. Hovringen byter aldrig bakgrundsfärg, den lyfter knappen och fördjupar skuggan.
+
+## Magasineringsvillkor
+
+Magasinering löper från det datum godset ställs in och förnyas automatiskt
+en kalendermånad i taget. Minst 4 m³, minst en månad. 139 kr per m³ och
+månad, faktureras i förskott, påbörjad månad debiteras helt. Skriftlig
+uppsägning senast sju dagar före ny period, och avtalet upphör först när
+godset hämtats ut. Hämtning och utkörning är rutberättigat arbete,
+förvaringen är det inte. Vid utebliven betalning: kvarhållning, därefter
+anmaning i rekommenderat brev och försäljning tidigast tre månader senare
+enligt lagen (1985:982) om näringsidkares rätt att sälja saker som inte har
+hämtats.

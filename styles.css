@@ -792,6 +792,9 @@ body:not(.kort-sida) main p a:not(.btn) {
   line-height: 1.8;
 }
 .villkor h3 { margin-bottom: .6rem; }
+/* Villkoren rymmer flera underrubriker – nästa rubrik behöver luft mot
+   stycket ovanför. */
+.villkor h3 + p ~ h3 { margin-top: 2.2rem; }
 
 /* ---------- Kontakt (ljus sektion, vitt formulärkort) ----------
    Bakgrunden kommer från .section-cream i markupen, inte härifrån. */
@@ -1140,6 +1143,9 @@ body:not(.kort-sida) main p a:not(.btn) {
   max-width: 720px; margin: 2.5rem auto 0; text-align: center;
   font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.6;
 }
+/* Två noter efter varandra i en panel hör ihop – den andra ska inte få hela
+   toppmarginalen en gång till. */
+.panel .price-note + .price-note { margin-top: .4rem; }
 
 /* ==========================================================================
    Scroll-animationer

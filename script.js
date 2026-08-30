@@ -102,6 +102,12 @@ function initPaneler() {
     const cta = panel.querySelector('.panel-btn');
     if (cta) cta.addEventListener('click', () => closePanel(panel));
 
+    // Noternas länkar leder vidare på sidan – samma sak där, panelen ska inte
+    // ligga kvar över det man klickat sig till
+    panel.querySelectorAll('.price-note a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => closePanel(panel));
+    });
+
     // Esc stänger dialogrutan på egen hand – då är close-händelsen enda signalen
     panel.addEventListener('close', releasePanel);
   });
