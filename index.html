@@ -293,7 +293,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=36" />
+  <link rel="stylesheet" href="styles.css?v=37" />
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
@@ -462,9 +462,51 @@
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Röjning för bostadsrättsförening, källare 12 m³</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">5 195 kr</div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Röjning för bostadsrättsförening, vind 8 m³</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">3 495 kr</div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Röjning för bostadsrättsförening, timpris två personer</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">995 kr<span class="pris__enhet">/tim</span></div>
+              <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Kontorsflytt, 8 arbetsplatser</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">7 900 kr</div>
+              <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Lagerflytt, en fullastad bil</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">5 600 kr</div>
+              <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+            </div>
+          </div>
+          <div class="prisrad">
+            <div class="prisrad__namn">Kontorsflytt, timpris två personer med bil</div>
+            <div class="pris pris--fast">
+              <div class="pris__netto">795 kr<span class="pris__enhet">/tim</span></div>
+              <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+            </div>
+          </div>
         </div>
 
-        <p class="price-note reveal">Priserna är frånpriser inklusive moms. Extra kostnad kan tillkomma vid mycket tungt material, långa bäravstånd, många trappor eller särskilda avfallsavgifter.</p>
+        <p class="price-note reveal">Priserna är frånpriser inklusive moms, utom de rader som är märkta Ex moms. Extra kostnad kan tillkomma vid mycket tungt material, långa bäravstånd, många trappor eller särskilda avfallsavgifter.</p>
 
         <div id="langdistans">
         <div class="section-head">
@@ -687,6 +729,30 @@
               <h3>Långdistansflytt</h3>
               <p>Flytt till en annan stad? Vi kör hela vägen med samma bil och samma personal, från lastning till urlastning. Inga omlastningar och ingen väntan på en terminal.</p>
               <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-10">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+
+          <article class="card" data-panel="panel-11">
+            <img class="card-img" src="assets/tjanst-3-800.webp"
+                 srcset="assets/tjanst-3-400.webp 400w, assets/tjanst-3-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Garage med öppen port där en bokhylla, en hoprullad matta och staplade förvaringslådor står kvar" width="1200" height="900" loading="lazy" decoding="async" />
+            <div class="card-body">
+              <h3>Röjning för bostadsrättsföreningar</h3>
+              <p>Vind, källare, cykelrum och gemensamma utrymmen. Vi tömmer, sorterar och lämnar ytorna sopade — och skickar bildrapport till styrelsen.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-11">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
+            </div>
+          </article>
+
+          <article class="card" data-panel="panel-12">
+            <img class="card-img" src="assets/tjanst-4-800.webp"
+                 srcset="assets/tjanst-4-400.webp 400w, assets/tjanst-4-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Staplade flyttkartonger märkta Bohagsbolaget.se i ett tomt rum, med hopvikt flyttfilt och tejprulle på golvet" width="1200" height="900" loading="lazy" decoding="async" />
+            <div class="card-body">
+              <h3>Kontors- och företagsflytt</h3>
+              <p>Kontor, lager och butik. Vi flyttar utanför öppettider när verksamheten inte får stanna, monterar ned och upp, och fakturerar företaget.</p>
+              <button type="button" class="card-cta" aria-haspopup="dialog" aria-controls="panel-12">Se pris och vad som ingår <span aria-hidden="true">→</span></button>
             </div>
           </article>
         </div>
@@ -1124,6 +1190,110 @@
           <h4>Det ingår</h4>
           <p>Bärhjälp i båda ändar, filtar och spännband, bil, bränsle och vägavgifter. Samma personal hela vägen.</p>
           <p>Flytt av bohag mellan två bostäder är RUT-grundande.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="price-note">Alla priser finns samlade under <a href="#priser">Priser</a>.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-11" role="dialog" aria-modal="true" aria-label="Röjning för bostadsrättsföreningar">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Röjning för bostadsrättsföreningar</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Källarröjning, 12 m³</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">5 195 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Vindsröjning, 8 m³</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">3 495 kr</div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Timpris, två personer</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">995 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
+              </div>
+            </div>
+          </div>
+
+          <h4>Så räknar vi</h4>
+          <p>Fast pris efter besök eller bilder. Behöver ni bara veta ungefär vad det landar på räcker det att skicka några foton, så får ni en siffra samma dag.</p>
+
+          <h4>Prisexempel</h4>
+          <ul class="panel-list">
+            <li>Källarröjning 12 m³ — från 5 195 kr</li>
+            <li>Vindsröjning 8 m³ — från 3 495 kr</li>
+            <li>Timpris två personer — 995 kr</li>
+          </ul>
+
+          <h4>Det ingår</h4>
+          <p>Bärhjälp och tömning, sortering till återvinning, sopning av ytan efteråt, och bildrapport före och efter till styrelsen.</p>
+
+          <h4>Tillkommer</h4>
+          <p>Farligt avfall, tungt material över 100 kg och eventuella deponiavgifter.</p>
+          <p>Föreningar är juridiska personer och omfattas varken av rot eller rut.</p>
+
+          <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
+          <p class="price-note">Alla priser finns samlade under <a href="#priser">Priser</a>.</p>
+        </div>
+      </dialog>
+
+      <dialog class="panel" id="panel-12" role="dialog" aria-modal="true" aria-label="Kontors- och företagsflytt">
+        <div class="panel-inner">
+          <button type="button" class="panel-close" aria-label="Stäng">&times;</button>
+          <h3 class="panel-title">Kontors- och företagsflytt</h3>
+
+          <div class="prislista">
+            <div class="prisrad">
+              <div class="prisrad__namn">Kontor med 8 arbetsplatser</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">7 900 kr</div>
+                <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Lagerflytt, en fullastad bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">5 600 kr</div>
+                <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+              </div>
+            </div>
+            <div class="prisrad">
+              <div class="prisrad__namn">Timpris, två personer med bil</div>
+              <div class="pris pris--fast">
+                <div class="pris__netto">795 kr<span class="pris__enhet">/tim</span></div>
+                <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
+              </div>
+            </div>
+          </div>
+          <p>Företag drar av momsen — priserna ovan är den faktiska kostnaden.</p>
+
+          <h4>Så räknar vi</h4>
+          <p>795 kr per timme för två personer med bil, minst tre timmar. Större flyttar prissätts fast efter besök på plats.</p>
+
+          <h4>Prisexempel</h4>
+          <ul class="panel-list">
+            <li>Kontor med 8 arbetsplatser — från 7 900 kr</li>
+            <li>Lagerflytt, en fullastad bil — från 5 600 kr</li>
+            <li>Timpris två personer — 795 kr</li>
+          </ul>
+          <p>Alla priser på detta kort anges exklusive moms.</p>
+
+          <h4>Det ingår</h4>
+          <p>Emballering av utrustning, nedmontering och montering av möbler, transport och placering på ny adress.</p>
+
+          <h4>Tillkommer</h4>
+          <p>Kvälls- och helgarbete, magasinering och eventuell bortforsling av det som inte ska följa med.</p>
+          <p>Flytt av företagslokaler ger varken rot- eller rutavdrag.</p>
 
           <a href="#kontakt" class="btn btn-primary panel-btn">Begär offert</a>
           <p class="price-note">Alla priser finns samlade under <a href="#priser">Priser</a>.</p>
