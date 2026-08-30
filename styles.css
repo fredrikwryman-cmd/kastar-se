@@ -388,8 +388,11 @@ body:not(.kort-sida) main p a:not(.btn) {
 .hero-inner { display: block; position: relative; z-index: 2; }
 .hero-copy  { max-width: 760px; }
 /* Rubriken är en lång uppräkning – något mindre grad än sidans övriga h1 så
-   den inte tar hela hero-ytan, särskilt på mobil. */
-.hero h1 { color: #fff; font-size: clamp(1.65rem, 3.7vw, 2.6rem); }
+   den inte tar hela hero-ytan, särskilt på mobil. Taket sänktes från 2.6rem
+   när magasinering lades till: rad två är då 843 px bred vid 2.6rem men bara
+   760 px står till buds, så raden bröts. 2.3rem ger 746 px och ryms med
+   marginal, och är fortfarande långt över den undre gränsen på 34 px. */
+.hero h1 { color: #fff; font-size: clamp(1.65rem, 3.7vw, 2.3rem); }
 /* ---------- Sista orden i hero-rubriken ----------
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
@@ -441,6 +444,13 @@ body:not(.kort-sida) main p a:not(.btn) {
 
 /* Håller ihop "– utan krångel" så raden aldrig bryts efter tankstrecket */
 .nowrap { white-space: nowrap; }
+
+/* Rubrikens andra rad hålls ihop på en rad – men bara där det finns bredd för
+   det. Under 900 px får orden bryta fritt, annars svämmar rubriken över kanten
+   på mobil. Radbrytningarna mellan raderna kommer från <br> i markupen. */
+@media (min-width: 901px) {
+  .hero-rad2 { white-space: nowrap; }
+}
 /* Etiketten står mot fotot, och ovanför mörkerlagret ligger .hero::after –
    därför kan ingen gradientjustering styra vad som lyser igenom bakom den.
    Egen solid platta i stället: #E8862E mot #092F38 ger 5,34:1 vid varje
