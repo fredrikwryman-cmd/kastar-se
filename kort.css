@@ -33,16 +33,6 @@ body.kort-sida {
    Rutan har fast förhållande och egen bakgrund. Bild och film delar samma
    regel och fyller rutan via object-fit: cover, så kortet ser likadant ut
    oavsett vilket som ligger i rutan – höjden är redan låst av 4:5. */
-.kort-media {
-  aspect-ratio: 4 / 5;
-  background: var(--petrol);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.kort-media img,
-.kort-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
 /* Foten är numera ett eget <footer> utanför <main>, för att bli en riktig
    contentinfo-landmark. Kroppen tappar därför sin underkant och foten får
    samma sidmått som marginal, så att linjen och luften ser exakt likadana

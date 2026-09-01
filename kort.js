@@ -1,17 +1,4 @@
-// Bohagsbolaget.se – digitala visitkort: porträttfilmen och dela-knappen.
-
-/* ---------- Reducerad rörelse ----------
-   Den som valt mindre rörelse i systemet ska inte få filmen igång av sig
-   själv. load() nollställer elementet, så posterbilden ligger kvar i rutan
-   i stället för en fryst filmruta. */
-const portrattfilm = document.querySelector('.kort-media video');
-
-if (portrattfilm && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  portrattfilm.removeAttribute('autoplay');
-  portrattfilm.autoplay = false;
-  portrattfilm.pause();
-  portrattfilm.load();
-}
+// Bohagsbolaget.se – digitala visitkort: dela-knappen.
 
 /* ---------- Dela ----------
    Delar sidans adress via systemets delningsruta. Saknas stödet kopieras

@@ -32,31 +32,12 @@
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
   <link rel="stylesheet" href="/styles.css?v=38" />
-  <link rel="stylesheet" href="/kort.css?v=8" />
+  <link rel="stylesheet" href="/kort.css?v=9" />
 </head>
 <body class="kort-sida">
   <a class="skip" href="#main">Hoppa till innehållet</a>
 
   <div class="kort">
-    <!-- Medieruta 4:5. Filmen är stum och dekorativ, samma bildutsnitt som
-         Fredriks porträtt. Ingen loop: den spelar en gång och blir stående på
-         sista bildrutan, där Thom står vänd mot kameran. WebM först och MP4
-         som reserv; posterbilden ligger i rutan tills filmen har laddat. Har
-         besökaren valt reducerad rörelse stoppar kort.js autostarten och
-         postern blir kvar. -->
-    <header class="kort-media">
-      <video autoplay muted playsinline preload="metadata"
-             poster="/assets/kort-thom-poster-900.webp" width="720" height="900"
-             aria-label="Thom på Bohagsbolaget.se vänder sig mot kameran och lägger armarna i kors.">
-        <source src="/assets/kort-thom.webm" type="video/webm" />
-        <source src="/assets/kort-thom.mp4" type="video/mp4" />
-        <img src="/assets/kort-thom-poster-900.webp"
-             srcset="/assets/kort-thom-poster-450.webp 450w, /assets/kort-thom-poster-900.webp 900w"
-             sizes="(max-width: 560px) 92vw, 420px" width="900" height="1125"
-             alt="Thom på Bohagsbolaget.se i orange arbetströja, med armarna i kors." />
-      </video>
-    </header>
-
     <main class="kort-kropp" id="main">
       <h1 class="kort-namn">Thom</h1>
       <p class="kort-roll">Transport och utförande</p>
@@ -92,6 +73,6 @@
     </footer>
   </div>
 
-  <script src="/kort.js?v=2"></script>
+  <script src="/kort.js?v=3"></script>
 </body>
 </html>
