@@ -987,7 +987,10 @@ function attGoraGrupper(jobb, idag) {
     sparStart();
     $('#nyttSpara').disabled = true;
 
-    anrop('skapa', obj).then(function(data){
+    // Servern laser de nya faltvardena ur indata.jobb, inte fran oversta
+    // nivan – darfor maste objektet packas i en jobb-nyckel. Skickas falten
+    // platt skapas raden med bara id och skapad ifyllda.
+    anrop('skapa', { jobb: obj }).then(function(data){
       sparStopp();
       $('#nyttSpara').disabled = false;
       doljFel();
