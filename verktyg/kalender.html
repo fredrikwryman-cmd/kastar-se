@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kalendern">
+<meta name="theme-color" content="#0E3A44">
+<link rel="apple-touch-icon" href="/assets/app-ikon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/app-ikon-192.png">
+<title>Kalendern – Bohagsbolaget.se</title>
+<style>
+  @font-face{
+    font-family:'Space Grotesk';
+    src:url('/assets/fonts/space-grotesk-variable.woff2') format('woff2');
+    font-weight:300 700; font-style:normal; font-display:swap;
+  }
+  :root{
+    --petrol:#0E3A44; --petrol-deep:#092F38;
+    --orange:#E8862E; --orange-ink:#A85610;
+    --bg:#FAF5EF; --card:#FFFFFF; --line:#E5DED6;
+    --ink:#111111; --body:#3A4A50; --muted:#6E7B81;
+    --ok:#1F6B4C; --warn:#9E3227; --warn-bg:#FBEDEB; --ok-bg:#E9F3EE;
+    --font:'Space Grotesk',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  html,body{max-width:100%; overflow-x:hidden}
+  body{
+    margin:0; background:var(--bg); color:var(--body);
+    font-family:var(--font); font-size:16px; line-height:1.5;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom));
+  }
+
+  header{
+    background:var(--petrol); color:#fff; padding:16px;
+    position:sticky; top:0; z-index:30;
+  }
+  header h1{margin:0; font-size:17px; font-weight:700; letter-spacing:.03em; text-transform:uppercase}
+  header p{margin:3px 0 0; font-size:14px; color:#B7C9CD; letter-spacing:.04em}
+
+  .wrap{max-width:1040px; margin:0 auto; padding:14px}
+
+  /* felbanner */
+  #fel{
+    position:fixed; left:0; right:0; top:0; z-index:100;
+    background:var(--warn); color:#fff;
+    padding:14px 14px 14px; box-shadow:0 6px 22px rgba(0,0,0,.3);
+  }
+  #fel .inner{max-width:1040px; margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+  #fel p{margin:0; flex:1 1 220px; font-size:15px; font-weight:600; overflow-wrap:anywhere}
+  #fel button{
+    min-height:44px; padding:0 16px; border:2px solid #fff; border-radius:8px;
+    background:transparent; color:#fff; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer;
+  }
+  #fel button.stang{border-color:rgba(255,255,255,.55)}
+
+  /* sparar-indikator */
+  #sparar{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:calc(108px + env(safe-area-inset-bottom)); z-index:95;
+    background:var(--petrol-deep); color:#fff; border-radius:999px;
+    padding:10px 18px; font-size:15px; font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,.28);
+  }
+
+  /* kort och knappar */
+  .kort{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px}
+  .kort h2{margin:0 0 10px; font-size:16px; color:var(--ink); font-weight:700}
+  .kort h3{margin:16px 0 8px; font-size:15px; color:var(--ink); font-weight:700}
+  p.hjalp{margin:0 0 12px; font-size:14px; color:var(--muted)}
+
+  button{font-family:inherit}
+  .knapp{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    min-height:48px; padding:10px 16px; border:0; border-radius:8px;
+    background:var(--orange); color:var(--petrol-deep);
+    font-size:16px; font-weight:700; cursor:pointer; text-decoration:none;
+    box-shadow:0 2px 0 rgba(14,58,68,.18);
+  }
+  .knapp:hover{transform:translateY(-1px); box-shadow:0 6px 14px rgba(14,58,68,.22)}
+  .knapp:active{transform:translateY(1px); box-shadow:none}
+  .knapp.sekundar{background:transparent; color:var(--petrol); border:2px solid var(--petrol); box-shadow:none}
+  .knapp.sekundar:hover{box-shadow:0 6px 14px rgba(14,58,68,.16)}
+  .knapp[disabled]{opacity:.55; cursor:default; transform:none; box-shadow:none}
+  .knapprad{display:flex; flex-wrap:wrap; gap:10px}
+  .knapprad .knapp{flex:1 1 160px}
+
+  /* formulärfält */
+  .falt{margin-bottom:14px}
+  .falt > label{display:block; font-size:14px; font-weight:600; color:var(--body); margin-bottom:5px}
+  .falt .krav{color:var(--orange-ink)}
+  input,select,textarea{
+    width:100%; min-height:48px; padding:11px 12px; font-size:16px; font-family:inherit;
+    border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink);
+  }
+  textarea{min-height:96px; resize:vertical; line-height:1.5}
+  input:focus,select:focus,textarea:focus{outline:3px solid var(--orange); outline-offset:1px}
+  .fstat{display:block; margin-top:5px; font-size:14px; font-weight:600; min-height:21px}
+  .fstat.sparar{color:var(--orange-ink)}
+  .fstat.ok{color:var(--ok)}
+  .fstat.fel{color:var(--warn)}
+
+  /* flikar */
+  nav.flikar{
+    position:fixed; left:0; right:0; bottom:0; z-index:90;
+    display:flex; background:var(--petrol);
+    padding-bottom:env(safe-area-inset-bottom);
+    box-shadow:0 -6px 22px rgba(0,0,0,.24);
+  }
+  nav.flikar button{
+    flex:1; min-height:62px; border:0; background:transparent; color:#B7C9CD;
+    font-size:14px; font-weight:600; cursor:pointer; padding:8px 4px 10px;
+    border-top:4px solid transparent; display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.flikar button .ikon{font-size:18px; line-height:1}
+  nav.flikar button[aria-current="page"]{color:#fff; border-top-color:var(--orange); background:var(--petrol-deep)}
+
+  /* veckovy */
+  .veckohuvud{
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+    background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px;
+  }
+  .veckohuvud .pil{
+    min-width:52px; min-height:52px; border:2px solid var(--petrol); border-radius:8px;
+    background:#fff; color:var(--petrol); font-size:20px; font-weight:700; cursor:pointer;
+  }
+  .veckohuvud .pil:hover{background:#F2F7F8; box-shadow:0 4px 12px rgba(14,58,68,.16)}
+  .veckohuvud .titel{flex:1; text-align:center; min-width:0}
+  .veckohuvud .titel strong{display:block; font-size:16px; color:var(--ink)}
+  .veckohuvud .titel span{display:block; font-size:14px; color:var(--muted)}
+
+  .vecka{display:flex; flex-direction:column; gap:10px}
+  .dag{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px}
+  .dag.idag{border:3px solid var(--orange); background:#FFF9F2}
+  .dag > h3{margin:0 0 8px; font-size:14px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .dag.idag > h3{color:var(--orange-ink)}
+  .dag .tom{margin:0; font-size:14px; color:var(--muted)}
+
+  .jobb{
+    display:block; width:100%; text-align:left; cursor:pointer;
+    min-height:56px; padding:10px 12px; margin-bottom:8px;
+    background:#fff; border:1px solid var(--line); border-left:6px solid var(--petrol);
+    border-radius:8px; font-family:inherit; color:var(--body);
+  }
+  .jobb:last-child{margin-bottom:0}
+  .jobb:hover{border-color:var(--orange); box-shadow:0 4px 12px rgba(14,58,68,.14)}
+  .jobb .tid{font-size:16px; font-weight:700; color:var(--ink)}
+  .jobb .namn{font-size:16px; font-weight:700; color:var(--ink); overflow-wrap:anywhere}
+  .jobb .rad2{display:block; font-size:14px; color:var(--muted); overflow-wrap:anywhere; margin-top:3px}
+  .jobb.krock{border-color:var(--warn); border-left-color:var(--warn); background:var(--warn-bg)}
+  .krockflagg{
+    display:inline-block; margin-top:6px; padding:4px 10px; border-radius:6px;
+    background:var(--warn); color:#fff; font-size:14px; font-weight:700;
+  }
+
+  .stamp{
+    display:inline-block; padding:3px 9px; border-radius:6px; font-size:14px; font-weight:700;
+    border:2px solid currentColor; margin-right:6px;
+  }
+  .s-offert{color:#5C686D} .s-bokad{color:#0E3A44} .s-utford{color:#A85610}
+  .s-fakturerad{color:#15556F} .s-rut_begard{color:#5B3F91} .s-betald{color:#1F6B4C}
+  .s-avbokad{color:#9E3227}
+
+  /* jobbkortet */
+  #kortvy{
+    position:fixed; inset:0; z-index:70; background:var(--bg);
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    padding-bottom:calc(40px + env(safe-area-inset-bottom));
+  }
+  #kortvy .topp{
+    position:sticky; top:0; z-index:5; background:var(--petrol); color:#fff; padding:12px 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  #kortvy .topp button{
+    min-height:44px; padding:0 14px; border:2px solid rgba(255,255,255,.6); border-radius:8px;
+    background:transparent; color:#fff; font-size:15px; font-weight:700; cursor:pointer; flex:none;
+  }
+  #kortvy .topp h2{margin:0; font-size:16px; font-weight:700; overflow-wrap:anywhere; min-width:0}
+
+  .lankrad{display:flex; flex-direction:column; gap:8px; margin-bottom:12px}
+  .lank{
+    display:flex; align-items:center; gap:10px; min-height:52px; padding:10px 12px;
+    border:2px solid var(--petrol); border-radius:8px; background:#fff;
+    color:var(--petrol); font-size:16px; font-weight:600; text-decoration:none; overflow-wrap:anywhere;
+  }
+  .lank:hover{background:#F2F7F8; box-shadow:0 4px 12px rgba(14,58,68,.16)}
+  .lank .etikett{font-size:14px; color:var(--muted); font-weight:700; min-width:52px; flex:none}
+
+  .statusrad{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+  .statusrad button{
+    min-height:56px; padding:8px 6px; border:2px solid var(--line); border-radius:10px;
+    background:#fff; color:var(--body); font-size:15px; font-weight:700; cursor:pointer;
+  }
+  .statusrad button:hover{border-color:var(--orange); box-shadow:0 4px 12px rgba(14,58,68,.14)}
+  .statusrad button[aria-pressed="true"]{
+    background:var(--orange); color:var(--petrol-deep); border-color:var(--petrol-deep);
+  }
+  .statusrad button[disabled]{opacity:.6; cursor:default}
+
+  .grupp{margin:0 0 4px; font-size:14px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em}
+  .fakta{font-size:15px; color:var(--body); margin:0 0 12px; overflow-wrap:anywhere}
+
+  .banner{
+    padding:12px; border-radius:8px; font-size:15px; font-weight:600; margin:12px 0;
+    border-left:6px solid currentColor;
+  }
+  .banner.ok{background:var(--ok-bg); color:var(--ok)}
+  .banner.dalig{background:var(--warn-bg); color:var(--warn)}
+
+  .laddar{font-size:15px; color:var(--muted); padding:12px 0}
+
+  @media (min-width:900px){
+    .vecka{display:grid; grid-template-columns:repeat(7,1fr); gap:8px; align-items:start}
+    .dag{order:0 !important; min-height:130px}
+    .statusrad{grid-template-columns:repeat(3,1fr)}
+    .lankrad{flex-direction:row; flex-wrap:wrap}
+    .lankrad .lank{flex:1 1 260px}
+  }
+</style>
+</head>
+<body>
+
+<div id="fel" hidden>
+  <div class="inner">
+    <p id="felText">Fel</p>
+    <button type="button" id="felIgen">Försök igen</button>
+    <button type="button" class="stang" id="felStang">Stäng</button>
+  </div>
+</div>
+
+<div id="sparar" hidden>Sparar …</div>
+
+<header>
+  <h1>Kalendern</h1>
+  <p>Internt · Bohagsbolaget.se</p>
+</header>
+
+<main class="wrap">
+
+  <!-- VECKAN -->
+  <section id="vy-veckan">
+    <div class="veckohuvud">
+      <button type="button" class="pil" id="vForra" aria-label="Föregående vecka">&#8592;</button>
+      <div class="titel">
+        <strong id="vTitel">Vecka</strong>
+        <span id="vDatum">&ndash;</span>
+      </div>
+      <button type="button" class="pil" id="vNasta" aria-label="Nästa vecka">&#8594;</button>
+    </div>
+    <div class="knapprad" style="margin-bottom:12px">
+      <button type="button" class="knapp sekundar" id="vIdag">Denna vecka</button>
+      <button type="button" class="knapp sekundar" id="vUppdatera">Hämta om</button>
+    </div>
+    <p id="veckaLaddar" class="laddar" hidden>Hämtar jobb &hellip;</p>
+    <div class="vecka" id="veckaGrid"></div>
+  </section>
+
+  <!-- ATT GÖRA -->
+  <section id="vy-attgora" hidden>
+    <p id="attgoraLaddar" class="laddar" hidden>Hämtar jobb &hellip;</p>
+    <div id="attgoraUt"></div>
+  </section>
+
+  <!-- NYTT JOBB -->
+  <section id="vy-nytt" hidden>
+    <form class="kort" id="nyttForm" novalidate>
+      <h2>Nytt jobb</h2>
+      <p class="hjalp">Datum, kundens namn och telefon måste fyllas i. Övrigt är frivilligt.</p>
+      <div class="falt">
+        <label for="ny_status">Status</label>
+        <select id="ny_status">
+          <option value="offert">Offert</option>
+          <option value="bokad" selected>Bokad</option>
+          <option value="utford">Utförd</option>
+          <option value="fakturerad">Fakturerad</option>
+          <option value="rut_begard">Rut begärd</option>
+          <option value="betald">Betald</option>
+          <option value="avbokad">Avbokad</option>
+        </select>
+      </div>
+      <div id="nyttFalt"></div>
+      <div class="knapprad">
+        <button type="submit" class="knapp" id="nyttSpara">Spara jobbet</button>
+        <button type="button" class="knapp sekundar" id="nyttTom">Töm formuläret</button>
+      </div>
+      <p class="fstat" id="nyttStat"></p>
+    </form>
+  </section>
+
+  <!-- INSTÄLLNINGAR -->
+  <section id="vy-installningar" hidden>
+    <div class="kort">
+      <h2>Anslutning</h2>
+      <p class="hjalp">Webbadress och lösenord sparas bara i den här webbläsaren. Utan båda visas ingen kalender.</p>
+      <div class="falt">
+        <label for="insUrl">Webbadress till kalendertjänsten <span class="krav">(krävs)</span></label>
+        <input type="url" id="insUrl" inputmode="url" autocomplete="off" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+      <div class="falt">
+        <label for="insLos">Lösenord <span class="krav">(krävs)</span></label>
+        <input type="password" id="insLos" autocomplete="off">
+      </div>
+      <div class="knapprad">
+        <button type="button" class="knapp" id="insSpara">Spara</button>
+        <button type="button" class="knapp sekundar" id="insTesta">Testa anslutningen</button>
+      </div>
+      <p class="banner ok" id="insOk" hidden></p>
+      <p class="banner dalig" id="insFel" hidden></p>
+      <h3>Glöm uppgifterna</h3>
+      <p class="hjalp">Rensar webbadress och lösenord ur den här webbläsaren.</p>
+      <button type="button" class="knapp sekundar" id="insGlom">Glöm uppgifterna</button>
+    </div>
+  </section>
+
+</main>
+
+<div id="kortvy" hidden>
+  <div class="topp">
+    <button type="button" id="kortStang">&#8592; Tillbaka</button>
+    <h2 id="kortRubrik">Jobb</h2>
+  </div>
+  <div class="wrap" id="kortInnehall"></div>
+</div>
+
+<nav class="flikar" aria-label="Huvudmeny">
+  <button type="button" data-flik="veckan" aria-current="page"><span class="ikon" aria-hidden="true">&#128197;</span>Veckan</button>
+  <button type="button" data-flik="attgora"><span class="ikon" aria-hidden="true">&#9989;</span>Att göra</button>
+  <button type="button" data-flik="nytt"><span class="ikon" aria-hidden="true">&#10133;</span>Nytt jobb</button>
+  <button type="button" data-flik="installningar"><span class="ikon" aria-hidden="true">&#9881;</span>Inställningar</button>
+</nav>
+
+<datalist id="bemanningLista">
+  <option value="Fredrik"></option>
+  <option value="Thom"></option>
+  <option value="Båda"></option>
+</datalist>
+
+<script>
+// === ATTGORA_START ===
+/**
+ * Grupperar jobb till "Att göra"-vyn.
+ * ES5, inga beroenden. Klistras in rakt i en <script>-tagg.
+ */
+function attGoraGrupper(jobb, idag) {
+  // --- Hjälpare -----------------------------------------------------------
+
+  function txt(v) {
+    if (v === null || v === undefined) return '';
+    return String(v).replace(/^\s+|\s+$/g, '');
+  }
+
+  function low(v) {
+    return txt(v).toLowerCase();
+  }
+
+  // Bygger lokal midnatt. Vi räknar kalenderdagar, inte timmar: med lokal
+  // midnatt som bas kan sommartidsskiften (23- eller 25-timmarsdygn) aldrig
+  // knuffa en gräns till fel dag.
+  function midnatt(ar, man, dag) {
+    var d = new Date(ar, man - 1, dag, 0, 0, 0, 0);
+    // Fångar t.ex. 2026-02-31 som annars rullar över till mars.
+    if (d.getFullYear() !== ar || d.getMonth() !== man - 1 || d.getDate() !== dag) return null;
+    return d;
+  }
+
+  // Tolkar "YYYY-MM-DD" eller Date. Ogiltigt/saknat ger null - jobbet matchar
+  // då ingen datumregel, men vi kastar aldrig.
+  function parseDatum(v) {
+    if (v instanceof Date) {
+      if (isNaN(v.getTime())) return null;
+      return midnatt(v.getFullYear(), v.getMonth() + 1, v.getDate());
+    }
+    var s = txt(v);
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return null;
+    return midnatt(Number(m[1]), Number(m[2]), Number(m[3]));
+  }
+
+  // Antal hela kalenderdagar från a till b (b - a), positivt framåt i tiden.
+  function dagarMellan(a, b) {
+    return Math.round((b.getTime() - a.getTime()) / 86400000);
+  }
+
+  // "3 542 kr", "3 542,50" (även hårt mellanslag), "3542" eller tal -> tal.
+  // Allt som inte går att tolka betraktas som 0.
+  function tolkaBelopp(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : 0;
+    var s = txt(v);
+    if (!s) return 0;
+    // \s täcker även hårt mellanslag (nbsp), så "3 542 kr" funkar.
+    s = s.replace(/\s/g, '').replace(/,/g, '.');
+    // Plockar ut första talet och slänger valutasuffix som "kr".
+    var m = /-?\d+(\.\d+)?/.exec(s);
+    if (!m) return 0;
+    var n = parseFloat(m[0]);
+    return isFinite(n) ? n : 0;
+  }
+
+  // --- Referensdatum ------------------------------------------------------
+
+  var nu = parseDatum(idag);
+  if (!nu) {
+    if (idag === undefined || idag === null || txt(idag) === '') {
+      var d = new Date();
+      nu = midnatt(d.getFullYear(), d.getMonth() + 1, d.getDate());
+    } else {
+      // Obrukbart "idag" - inget datumbaserat kan avgöras.
+      return [];
+    }
+  }
+
+  var lista = (jobb && jobb.length) ? jobb : [];
+
+  // --- Grupperna ----------------------------------------------------------
+
+  var fakturera = [];
+  var begarRut = [];
+  var bokaStad = [];
+
+  for (var i = 0; i < lista.length; i++) {
+    var j = lista[i];
+    if (!j || typeof j !== 'object') continue;
+
+    var status = low(j.status);
+    if (status === 'avbokad') continue; // avbokade jobb hör aldrig hemma i vyn
+
+    var datum = parseDatum(j.datum);
+    var alder = datum ? dagarMellan(datum, nu) : null; // dagar sedan jobbet
+
+    // 1. Fakturera: utfört och ÄLDRE än två dagar, dvs 3+ dagar sedan.
+    // Exakt 2 dagar gammalt är ännu inte "äldre än två dagar" -> med först vid 3.
+    if (status === 'utford' && alder !== null && alder > 2) {
+      fakturera.push(j);
+    }
+
+    // 2. Begär rut: fakturerad, rut-belopp > 0 och ansökan inte gjord.
+    if (status === 'fakturerad' && tolkaBelopp(j.rut_belopp) > 0 && txt(j.rut_ansokt_datum) === '') {
+      begarRut.push(j);
+    }
+
+    // 3. Boka städ: städ obokat och jobbet ligger 0-10 dagar fram.
+    // Idag (0) och dag tio (10) räknas med; passerade jobb (<0) och dag 11+ inte.
+    if (low(j.stad_bokad) === 'nej' && alder !== null) {
+      var kvar = -alder; // dagar kvar till jobbet
+      if (kvar >= 0 && kvar <= 10) bokaStad.push(j);
+    }
+  }
+
+  // Äldsta datum först inom varje grupp. Jobb utan giltigt datum sist.
+  function sorteraDatum(a, b) {
+    var da = parseDatum(a.datum);
+    var db = parseDatum(b.datum);
+    if (!da && !db) return 0;
+    if (!da) return 1;
+    if (!db) return -1;
+    return da.getTime() - db.getTime();
+  }
+
+  fakturera.sort(sorteraDatum);
+  begarRut.sort(sorteraDatum);
+  bokaStad.sort(sorteraDatum);
+
+  // Tomma grupper utelämnas helt.
+  var ut = [];
+  if (fakturera.length) ut.push({ rubrik: 'Fakturera', jobb: fakturera });
+  if (begarRut.length) ut.push({ rubrik: 'Begär rut', jobb: begarRut });
+  if (bokaStad.length) ut.push({ rubrik: 'Boka städ', jobb: bokaStad });
+  return ut;
+}
+// === ATTGORA_SLUT ===
+
+(function(){
+  'use strict';
+
+  var NYCKEL_URL = 'kalender.url';
+  var NYCKEL_LOS = 'kalender.losenord';
+
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+
+  function esc(v){
+    return String(v === null || v === undefined ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* ---------- modell ---------- */
+  var STATUSAR = [
+    {v:'bokad',      t:'Bokad'},
+    {v:'utford',     t:'Utförd'},
+    {v:'fakturerad', t:'Fakturerad', d:'faktura_datum'},
+    {v:'rut_begard', t:'Rut begärd',  d:'rut_ansokt_datum'},
+    {v:'betald',     t:'Betald',      d:'betald_datum'},
+    {v:'avbokad',    t:'Avbokad'}
+  ];
+  var STATUSTEXT = {
+    offert:'Offert', bokad:'Bokad', utford:'Utförd', fakturerad:'Fakturerad',
+    rut_begard:'Rut begärd', betald:'Betald', avbokad:'Avbokad'
+  };
+
+  var FALT = [
+    {n:'datum',            t:'Datum',             typ:'date',   obl:true},
+    {n:'starttid',         t:'Starttid',          typ:'time'},
+    {n:'timmar',           t:'Timmar',            typ:'number', steg:'0.5'},
+    {n:'kund_namn',        t:'Kundens namn',      typ:'text',   obl:true},
+    {n:'kund_tel',         t:'Telefon',           typ:'tel',    obl:true},
+    {n:'kund_epost',       t:'E-post',            typ:'email'},
+    {n:'fran_adress',      t:'Från adress',       typ:'text'},
+    {n:'till_adress',      t:'Till adress',       typ:'text'},
+    {n:'tjanster',         t:'Tjänster',          typ:'text'},
+    {n:'volym_m3',         t:'Volym, m³',         typ:'number', steg:'0.5'},
+    {n:'yta_kvm',          t:'Yta, m²',           typ:'number', steg:'1'},
+    {n:'pris_total',       t:'Pris totalt, kr',   typ:'number', steg:'100'},
+    {n:'arbetskostnad',    t:'Arbetskostnad, kr', typ:'number', steg:'100'},
+    {n:'rut_belopp',       t:'Rut-belopp, kr',    typ:'number', steg:'100'},
+    {n:'kund_betalar',     t:'Kund betalar, kr',  typ:'number', steg:'100'},
+    {n:'bemanning',        t:'Bemanning',         typ:'bemanning'},
+    {n:'stad_bokad',       t:'Städ bokad',        typ:'janej'},
+    {n:'stad_datum',       t:'Städdatum',         typ:'date'},
+    {n:'noteringar',       t:'Noteringar',        typ:'textarea'},
+    {n:'fakturanr',        t:'Fakturanummer',     typ:'text'},
+    {n:'faktura_datum',    t:'Fakturadatum',      typ:'date'},
+    {n:'rut_ansokt_datum', t:'Rut ansökt, datum', typ:'date'},
+    {n:'betald_datum',     t:'Betald, datum',     typ:'date'}
+  ];
+
+  function faltHtml(falt, prefix, varde){
+    var id = prefix + falt.n;
+    var v = esc(varde === undefined || varde === null ? '' : varde);
+    var h = '<div class="falt"><label for="' + id + '">' + esc(falt.t);
+    if (falt.obl) h += ' <span class="krav">(krävs)</span>';
+    h += '</label>';
+    if (falt.typ === 'textarea') {
+      h += '<textarea id="' + id + '" data-falt="' + falt.n + '">' + v + '</textarea>';
+    } else if (falt.typ === 'janej') {
+      h += '<select id="' + id + '" data-falt="' + falt.n + '">' +
+           '<option value=""' + (v === '' ? ' selected' : '') + '>&ndash;</option>' +
+           '<option value="ja"' + (v === 'ja' ? ' selected' : '') + '>Ja</option>' +
+           '<option value="nej"' + (v === 'nej' ? ' selected' : '') + '>Nej</option></select>';
+    } else if (falt.typ === 'bemanning') {
+      h += '<input type="text" id="' + id + '" data-falt="' + falt.n + '" list="bemanningLista" value="' + v + '">';
+    } else {
+      h += '<input type="' + falt.typ + '" id="' + id + '" data-falt="' + falt.n + '"' +
+           (falt.steg ? ' step="' + falt.steg + '" inputmode="decimal"' : '') +
+           ' value="' + v + '">';
+    }
+    h += '<span class="fstat" data-stat="' + falt.n + '"></span></div>';
+    return h;
+  }
+
+  /* ---------- datum ---------- */
+  function tva(n){ return (n < 10 ? '0' : '') + n; }
+  function ymd(d){ return d.getFullYear() + '-' + tva(d.getMonth() + 1) + '-' + tva(d.getDate()); }
+  function idagStr(){ return ymd(new Date()); }
+  function mandagen(d){
+    var n = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    n.setDate(n.getDate() - ((n.getDay() + 6) % 7));
+    return n;
+  }
+  function veckonummer(d){
+    var t = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    t.setDate(t.getDate() + 3 - ((t.getDay() + 6) % 7));
+    var v1 = new Date(t.getFullYear(), 0, 4);
+    return 1 + Math.round(((t - v1) / 86400000 - 3 + ((v1.getDay() + 6) % 7)) / 7);
+  }
+  var DAGNAMN = ['Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag','Söndag'];
+  var MANAD = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+  function kortDatum(d){ return d.getDate() + ' ' + MANAD[d.getMonth()]; }
+  function minuter(t){
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(t || '').trim());
+    return m ? (+m[1]) * 60 + (+m[2]) : null;
+  }
+  function datumTillDate(s){
+    var p = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '').trim());
+    return p ? new Date(+p[1], (+p[2]) - 1, +p[3]) : null;
+  }
+
+  /* ---------- felbanner och sparar-indikator ---------- */
+  var felRuta = $('#fel'), felText = $('#felText'), felIgen = $('#felIgen');
+  var senasteForsok = null;
+
+  function visaFel(text, forsokIgen){
+    felText.textContent = text;
+    senasteForsok = (typeof forsokIgen === 'function') ? forsokIgen : null;
+    felIgen.hidden = !senasteForsok;
+    felRuta.hidden = false;
+  }
+  function doljFel(){ felRuta.hidden = true; senasteForsok = null; }
+
+  felIgen.addEventListener('click', function(){
+    var f = senasteForsok;
+    doljFel();
+    if (f) f();
+  });
+  $('#felStang').addEventListener('click', doljFel);
+
+  var sparRuta = $('#sparar'), sparAntal = 0;
+  function sparStart(){ sparAntal++; sparRuta.hidden = false; }
+  function sparStopp(){ sparAntal = Math.max(0, sparAntal - 1); if (!sparAntal) sparRuta.hidden = true; }
+
+  function felMening(e){ return (e && e.message) ? e.message : 'Okänt fel.'; }
+
+  /* ---------- backend ---------- */
+  function hamtaUrl(){ try { return localStorage.getItem(NYCKEL_URL) || ''; } catch(e){ return ''; } }
+  function hamtaLos(){ try { return localStorage.getItem(NYCKEL_LOS) || ''; } catch(e){ return ''; } }
+  function harUppgifter(){ return !!(hamtaUrl() && hamtaLos()); }
+
+  function anrop(atgard, extra){
+    var url = hamtaUrl(), los = hamtaLos();
+    if (!url || !los) {
+      return Promise.reject(new Error('Webbadress eller lösenord saknas. Fyll i dem under Inställningar.'));
+    }
+    var kropp = { losenord: los, atgard: atgard };
+    if (extra) {
+      for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) kropp[k] = extra[k]; }
+    }
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(kropp)
+    }).catch(function(){
+      throw new Error('Ingen kontakt med servern. Kontrollera nätet och försök igen.');
+    }).then(function(r){
+      return r.text().then(function(txt){
+        var j = null;
+        try { j = JSON.parse(txt); } catch(e){ j = null; }
+        if (!j) throw new Error('Servern svarade oväntat (kod ' + r.status + ').');
+        if (j.ok !== true) {
+          if (j.kod === 401) throw new Error('Fel lösenord. Ändra det under Inställningar.');
+          throw new Error(j.fel ? String(j.fel) : 'Servern nekade anropet.');
+        }
+        return j.data;
+      });
+    });
+  }
+
+  function tillLista(data){
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.jobb)) return data.jobb;
+    return [];
+  }
+
+  /* ---------- data ---------- */
+  var jobb = [];
+  var laddar = false;
+
+  function hitta(id){
+    for (var i = 0; i < jobb.length; i++) { if (String(jobb[i].id) === String(id)) return jobb[i]; }
+    return null;
+  }
+
+  function laddaLista(sedan){
+    if (!harUppgifter()) return;
+    laddar = true;
+    $('#veckaLaddar').hidden = false;
+    $('#attgoraLaddar').hidden = false;
+    anrop('lista', {}).then(function(data){
+      jobb = tillLista(data).filter(function(j){ return j && typeof j === 'object'; });
+      laddar = false;
+      $('#veckaLaddar').hidden = true;
+      $('#attgoraLaddar').hidden = true;
+      doljFel();
+      ritaVecka();
+      ritaAttGora();
+      if (typeof sedan === 'function') sedan();
+    }).catch(function(e){
+      laddar = false;
+      $('#veckaLaddar').hidden = true;
+      $('#attgoraLaddar').hidden = true;
+      ritaVecka();
+      visaFel('Kunde inte hämta jobben. ' + felMening(e), function(){ laddaLista(sedan); });
+    });
+  }
+
+  /* ---------- veckovy ---------- */
+  var veckansMandag = mandagen(new Date());
+
+  function jobbForDag(dstr){
+    return jobb.filter(function(j){ return String(j.datum || '') === dstr; })
+      .sort(function(a, b){
+        var am = minuter(a.starttid), bm = minuter(b.starttid);
+        if (am === null && bm === null) return 0;
+        if (am === null) return 1;
+        if (bm === null) return -1;
+        return am - bm;
+      });
+  }
+
+  function krockar(lista){
+    var ut = {};
+    var akt = lista.filter(function(j){ return String(j.status || '') !== 'avbokad'; });
+    for (var i = 0; i < akt.length; i++) {
+      for (var k = i + 1; k < akt.length; k++) {
+        var a = akt[i], b = akt[k];
+        var as = minuter(a.starttid), bs = minuter(b.starttid);
+        if (as === null || bs === null) continue;
+        var at = parseFloat(a.timmar); if (!(at > 0)) at = 2;
+        var bt = parseFloat(b.timmar); if (!(bt > 0)) bt = 2;
+        if (as < bs + bt * 60 && bs < as + at * 60) { ut[a.id] = true; ut[b.id] = true; }
+      }
+    }
+    return ut;
+  }
+
+  function jobbKnapp(j, arKrock){
+    var st = String(j.status || '');
+    var h = '<button type="button" class="jobb' + (arKrock ? ' krock' : '') + '" data-id="' + esc(j.id) + '">';
+    h += '<span class="tid">' + esc(j.starttid || 'Tid saknas') + '</span> ';
+    h += '<span class="namn">' + esc(j.kund_namn || 'Namn saknas') + '</span>';
+    h += '<span class="rad2"><span class="stamp s-' + esc(st) + '">' + esc(STATUSTEXT[st] || st || 'Utan status') + '</span>' +
+         esc(j.tjanster || 'Tjänst ej angiven') + '</span>';
+    h += '<span class="rad2">Bemanning: ' + esc(j.bemanning || 'ej satt') + '</span>';
+    if (arKrock) h += '<span class="krockflagg">Krock</span>';
+    h += '</button>';
+    return h;
+  }
+
+  function ritaVecka(){
+    var m = veckansMandag;
+    var slut = new Date(m.getFullYear(), m.getMonth(), m.getDate() + 6);
+    $('#vTitel').textContent = 'Vecka ' + veckonummer(m);
+    $('#vDatum').textContent = kortDatum(m) + ' – ' + kortDatum(slut) + ' ' + slut.getFullYear();
+
+    var idag = idagStr();
+    var idagIndex = -1;
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(m.getFullYear(), m.getMonth(), m.getDate() + i);
+      if (ymd(d) === idag) { idagIndex = i; break; }
+    }
+
+    var html = '';
+    for (var n = 0; n < 7; n++) {
+      var dag = new Date(m.getFullYear(), m.getMonth(), m.getDate() + n);
+      var dstr = ymd(dag);
+      var arIdag = (dstr === idag);
+      var lista = jobbForDag(dstr);
+      var kr = krockar(lista);
+      var ordning = (idagIndex >= 0) ? ((n - idagIndex + 7) % 7) : n;
+      html += '<div class="dag' + (arIdag ? ' idag' : '') + '" style="order:' + ordning + '">';
+      html += '<h3>' + DAGNAMN[n] + ' ' + kortDatum(dag) + (arIdag ? ' · Idag' : '') + '</h3>';
+      if (!lista.length) {
+        html += '<p class="tom">' + (laddar ? 'Hämtar …' : 'Inget bokat') + '</p>';
+      } else {
+        for (var q = 0; q < lista.length; q++) html += jobbKnapp(lista[q], !!kr[lista[q].id]);
+      }
+      html += '</div>';
+    }
+    $('#veckaGrid').innerHTML = html;
+  }
+
+  $('#vForra').addEventListener('click', function(){
+    veckansMandag = new Date(veckansMandag.getFullYear(), veckansMandag.getMonth(), veckansMandag.getDate() - 7);
+    ritaVecka();
+  });
+  $('#vNasta').addEventListener('click', function(){
+    veckansMandag = new Date(veckansMandag.getFullYear(), veckansMandag.getMonth(), veckansMandag.getDate() + 7);
+    ritaVecka();
+  });
+  $('#vIdag').addEventListener('click', function(){
+    veckansMandag = mandagen(new Date());
+    ritaVecka();
+  });
+  $('#vUppdatera').addEventListener('click', function(){ laddaLista(); });
+
+  /* ---------- att göra ---------- */
+  function ritaAttGora(){
+    var ut = $('#attgoraUt');
+    var grupper = [];
+    try {
+      if (typeof attGoraGrupper === 'function') grupper = attGoraGrupper(jobb, idagStr());
+    } catch(e){ grupper = []; }
+    if (!Array.isArray(grupper) || !grupper.length) {
+      ut.innerHTML = '<div class="kort"><p class="fakta">Inget som väntar</p></div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < grupper.length; i++) {
+      var g = grupper[i] || {};
+      var rader = Array.isArray(g.jobb) ? g.jobb : [];
+      html += '<div class="kort"><h2>' + esc(g.rubrik || '') + '</h2>';
+      if (!rader.length) {
+        html += '<p class="fakta">Inget som väntar</p>';
+      } else {
+        for (var k = 0; k < rader.length; k++) {
+          var j = rader[k] || {};
+          var st = String(j.status || '');
+          html += '<button type="button" class="jobb" data-id="' + esc(j.id) + '">';
+          html += '<span class="namn">' + esc(j.kund_namn || 'Namn saknas') + '</span>';
+          html += '<span class="rad2"><span class="stamp s-' + esc(st) + '">' +
+                  esc(STATUSTEXT[st] || st || 'Utan status') + '</span>' +
+                  esc(j.datum || 'utan datum') + (j.starttid ? ' ' + esc(j.starttid) : '') + '</span>';
+          if (j.tjanster) html += '<span class="rad2">' + esc(j.tjanster) + '</span>';
+          html += '</button>';
+        }
+      }
+      html += '</div>';
+    }
+    ut.innerHTML = html;
+  }
+
+  /* ---------- jobbkortet ---------- */
+  var kortvy = $('#kortvy'), kortInnehall = $('#kortInnehall'), oppetId = null;
+
+  function telLank(nr){ return 'tel:' + String(nr || '').replace(/[^0-9+]/g, ''); }
+  function kartLank(adr){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(String(adr || '')); }
+
+  function oppnaKort(id){
+    var j = hitta(id);
+    if (!j) { visaFel('Hittade inte jobbet i listan. Hämta om.', function(){ laddaLista(); }); return; }
+    oppetId = String(id);
+    $('#kortRubrik').textContent = (j.kund_namn || 'Jobb') + ' · ' + (j.datum || 'utan datum');
+
+    var st = String(j.status || '');
+    var h = '';
+
+    h += '<div class="kort">';
+    h += '<p class="grupp">Status</p><p class="fakta"><span class="stamp s-' + esc(st) + '">' +
+         esc(STATUSTEXT[st] || st || 'Utan status') + '</span></p>';
+    h += '<p class="grupp">Tid</p><p class="fakta">' + esc(j.datum || 'Datum saknas') +
+         ' klockan ' + esc(j.starttid || '–') + ' · ' +
+         (j.timmar ? esc(j.timmar) + ' tim' : 'timmar ej satta') + '</p>';
+    h += '<p class="grupp">Bemanning</p><p class="fakta">' + esc(j.bemanning || 'Ej satt') + '</p>';
+    if (j.tjanster) h += '<p class="grupp">Tjänster</p><p class="fakta">' + esc(j.tjanster) + '</p>';
+    h += '<div class="lankrad">';
+    if (j.kund_tel) h += '<a class="lank" href="' + esc(telLank(j.kund_tel)) + '"><span class="etikett">Ring</span>' + esc(j.kund_tel) + '</a>';
+    if (j.kund_epost) h += '<a class="lank" href="mailto:' + esc(j.kund_epost) + '"><span class="etikett">Mejl</span>' + esc(j.kund_epost) + '</a>';
+    if (j.fran_adress) h += '<a class="lank" href="' + esc(kartLank(j.fran_adress)) + '" target="_blank" rel="noopener"><span class="etikett">Från</span>' + esc(j.fran_adress) + '</a>';
+    if (j.till_adress) h += '<a class="lank" href="' + esc(kartLank(j.till_adress)) + '" target="_blank" rel="noopener"><span class="etikett">Till</span>' + esc(j.till_adress) + '</a>';
+    h += '</div>';
+    h += '</div>';
+
+    h += '<div class="kort"><h2>Sätt status</h2><div class="statusrad" id="statusRad">';
+    for (var i = 0; i < STATUSAR.length; i++) {
+      var s = STATUSAR[i];
+      h += '<button type="button" data-status="' + s.v + '" aria-pressed="' + (st === s.v ? 'true' : 'false') + '">' +
+           (st === s.v ? '&#10003; ' : '') + esc(s.t) + '</button>';
+    }
+    h += '</div><p class="fstat" id="statusStat"></p></div>';
+
+    h += '<div class="kort"><h2>Uppgifter</h2>';
+    h += '<p class="hjalp">Varje fält sparas för sig när du lämnar det.</p>';
+    for (var k = 0; k < FALT.length; k++) h += faltHtml(FALT[k], 'kort_', j[FALT[k].n]);
+    h += '</div>';
+
+    h += '<div class="kort"><p class="grupp">Skapad</p><p class="fakta">' + esc(j.skapad || 'okänt') +
+         '</p><p class="grupp">Id</p><p class="fakta">' + esc(j.id) + '</p></div>';
+
+    kortInnehall.innerHTML = h;
+    kortvy.hidden = false;
+    kortvy.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function stangKort(){
+    kortvy.hidden = true;
+    oppetId = null;
+    document.body.style.overflow = '';
+  }
+  $('#kortStang').addEventListener('click', stangKort);
+
+  function sattStat(el, text, klass){
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'fstat' + (klass ? ' ' + klass : '');
+  }
+
+  // Skickar bara de fält som faktiskt ändrats. Lyckas anropet inte får inget
+  // visas som sparat, och overlayen stängs aldrig av ett fel.
+  function sparaAndring(id, andringar, statEl, efter, forsokIgen){
+    sattStat(statEl, 'Sparar …', 'sparar');
+    sparStart();
+    anrop('uppdatera', { id: id, andringar: andringar }).then(function(){
+      sparStopp();
+      var j = hitta(id);
+      if (j) { for (var k in andringar) { if (Object.prototype.hasOwnProperty.call(andringar, k)) j[k] = andringar[k]; } }
+      sattStat(statEl, 'Sparat', 'ok');
+      doljFel();
+      ritaVecka();
+      ritaAttGora();
+      if (typeof efter === 'function') efter();
+    }).catch(function(e){
+      sparStopp();
+      sattStat(statEl, 'EJ sparat', 'fel');
+      visaFel('Sparningen gick inte igenom. ' + felMening(e), forsokIgen);
+    });
+  }
+
+  kortInnehall.addEventListener('click', function(ev){
+    var rad = $('#statusRad', kortInnehall);
+    if (!rad || !oppetId) return;
+    var knapp = ev.target;
+    while (knapp && knapp !== rad && knapp.parentNode) {
+      if (knapp.parentNode === rad) break;
+      knapp = knapp.parentNode;
+    }
+    if (!knapp || knapp.parentNode !== rad) return;
+    var v = knapp.getAttribute('data-status');
+    var def = null;
+    for (var i = 0; i < STATUSAR.length; i++) { if (STATUSAR[i].v === v) def = STATUSAR[i]; }
+    if (!def) return;
+
+    var andringar = { status: def.v };
+    if (def.d) andringar[def.d] = idagStr();
+    var statEl = $('#statusStat', kortInnehall);
+    var knappar = rad.querySelectorAll('button');
+    for (var q = 0; q < knappar.length; q++) knappar[q].disabled = true;
+
+    var slappKnappar = function(){
+      var b = kortInnehall.querySelectorAll('#statusRad button');
+      for (var w = 0; w < b.length; w++) b[w].disabled = false;
+    };
+    var kor = function(){
+      sparaAndring(oppetId, andringar, statEl, function(){
+        var id = oppetId;
+        if (id) oppnaKort(id);
+      }, function(){ kor(); });
+    };
+    kor();
+    setTimeout(slappKnappar, 600);
+  });
+
+  kortInnehall.addEventListener('change', function(ev){
+    var el = ev.target;
+    if (!el || !el.getAttribute || !el.getAttribute('data-falt') || !oppetId) return;
+    var namn = el.getAttribute('data-falt');
+    var varde = el.value;
+    var statEl = kortInnehall.querySelector('[data-stat="' + namn + '"]');
+    var andringar = {};
+    andringar[namn] = varde;
+    var kor = function(){ sparaAndring(oppetId, andringar, statEl, null, function(){ kor(); }); };
+    kor();
+  });
+
+  // Klick på ett jobbkort i veckovyn eller att göra-listan
+  document.addEventListener('click', function(ev){
+    var el = ev.target;
+    while (el && el !== document.body) {
+      if (el.classList && el.classList.contains('jobb') && el.getAttribute('data-id')) {
+        if (kortInnehall.contains(el)) return;
+        oppnaKort(el.getAttribute('data-id'));
+        return;
+      }
+      el = el.parentNode;
+    }
+  });
+
+  /* ---------- nytt jobb ---------- */
+  (function byggNyttFormular(){
+    var h = '';
+    for (var i = 0; i < FALT.length; i++) h += faltHtml(FALT[i], 'ny_', '');
+    $('#nyttFalt').innerHTML = h;
+  })();
+
+  var nyttStat = $('#nyttStat');
+
+  function nyttVarden(){
+    var obj = { status: $('#ny_status').value || 'bokad' };
+    var el = $('#nyttFalt').querySelectorAll('[data-falt]');
+    for (var i = 0; i < el.length; i++) {
+      var v = el[i].value;
+      if (v !== null && v !== undefined && String(v).trim() !== '') {
+        obj[el[i].getAttribute('data-falt')] = String(v).trim();
+      }
+    }
+    return obj;
+  }
+
+  function slaIhop(a, b){
+    var ut = {};
+    var k;
+    for (k in a) { if (Object.prototype.hasOwnProperty.call(a, k)) ut[k] = a[k]; }
+    for (k in b) { if (Object.prototype.hasOwnProperty.call(b, k)) ut[k] = b[k]; }
+    return ut;
+  }
+
+  function skapaJobb(){
+    var obj = nyttVarden();
+    var saknas = [];
+    if (!obj.datum) saknas.push('datum');
+    if (!obj.kund_namn) saknas.push('kundens namn');
+    if (!obj.kund_tel) saknas.push('telefon');
+    if (saknas.length) { sattStat(nyttStat, 'Fyll i ' + saknas.join(', ') + '.', 'fel'); return; }
+
+    sattStat(nyttStat, 'Sparar …', 'sparar');
+    sparStart();
+    $('#nyttSpara').disabled = true;
+
+    anrop('skapa', obj).then(function(data){
+      sparStopp();
+      $('#nyttSpara').disabled = false;
+      doljFel();
+
+      var nyttJobb = null;
+      if (data && typeof data === 'object' && !Array.isArray(data)) nyttJobb = slaIhop(obj, data);
+      else if (typeof data === 'string' || typeof data === 'number') nyttJobb = slaIhop(obj, { id: String(data) });
+
+      sattStat(nyttStat, 'Sparat', 'ok');
+      $('#nyttForm').reset();
+      $('#ny_status').value = 'bokad';
+
+      if (nyttJobb && nyttJobb.id) {
+        var fanns = hitta(nyttJobb.id);
+        if (fanns) { for (var d in nyttJobb) { if (Object.prototype.hasOwnProperty.call(nyttJobb, d)) fanns[d] = nyttJobb[d]; } }
+        else jobb.push(nyttJobb);
+        var dd = datumTillDate(nyttJobb.datum);
+        if (dd) veckansMandag = mandagen(dd);
+        visaFlik('veckan');
+        ritaVecka();
+        ritaAttGora();
+        oppnaKort(nyttJobb.id);
+        laddaLista();
+      } else {
+        // Servern gav ingen id tillbaka: hämta om och leta upp jobbet.
+        laddaLista(function(){
+          var senast = null;
+          for (var i = 0; i < jobb.length; i++) {
+            var j = jobb[i];
+            if (String(j.datum) === obj.datum && String(j.kund_namn) === obj.kund_namn) {
+              if (!senast || String(j.skapad || '') >= String(senast.skapad || '')) senast = j;
+            }
+          }
+          var d2 = datumTillDate(obj.datum);
+          if (d2) veckansMandag = mandagen(d2);
+          visaFlik('veckan');
+          ritaVecka();
+          if (senast) oppnaKort(senast.id);
+        });
+      }
+    }).catch(function(e){
+      sparStopp();
+      $('#nyttSpara').disabled = false;
+      sattStat(nyttStat, 'EJ sparat. Allt du skrivit står kvar.', 'fel');
+      visaFel('Jobbet sparades inte. ' + felMening(e), function(){ skapaJobb(); });
+    });
+  }
+
+  $('#nyttForm').addEventListener('submit', function(ev){ ev.preventDefault(); skapaJobb(); });
+  $('#nyttTom').addEventListener('click', function(){
+    $('#nyttForm').reset();
+    $('#ny_status').value = 'bokad';
+    sattStat(nyttStat, '', '');
+  });
+
+  /* ---------- inställningar ---------- */
+  var insUrl = $('#insUrl'), insLos = $('#insLos'), insOk = $('#insOk'), insFel = $('#insFel');
+
+  function insMed(text){ insOk.textContent = text; insOk.hidden = false; insFel.hidden = true; }
+  function insMiss(text){ insFel.textContent = text; insFel.hidden = false; insOk.hidden = true; }
+  function insRent(){ insOk.hidden = true; insFel.hidden = true; }
+
+  function fyllInstallningar(){
+    insUrl.value = hamtaUrl();
+    insLos.value = hamtaLos();
+  }
+
+  $('#insSpara').addEventListener('click', function(){
+    var u = insUrl.value.trim(), l = insLos.value;
+    if (!u || !l) { insMiss('Både webbadress och lösenord måste fyllas i.'); return; }
+    try {
+      localStorage.setItem(NYCKEL_URL, u);
+      localStorage.setItem(NYCKEL_LOS, l);
+    } catch(e){ insMiss('Webbläsaren tillåter inte lagring. Uppgifterna kunde inte sparas.'); return; }
+    insMed('Sparat i den här webbläsaren. Testa anslutningen härnäst.');
+    doljFel();
+    laddaLista();
+  });
+
+  $('#insTesta').addEventListener('click', function(){
+    var u = insUrl.value.trim(), l = insLos.value;
+    if (!u || !l) { insMiss('Fyll i både webbadress och lösenord innan du testar.'); return; }
+    try { localStorage.setItem(NYCKEL_URL, u); localStorage.setItem(NYCKEL_LOS, l); } catch(e){}
+    insRent();
+    var knapp = this;
+    knapp.disabled = true;
+    knapp.textContent = 'Testar …';
+    sparStart();
+    anrop('lista', {}).then(function(data){
+      sparStopp();
+      knapp.disabled = false;
+      knapp.textContent = 'Testa anslutningen';
+      var lista = tillLista(data);
+      insMed('Anslutningen fungerar. Servern svarade med ' + lista.length + ' jobb.');
+      doljFel();
+      jobb = lista.filter(function(j){ return j && typeof j === 'object'; });
+      ritaVecka();
+      ritaAttGora();
+    }).catch(function(e){
+      sparStopp();
+      knapp.disabled = false;
+      knapp.textContent = 'Testa anslutningen';
+      insMiss('Anslutningen misslyckades. ' + felMening(e));
+    });
+  });
+
+  $('#insGlom').addEventListener('click', function(){
+    try { localStorage.removeItem(NYCKEL_URL); localStorage.removeItem(NYCKEL_LOS); } catch(e){}
+    insUrl.value = '';
+    insLos.value = '';
+    jobb = [];
+    if (!kortvy.hidden) stangKort();
+    ritaVecka();
+    ritaAttGora();
+    doljFel();
+    visaFlik('installningar');
+    insMed('Uppgifterna är borttagna ur den här webbläsaren.');
+  });
+
+  /* ---------- flikar ---------- */
+  var VYER = {
+    veckan: '#vy-veckan',
+    attgora: '#vy-attgora',
+    nytt: '#vy-nytt',
+    installningar: '#vy-installningar'
+  };
+
+  function visaFlik(namn){
+    if (!VYER[namn]) namn = 'veckan';
+    if (!harUppgifter()) namn = 'installningar';
+    for (var k in VYER) {
+      if (Object.prototype.hasOwnProperty.call(VYER, k)) $(VYER[k]).hidden = (k !== namn);
+    }
+    var knappar = document.querySelectorAll('nav.flikar button');
+    for (var i = 0; i < knappar.length; i++) {
+      if (knappar[i].getAttribute('data-flik') === namn) knappar[i].setAttribute('aria-current', 'page');
+      else knappar[i].removeAttribute('aria-current');
+    }
+    if (namn === 'installningar') fyllInstallningar();
+    if (namn === 'attgora') ritaAttGora();
+  }
+
+  var flikKnappar = document.querySelectorAll('nav.flikar button');
+  for (var fi = 0; fi < flikKnappar.length; fi++) {
+    flikKnappar[fi].addEventListener('click', function(){
+      var mal = this.getAttribute('data-flik');
+      if (!kortvy.hidden) stangKort();
+      if (!harUppgifter() && mal !== 'installningar') {
+        visaFlik('installningar');
+        insMiss('Fyll i webbadress och lösenord först. Utan dem finns ingen kalender att visa.');
+        return;
+      }
+      visaFlik(mal);
+    });
+  }
+
+  /* ---------- start ---------- */
+  fyllInstallningar();
+  ritaVecka();
+  ritaAttGora();
+  if (harUppgifter()) {
+    visaFlik('veckan');
+    laddaLista();
+  } else {
+    visaFlik('installningar');
+  }
+})();
+</script>
+</body>
+</html>
