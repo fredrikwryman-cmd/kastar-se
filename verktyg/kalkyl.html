@@ -252,6 +252,20 @@
     </div>
   </details>
 
+  <!-- 8b. FLYTTSTÄDNING -->
+  <details class="card">
+    <summary>Flyttstädning <span class="sum-amt" data-sum="stad"></span></summary>
+    <div class="body">
+      <div class="row">
+        <label>Bostadens yta
+          <span class="hint">Kvadratmeter. Över 150 m² offereras separat.</span>
+        </label>
+        <input type="number" id="stadyta" min="0" step="1" value="0">
+      </div>
+      <p class="note">Arbetskostnad fullt ut – hela beloppet är RUT-grundande.</p>
+    </div>
+  </details>
+
   <!-- 9. TILLÄGG -->
   <details class="card">
     <summary>Tillägg <span class="sum-amt" data-sum="till"></span></summary>
@@ -315,6 +329,12 @@
 <script>
 (function(){
   var VOL = {2:1295, 4:2195, 8:3495, 10:4395, 12:5195, 16:6995};
+  // Flyttstädning, försäljningspris per ytintervall FÖRE rutavdrag. Städningen
+  // köps av partner och säljs vidare i egen faktura; leverantörens lista är
+  // angiven efter avdrag och beloppen här är redan fördubblade – dubbla dem
+  // inte igen. Värdet är intervallets övre gräns, så ingen yta hamnar mellan
+  // två steg. Över 150 m² finns inget pris: de bostäderna prissätts för hand.
+  var STAD = [[40, 4400], [60, 5600], [80, 6400], [100, 7000], [150, 9000]];
   var kr = function(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' kr'; };
   var num = function(id){ var el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
 
@@ -412,6 +432,26 @@
     }
     rut += sumHjalp;
 
+    // Flyttstädning – arbetskostnad till 100 procent, hela beloppet är därför
+    // RUT-grundande. Priset styrs av bostadens yta, inte av tid.
+    var yta = num('stadyta'), sumStad = 0, stadOffert = false;
+    if (yta > 0) {
+      var stadPris = 0;
+      for (var si = 0; si < STAD.length; si++) {
+        if (yta <= STAD[si][0]) { stadPris = STAD[si][1]; break; }
+      }
+      if (stadPris > 0) {
+        sumStad = stadPris;
+        lines.push(['Flyttstädning, ' + yta + ' m²', sumStad]);
+        rut += sumStad;
+      } else {
+        // Över 150 m²: raden står kvar i offerten utan belopp och räknas
+        // varken in i summan eller i avdragsunderlaget.
+        stadOffert = true;
+        lines.push(['Flyttstädning, ' + yta + ' m²', null]);
+      }
+    }
+
     // Delsumma före tillägg
     var del = rot + rut + trans + ovr;
 
@@ -478,6 +518,11 @@
     setSum('mag', sumMag);
     setSum('bud', sumBud);
     setSum('hjalp', sumHjalp);
+    setSum('stad', sumStad);
+    if (stadOffert) {
+      var stadEl = document.querySelector('[data-sum="stad"]');
+      if (stadEl) stadEl.textContent = 'Offereras separat';
+    }
     setSum('till', sumTill);
     var margEl = document.querySelector('[data-sum="marg"]');
     if (margEl) margEl.textContent = (mantim > 0 && exmoms > 0) ? Math.round(tbProc) + ' %' : '';
@@ -501,10 +546,14 @@
     var t = 'OFFERT – BOHAGSBOLAGET.SE\n';
     t += '------------------------------------------\n';
     r.lines.forEach(function(l){
-      t += pad(l[0], 32) + kr(l[1]) + '\n';
+      // null som belopp betyder att posten prissätts för hand: raden ska
+      // synas i offerten men inte räknas in i summan.
+      t += pad(l[0], 32) + (l[1] === null ? 'Offereras separat' : kr(l[1])) + '\n';
     });
     t += '------------------------------------------\n';
-    t += pad('Att betala', 32) + kr(r.total) + '\n\n';
+    t += pad('Att betala', 32) + kr(r.total) + '\n';
+    t += 'Alla priser anges före RUT-avdrag. Avdraget\n';
+    t += 'redovisas nedan.\n\n';
     if (r.rot > 0) t += 'Varav ROT-grundande arbete: ' + kr(r.rot) + ' → avdrag ' + kr(r.rotAvd) + '\n';
     if (r.rut > 0) t += 'Varav RUT-grundande arbete: ' + kr(r.rut) + ' → avdrag ' + kr(r.rutAvd) + '\n';
     if (r.rot > 0 || r.rut > 0) t += 'Efter avdrag, om villkoren uppfylls: ' + kr(r.efter) + '\n';
