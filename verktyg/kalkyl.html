@@ -335,9 +335,9 @@
   // inte igen. Värdet är intervallets övre gräns, så ingen yta hamnar mellan
   // två steg. Över 150 m² finns inget pris: de bostäderna prissätts för hand.
   var STAD = [[40, 4400], [60, 5600], [80, 6400], [100, 7000], [150, 9000]];
-  // Fordonskostnad för ett uppdrag utan debiterade timmar. Timpriset bär
-  // annars bilen; hit hamnar bara kalkyler som består av poster per styck
-  // eller per våning.
+  // Fordonskostnad för ett uppdrag utan debiterade timmar och utan
+  // framkörning. Beloppet bryts UT ur arbetsposten, det läggs aldrig ovanpå –
+  // totalpriset mot kund är detsamma med eller utan uppdelningen.
   var FORDON_UPPDRAG = 400;
   var kr = function(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' kr'; };
   var num = function(id){ var el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
@@ -345,6 +345,10 @@
   function calc(){
     var lines = [];
     var rot = 0, rut = 0, trans = 0, ovr = 0;
+    // Första arbetsposten som prissätts per styck eller per våning. Används
+    // bara när kalkylen saknar både timmar och framkörning – då bryts
+    // fordonskostnaden ut ur just den raden.
+    var forstaStyck = null;
 
     // Timpriset "två personer med bil" innehåller bilen, och bil och drivmedel
     // ger aldrig avdrag. I stället för en schablonandel bryts fordonet ut som
@@ -377,6 +381,7 @@
         sumNed += p;
         var namn = el.closest('.row').querySelector('label').childNodes[0].textContent.trim();
         lines.push([namn + (q !== 1 ? ' × ' + q : ''), p]);
+        if (!forstaStyck) forstaStyck = { rad: lines.length - 1, potte: 'rot' };
       }
     });
     rot += sumNed;
@@ -398,23 +403,19 @@
 
     // Tungflytt
     var ts = num('tungst'), tv = num('tungvan'), sumTung = 0;
-    if (ts > 0) { sumTung += ts * 2495; lines.push(['Tungflytt, ' + ts + ' föremål', ts * 2495]); }
-    if (tv > 0) { sumTung += tv * 495; lines.push([tv + ' våning' + (tv > 1 ? 'ar' : '') + ' utan hiss', tv * 495]); }
+    if (ts > 0) {
+      sumTung += ts * 2495; lines.push(['Tungflytt, ' + ts + ' föremål', ts * 2495]);
+      if (!forstaStyck) forstaStyck = { rad: lines.length - 1, potte: 'rut' };
+    }
+    if (tv > 0) {
+      sumTung += tv * 495; lines.push([tv + ' våning' + (tv > 1 ? 'ar' : '') + ' utan hiss', tv * 495]);
+      if (!forstaStyck) forstaStyck = { rad: lines.length - 1, potte: 'rut' };
+    }
     // Tungflytt debiteras per föremål och per våning, inte per timme. Posten
     // bokförs som arbete fullt ut – fordonet tas en gång för hela uppdraget,
     // inte per post.
     rut += sumTung;
 
-    // Fordonet ska betalas EN gång per kalkyl. Finns debiterade flyttimmar är
-    // det redan uttaget ur timpriset ovan. Består kalkylen enbart av poster
-    // som prissätts per styck eller per våning finns inget timunderlag, och då
-    // läggs bilen till som egen post för uppdraget.
-    var sumFordon = fh > 0 ? flyttFordon : 0;
-    if (fh === 0 && (sumTung > 0 || sumNed > 0)) {
-      sumFordon = FORDON_UPPDRAG;
-      lines.push(['Fordon och drivmedel', sumFordon]);
-      trans += sumFordon;
-    }
 
     // Magasinering
     var m3 = num('magm3'), man = num('magman'), sumMag = 0;
@@ -483,6 +484,21 @@
 
     var rab = num('rabatt');
     if (rab > 0) { lines.push(['Rabatt', -rab]); sumTill -= rab; }
+
+    // Fordonet betalas EN gång per uppdrag och får aldrig ändra vad kunden
+    // betalar – uppdelningen flyttar bara pengar mellan raderna.
+    //   Finns debiterade timmar: bilen är redan uttagen ur timpriset ovan.
+    //   Finns framkörning: den ÄR uppdragets fordonskostnad, inget mer läggs på.
+    //   Annars: bryt ut beloppet ur den första arbetsposten per styck.
+    if (fh === 0 && fram === 0 && forstaStyck) {
+      var uttag = Math.min(FORDON_UPPDRAG, lines[forstaStyck.rad][1]);
+      if (uttag > 0) {
+        lines[forstaStyck.rad][1] -= uttag;
+        lines.splice(forstaStyck.rad + 1, 0, ['Fordon och drivmedel', uttag]);
+        if (forstaStyck.potte === 'rot') rot -= uttag; else rut -= uttag;
+        trans += uttag;
+      }
+    }
 
     var total = rot + rut + trans + ovr - rab;
     if (total < 0) total = 0;
