@@ -217,7 +217,12 @@ function atgardSkapa(indata) {
       rad.push(nyttJobb[kolumner[j]]);
     }
 
-    blad.appendRow(rad);
+    // Formatet satts pa raden INNAN vardena skrivs. Skrivs de forst hinner
+    // Sheets tolka dem som tal och de inledande nollorna ar redan borta.
+    var nyttRadnummer = blad.getLastRow() + 1;
+    var nyttOmrade = blad.getRange(nyttRadnummer, 1, 1, kolumner.length);
+    nyttOmrade.setNumberFormat('@');
+    nyttOmrade.setValues([rad]);
     SpreadsheetApp.flush();
 
     return nyttJobb;
@@ -285,6 +290,9 @@ function atgardUppdatera(indata) {
         : String(nyttVarde);
     }
 
+    // Aven har satts formatet fore skrivningen, annars aterkommer felet
+    // vid varje redigering av ett telefonnummer eller fakturanummer.
+    omrade.setNumberFormat('@');
     omrade.setValues([befintligRad]);
     SpreadsheetApp.flush();
 
@@ -312,7 +320,29 @@ function haemtaBlad() {
   if (!blad) {
     throw new Error('Hittade inget blad som heter ' + BLADNAMN);
   }
+  saekraTextformat(blad);
   return blad;
+}
+
+/**
+ * Satter oformaterad text ('@') pa hela bladet.
+ *
+ * Med standardformat tolkar Sheets varden som tal, och tal har inga
+ * inledande nollor: 070 033 22 20 blir 70 033 22 20 och fakturanummer
+ * 001 blir 1. Samma fella drabbar postnummer, portkoder och
+ * lagenhetsnummer i noteringar. Datumen skrivs redan som text i formen
+ * 2026-09-09, sa ingenting i arket vinner pa talformat.
+ *
+ * Korsvis en gang per korning - flaggan hindrar att varje anrop i samma
+ * exekvering gor om samma skrivning.
+ */
+var formatSatt = false;
+function saekraTextformat(blad) {
+  if (formatSatt) {
+    return;
+  }
+  blad.getRange(1, 1, blad.getMaxRows(), blad.getMaxColumns()).setNumberFormat('@');
+  formatSatt = true;
 }
 
 /**
