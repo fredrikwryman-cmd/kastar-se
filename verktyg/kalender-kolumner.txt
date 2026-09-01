@@ -1,0 +1,3 @@
+id,skapad,status,datum,starttid,timmar,kund_namn,kund_tel,kund_epost,fran_adress,till_adress,tjanster,volym_m3,yta_kvm,pris_total,arbetskostnad,rut_belopp,kund_betalar,bemanning,stad_bokad,stad_datum,noteringar,fakturanr,faktura_datum,rut_ansokt_datum,betald_datum
+
+id	skapad	status	datum	starttid	timmar	kund_namn	kund_tel	kund_epost	fran_adress	till_adress	tjanster	volym_m3	yta_kvm	pris_total	arbetskostnad	rut_belopp	kund_betalar	bemanning	stad_bokad	stad_datum	noteringar	fakturanr	faktura_datum	rut_ansokt_datum	betald_datum
