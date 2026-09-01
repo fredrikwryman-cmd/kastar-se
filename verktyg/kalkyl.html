@@ -506,8 +506,10 @@
     // Avdrag med tak: ROT högst 50 000 kr per person och år, RUT högst 75 000,
     // och tillsammans högst 75 000. Går summan över det gemensamma taket
     // trimmas ROT först, så det större RUT-avdraget behålls.
-    var rotRatt = Math.round(rot * 0.30);
-    var rutRatt = Math.round(rut * 0.50);
+    // Avrundas alltid NEDÅT. Vid halva kronan skulle avrundning till närmaste
+    // krona ge ett avdrag över 30 respektive 50 procent av arbetskostnaden.
+    var rotRatt = Math.floor(rot * 0.30);
+    var rutRatt = Math.floor(rut * 0.50);
     var rotAvd = Math.min(rotRatt, 50000);
     var rutAvd = Math.min(rutRatt, 75000);
     if (rotAvd + rutAvd > 75000) rotAvd = Math.max(0, 75000 - rutAvd);
