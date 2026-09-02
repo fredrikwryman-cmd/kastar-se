@@ -43,6 +43,10 @@ var LOSENORD = 'BYT_MIG';
 /** Bladets namn i kalkylarket. */
 var BLADNAMN = 'Jobb';
 
+/** Bladet for den delade anteckningslistan. Rubrikraden ligger i
+ *  verktyg/anteckningar-kolumner.txt. */
+var BLADNAMN_ANTECKNINGAR = 'Anteckningar';
+
 
 /* ------------------------------------------------------------------ */
 /* Ingangar                                                            */
@@ -79,6 +83,18 @@ function hanteraAnrop(e) {
     }
     if (atgard === 'uppdatera') {
       return svara({ ok: true, data: atgardUppdatera(indata) });
+    }
+    if (atgard === 'ant_lista') {
+      return svara({ ok: true, data: atgardAntLista(indata) });
+    }
+    if (atgard === 'ant_skapa') {
+      return svara({ ok: true, data: atgardAntSkapa(indata) });
+    }
+    if (atgard === 'ant_uppdatera') {
+      return svara({ ok: true, data: atgardAntUppdatera(indata) });
+    }
+    if (atgard === 'ant_radera') {
+      return svara({ ok: true, data: atgardAntRadera(indata) });
     }
 
     return svara({ ok: false, fel: 'Okand atgard' });
@@ -458,4 +474,203 @@ function skapaId() {
     slumpdel += tecken.charAt(Math.floor(Math.random() * tecken.length));
   }
   return Date.now() + '-' + slumpdel;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Anteckningar - delad att-gora-lista                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Hamtar anteckningsbladet. Skapar det ALDRIG - saknas bladet ar det ett
+ * uppsattningsfel som ska rattas i arket, inte nagot skriptet ska gissa.
+ *
+ * Egen formatflagga: flaggan for jobbladet skulle annars hindra att det
+ * har bladet far sitt textformat i samma korning.
+ */
+var formatSattAnteckningar = false;
+function haemtaAnteckningsblad() {
+  var kalkylark = SpreadsheetApp.getActiveSpreadsheet();
+  if (!kalkylark) {
+    throw new Error('Skriptet ar inte kopplat till nagot kalkylark');
+  }
+  var blad = kalkylark.getSheetByName(BLADNAMN_ANTECKNINGAR);
+  if (!blad) {
+    throw new Error('Hittade inget blad som heter ' + BLADNAMN_ANTECKNINGAR +
+      '. Skapa bladet och klistra in rubrikraden ur anteckningar-kolumner.txt i rad 1.');
+  }
+  if (!formatSattAnteckningar) {
+    blad.getRange(1, 1, blad.getMaxRows(), blad.getMaxColumns()).setNumberFormat('@');
+    formatSattAnteckningar = true;
+  }
+  return blad;
+}
+
+/** ant_lista: alla anteckningar som objekt med kolumnnamnen som nycklar. */
+function atgardAntLista(indata) {
+  var blad = haemtaAnteckningsblad();
+  var kolumner = haemtaKolumner(blad);
+  var antalRader = blad.getLastRow() - 1;
+
+  if (antalRader < 1) {
+    return [];
+  }
+
+  var varden = blad.getRange(2, 1, antalRader, kolumner.length).getValues();
+  var lista = [];
+  for (var i = 0; i < varden.length; i++) {
+    var post = radTillObjekt(varden[i], kolumner);
+
+    // Hoppa over helt tomma rader.
+    if (!post.id && !post.text) {
+      continue;
+    }
+
+    lista.push(post);
+  }
+
+  return lista;
+}
+
+/**
+ * ant_skapa: lagger till en rad sist. id, skapad, klar och klar_datum satts
+ * server-side - klienten skickar bara text och skapad_av.
+ */
+function atgardAntSkapa(indata) {
+  var inkommande = indata.anteckning || {};
+  if (typeof inkommande !== 'object' || inkommande === null) {
+    throw new Error('Faltet anteckning maste vara ett objekt');
+  }
+
+  var las = LockService.getScriptLock();
+  if (!las.tryLock(10000)) {
+    throw new Error('Kunde inte fa skrivlas, forsok igen om en stund');
+  }
+
+  try {
+    var blad = haemtaAnteckningsblad();
+    var kolumner = haemtaKolumner(blad);
+
+    var ny = {};
+    for (var i = 0; i < kolumner.length; i++) {
+      var kolumn = kolumner[i];
+      var varde = inkommande[kolumn];
+      ny[kolumn] = (varde === undefined || varde === null) ? '' : String(varde);
+    }
+
+    ny.id = skapaId();
+    ny.skapad = new Date().toISOString();
+    ny.klar = 'nej';
+    ny.klar_datum = '';
+
+    var rad = [];
+    for (var j = 0; j < kolumner.length; j++) {
+      rad.push(ny[kolumner[j]]);
+    }
+
+    // Formatet satts INNAN vardena skrivs, annars tolkar Sheets dem som tal.
+    var radnummer = blad.getLastRow() + 1;
+    var omrade = blad.getRange(radnummer, 1, 1, kolumner.length);
+    omrade.setNumberFormat('@');
+    omrade.setValues([rad]);
+    SpreadsheetApp.flush();
+
+    return ny;
+
+  } finally {
+    las.releaseLock();
+  }
+}
+
+/**
+ * ant_uppdatera: las-andra-skriv pa en enskild rad. Endast de falt som finns
+ * i "andringar" skrivs om, resten av raden lamnas exakt som den ligger.
+ */
+function atgardAntUppdatera(indata) {
+  var id = indata.id ? String(indata.id) : '';
+  if (!id) {
+    throw new Error('Faltet id saknas');
+  }
+
+  var andringar = indata.andringar || {};
+  if (typeof andringar !== 'object' || andringar === null) {
+    throw new Error('Faltet andringar maste vara ett objekt');
+  }
+
+  var las = LockService.getScriptLock();
+  if (!las.tryLock(10000)) {
+    throw new Error('Kunde inte fa skrivlas, forsok igen om en stund');
+  }
+
+  try {
+    var blad = haemtaAnteckningsblad();
+    var kolumner = haemtaKolumner(blad);
+
+    var radnummer = hittaRadnummer(blad, kolumner, id);
+    if (radnummer === -1) {
+      throw new Error('Hittade ingen anteckning med id ' + id);
+    }
+
+    var omrade = blad.getRange(radnummer, 1, 1, kolumner.length);
+    var befintligRad = omrade.getValues()[0];
+
+    for (var faltnamn in andringar) {
+      if (!Object.prototype.hasOwnProperty.call(andringar, faltnamn)) {
+        continue;
+      }
+      // id och skapad ar server-agda och far inte andras av klienten.
+      if (faltnamn === 'id' || faltnamn === 'skapad') {
+        continue;
+      }
+      var kolumnIndex = kolumner.indexOf(faltnamn);
+      if (kolumnIndex === -1) {
+        continue; // Okant falt ignoreras hellre an kraschar.
+      }
+      var nyttVarde = andringar[faltnamn];
+      befintligRad[kolumnIndex] = (nyttVarde === undefined || nyttVarde === null)
+        ? ''
+        : String(nyttVarde);
+    }
+
+    omrade.setNumberFormat('@');
+    omrade.setValues([befintligRad]);
+    SpreadsheetApp.flush();
+
+    var sparadRad = blad.getRange(radnummer, 1, 1, kolumner.length).getValues()[0];
+    return radTillObjekt(sparadRad, kolumner);
+
+  } finally {
+    las.releaseLock();
+  }
+}
+
+/** ant_radera: tar bort hela raden vars id matchar. */
+function atgardAntRadera(indata) {
+  var id = indata.id ? String(indata.id) : '';
+  if (!id) {
+    throw new Error('Faltet id saknas');
+  }
+
+  var las = LockService.getScriptLock();
+  if (!las.tryLock(10000)) {
+    throw new Error('Kunde inte fa skrivlas, forsok igen om en stund');
+  }
+
+  try {
+    var blad = haemtaAnteckningsblad();
+    var kolumner = haemtaKolumner(blad);
+
+    var radnummer = hittaRadnummer(blad, kolumner, id);
+    if (radnummer === -1) {
+      throw new Error('Hittade ingen anteckning med id ' + id);
+    }
+
+    blad.deleteRow(radnummer);
+    SpreadsheetApp.flush();
+
+    return { id: id, raderad: true };
+
+  } finally {
+    las.releaseLock();
+  }
 }

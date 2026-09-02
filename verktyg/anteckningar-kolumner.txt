@@ -1,0 +1,1 @@
+id,skapad,text,klar,klar_datum,skapad_av

@@ -111,7 +111,11 @@
     box-shadow:0 -6px 22px rgba(0,0,0,.24);
   }
   nav.flikar button{
-    flex:1; min-height:62px; border:0; background:transparent; color:#B7C9CD;
+    /* min-width:0 kravs for att femte fliken ska fa krympa - utan den blir
+       raden bredare an skarmen vid 320 px och Installningar hamnar utanfor.
+       Etiketten bryts hellre pa tva rader an att graden gar under 14 px. */
+    flex:1 1 0; min-width:0; overflow-wrap:anywhere;
+    min-height:62px; border:0; background:transparent; color:#B7C9CD;
     font-size:14px; font-weight:600; cursor:pointer; padding:8px 4px 10px;
     border-top:4px solid transparent; display:flex; flex-direction:column; align-items:center; gap:3px;
   }
@@ -151,6 +155,23 @@
   .jobb .namn{font-size:16px; font-weight:700; color:var(--ink); overflow-wrap:anywhere}
   .jobb .rad2{display:block; font-size:14px; color:var(--muted); overflow-wrap:anywhere; margin-top:3px}
   .jobb.krock{border-color:var(--warn); border-left-color:var(--warn); background:var(--warn-bg)}
+
+  /* Anteckningar: en rad per punkt, kryssruta till vanster och Ta bort till hoger. */
+  .ant{display:flex; align-items:flex-start; flex-wrap:wrap; gap:8px 10px;
+    padding:12px 0; border-bottom:1px solid var(--line)}
+  .ant:last-child{border-bottom:0; padding-bottom:0}
+  .ant:first-child{padding-top:0}
+  .ant-kryss{display:flex; align-items:flex-start; gap:10px; flex:1 1 200px;
+    min-height:44px; cursor:pointer}
+  .ant-kryss input{width:24px; height:24px; margin:10px 0 0; flex:0 0 auto; accent-color:var(--petrol)}
+  .ant-text{font-size:16px; color:var(--ink); align-self:center; overflow-wrap:anywhere}
+  .ant-meta{display:block; width:100%; font-size:14px; color:var(--muted); overflow-wrap:anywhere}
+  .ant-bort{min-height:44px; padding:0 14px; border:1px solid var(--line); border-radius:8px;
+    background:var(--card); color:var(--muted); font:inherit; font-size:14px; font-weight:600; cursor:pointer}
+  .ant-bort:hover{border-color:var(--warn); color:var(--warn)}
+  .ant-bort-sakra{border-color:var(--warn); background:var(--warn-bg); color:var(--warn)}
+  .ant-klar .ant-text{text-decoration:line-through; color:var(--muted)}
+  .ant-klar{opacity:.7}
   .krockflagg{
     display:inline-block; margin-top:6px; padding:4px 10px; border-radius:6px;
     background:var(--warn); color:#fff; font-size:14px; font-weight:700;
@@ -264,6 +285,32 @@
     <div id="attgoraUt"></div>
   </section>
 
+  <!-- ANTECKNINGAR -->
+  <section id="vy-anteckningar" hidden>
+    <div class="kort">
+      <h2>Ny anteckning</h2>
+      <p class="hjalp">Listan delas mellan Fredrik och Thom. Alla ser samma punkter.</p>
+      <div class="falt">
+        <label for="antAvsandare">Vem skriver <span class="krav">(krävs)</span></label>
+        <select id="antAvsandare">
+          <option value="">Välj …</option>
+          <option value="Fredrik">Fredrik</option>
+          <option value="Thom">Thom</option>
+        </select>
+      </div>
+      <div class="falt">
+        <label for="antText">Anteckning</label>
+        <input type="text" id="antText" autocomplete="off" placeholder="Vad ska göras?">
+      </div>
+      <div class="knapprad">
+        <button type="button" class="knapp" id="antLagg" disabled>Lägg till</button>
+      </div>
+      <p class="fstat" id="antStat"></p>
+    </div>
+    <p id="antLaddar" class="laddar" hidden>Hämtar anteckningar &hellip;</p>
+    <div id="antUt"></div>
+  </section>
+
   <!-- NYTT JOBB -->
   <section id="vy-nytt" hidden>
     <form class="kort" id="nyttForm" novalidate>
@@ -328,6 +375,7 @@
 <nav class="flikar" aria-label="Huvudmeny">
   <button type="button" data-flik="veckan" aria-current="page"><span class="ikon" aria-hidden="true">&#128197;</span>Veckan</button>
   <button type="button" data-flik="attgora"><span class="ikon" aria-hidden="true">&#9989;</span>Att göra</button>
+  <button type="button" data-flik="anteckningar"><span class="ikon" aria-hidden="true">&#128221;</span>Anteckningar</button>
   <button type="button" data-flik="nytt"><span class="ikon" aria-hidden="true">&#10133;</span>Nytt jobb</button>
   <button type="button" data-flik="installningar"><span class="ikon" aria-hidden="true">&#9881;</span>Inställningar</button>
 </nav>
@@ -800,6 +848,220 @@ function attGoraGrupper(jobb, idag) {
     ut.innerHTML = html;
   }
 
+  /* ---------- anteckningar: delad att-göra-lista ---------- */
+  var NYCKEL_AVSANDARE = 'bb_anteckningar_avsandare';
+  var anteckningar = [];
+  var antVantarRadera = null;   // id vars Ta bort-knapp står i "Säker?"-läge
+
+  function hamtaAvsandare(){
+    try { return localStorage.getItem(NYCKEL_AVSANDARE) || ''; } catch(e){ return ''; }
+  }
+  function sparaAvsandare(v){
+    try { localStorage.setItem(NYCKEL_AVSANDARE, v); } catch(e){}
+  }
+
+  // Lägg till kräver både avsändare och text. Utan avsändare vet vi inte vem
+  // som skrev punkten, och listan är delad mellan två personer.
+  function antStyrKnapp(){
+    var val = $('#antAvsandare').value;
+    var text = $('#antText').value.replace(/^\s+|\s+$/g, '');
+    $('#antLagg').disabled = !(val && text);
+  }
+
+  function antNamnDatum(a){
+    var vem = String(a.skapad_av || '').replace(/^\s+|\s+$/g, '');
+    var nar = String(a.skapad || '').slice(0, 10);
+    if (vem && nar) return vem + ' · ' + nar;
+    return vem || nar || '';
+  }
+
+  function laddaAnteckningar(){
+    if (!harUppgifter()) return;
+    $('#antLaddar').hidden = false;
+    anrop('ant_lista', {}).then(function(data){
+      anteckningar = tillLista(data).filter(function(a){ return a && typeof a === 'object'; });
+      $('#antLaddar').hidden = true;
+      doljFel();
+      ritaAnteckningar();
+    }).catch(function(e){
+      $('#antLaddar').hidden = true;
+      visaFel('Kunde inte hämta anteckningarna. ' + felMening(e), function(){ laddaAnteckningar(); });
+    });
+  }
+
+  function arKlar(a){ return String(a.klar || '').toLowerCase() === 'ja'; }
+
+  function ritaAnteckningar(){
+    var ut = $('#antUt');
+    var oppna = [], klara = [];
+    for (var i = 0; i < anteckningar.length; i++) {
+      (arKlar(anteckningar[i]) ? klara : oppna).push(anteckningar[i]);
+    }
+    // Öppna punkter: äldst först, så det som legat längst syns överst.
+    oppna.sort(function(a, b){ return String(a.skapad || '') < String(b.skapad || '') ? -1 : 1; });
+    // Klara: senast klarmarkerad först.
+    klara.sort(function(a, b){ return String(b.klar_datum || '') < String(a.klar_datum || '') ? -1 : 1; });
+
+    if (!oppna.length && !klara.length) {
+      ut.innerHTML = '<div class="kort"><p class="fakta">Inga anteckningar</p></div>';
+      return;
+    }
+
+    var html = '';
+    if (oppna.length) {
+      html += '<div class="kort">';
+      for (var o = 0; o < oppna.length; o++) html += antRad(oppna[o]);
+      html += '</div>';
+    }
+    if (klara.length) {
+      html += '<div class="kort"><h2>Klara</h2>';
+      for (var k = 0; k < klara.length; k++) html += antRad(klara[k]);
+      html += '</div>';
+    }
+    ut.innerHTML = html;
+  }
+
+  function antRad(a){
+    var klar = arKlar(a);
+    var id = esc(a.id);
+    var h = '<div class="ant' + (klar ? ' ant-klar' : '') + '" data-ant="' + id + '">';
+    h += '<label class="ant-kryss"><input type="checkbox" data-ant-kryss="' + id + '"' +
+         (klar ? ' checked' : '') + '><span class="ant-text">' + esc(a.text || '') + '</span></label>';
+    h += '<span class="ant-meta">' + esc(antNamnDatum(a));
+    if (klar && a.klar_datum) h += ' · klar ' + esc(String(a.klar_datum).slice(0, 10));
+    h += '</span>';
+    h += '<button type="button" class="ant-bort" data-ant-bort="' + id + '">Ta bort</button>';
+    h += '</div>';
+    return h;
+  }
+
+  function hittaAnt(id){
+    for (var i = 0; i < anteckningar.length; i++) {
+      if (String(anteckningar[i].id) === String(id)) return anteckningar[i];
+    }
+    return null;
+  }
+
+  // Kryssrutan skriver direkt i vyn och rullas tillbaka om servern säger nej.
+  function vaxlaKlar(id, kryssad){
+    var a = hittaAnt(id);
+    if (!a) return;
+    var foreKlar = a.klar, foreDatum = a.klar_datum;
+    var andringar = kryssad
+      ? { klar: 'ja',  klar_datum: idagStr() }
+      : { klar: 'nej', klar_datum: '' };
+    a.klar = andringar.klar;
+    a.klar_datum = andringar.klar_datum;
+    ritaAnteckningar();
+    sparStart();
+    anrop('ant_uppdatera', { id: id, andringar: andringar }).then(function(){
+      sparStopp();
+      doljFel();
+    }).catch(function(e){
+      sparStopp();
+      a.klar = foreKlar;
+      a.klar_datum = foreDatum;
+      ritaAnteckningar();
+      visaFel('Kunde inte spara ändringen. ' + felMening(e), function(){ vaxlaKlar(id, kryssad); });
+    });
+  }
+
+  function raderaAnteckning(id){
+    sparStart();
+    anrop('ant_radera', { id: id }).then(function(){
+      sparStopp();
+      var kvar = [];
+      for (var i = 0; i < anteckningar.length; i++) {
+        if (String(anteckningar[i].id) !== String(id)) kvar.push(anteckningar[i]);
+      }
+      anteckningar = kvar;
+      antVantarRadera = null;
+      doljFel();
+      ritaAnteckningar();
+    }).catch(function(e){
+      sparStopp();
+      visaFel('Kunde inte ta bort anteckningen. ' + felMening(e), function(){ raderaAnteckning(id); });
+    });
+  }
+
+  function laggTillAnteckning(){
+    var vem = $('#antAvsandare').value;
+    var text = $('#antText').value.replace(/^\s+|\s+$/g, '');
+    if (!vem || !text) return;
+    sattStat($('#antStat'), 'Sparar …', 'sparar');
+    sparStart();
+    $('#antLagg').disabled = true;
+    anrop('ant_skapa', { anteckning: { text: text, skapad_av: vem } }).then(function(data){
+      sparStopp();
+      if (data && typeof data === 'object') anteckningar.push(data);
+      $('#antText').value = '';
+      sattStat($('#antStat'), 'Tillagd.', 'ok');
+      doljFel();
+      ritaAnteckningar();
+      antStyrKnapp();
+    }).catch(function(e){
+      sparStopp();
+      // Texten står kvar i fältet så ingenting går förlorat.
+      sattStat($('#antStat'), 'Sparades inte. ' + felMening(e), 'fel');
+      antStyrKnapp();
+      visaFel('Anteckningen sparades inte. ' + felMening(e), function(){ laggTillAnteckning(); });
+    });
+  }
+
+  $('#antAvsandare').addEventListener('change', function(){
+    sparaAvsandare(this.value);
+    antStyrKnapp();
+  });
+  $('#antText').addEventListener('input', antStyrKnapp);
+  $('#antText').addEventListener('keydown', function(ev){
+    if (ev.key === 'Enter' && !$('#antLagg').disabled) { ev.preventDefault(); laggTillAnteckning(); }
+  });
+  $('#antLagg').addEventListener('click', laggTillAnteckning);
+
+  // Ett klick beväpnar knappen, nästa raderar. Klick någon annanstans
+  // återställer den - ingen confirm()-ruta.
+  $('#antUt').addEventListener('click', function(ev){
+    var el = ev.target;
+    while (el && el !== this) {
+      if (el.getAttribute && el.getAttribute('data-ant-bort')) {
+        var id = el.getAttribute('data-ant-bort');
+        if (antVantarRadera === id) { raderaAnteckning(id); return; }
+        antVantarRadera = id;
+        aterstallBortKnappar(el);
+        el.textContent = 'Säker?';
+        el.className = 'ant-bort ant-bort-sakra';
+        return;
+      }
+      el = el.parentNode;
+    }
+  });
+
+  $('#antUt').addEventListener('change', function(ev){
+    var el = ev.target;
+    if (el && el.getAttribute && el.getAttribute('data-ant-kryss')) {
+      vaxlaKlar(el.getAttribute('data-ant-kryss'), !!el.checked);
+    }
+  });
+
+  function aterstallBortKnappar(utom){
+    var knappar = document.querySelectorAll('#antUt [data-ant-bort]');
+    for (var i = 0; i < knappar.length; i++) {
+      if (knappar[i] === utom) continue;
+      knappar[i].textContent = 'Ta bort';
+      knappar[i].className = 'ant-bort';
+    }
+  }
+
+  document.addEventListener('click', function(ev){
+    if (!antVantarRadera) return;
+    var el = ev.target, pa = false;
+    while (el && el !== document.body) {
+      if (el.getAttribute && el.getAttribute('data-ant-bort') === antVantarRadera) { pa = true; break; }
+      el = el.parentNode;
+    }
+    if (!pa) { antVantarRadera = null; aterstallBortKnappar(null); }
+  });
+
   /* ---------- jobbkortet ---------- */
   var kortvy = $('#kortvy'), kortInnehall = $('#kortInnehall'), oppetId = null;
 
@@ -1114,9 +1376,16 @@ function attGoraGrupper(jobb, idag) {
   var VYER = {
     veckan: '#vy-veckan',
     attgora: '#vy-attgora',
+    anteckningar: '#vy-anteckningar',
     nytt: '#vy-nytt',
     installningar: '#vy-installningar'
   };
+
+  (function(){
+    var valt = hamtaAvsandare();
+    if (valt) $('#antAvsandare').value = valt;
+    antStyrKnapp();
+  })();
 
   function visaFlik(namn){
     if (!VYER[namn]) namn = 'veckan';
@@ -1131,6 +1400,8 @@ function attGoraGrupper(jobb, idag) {
     }
     if (namn === 'installningar') fyllInstallningar();
     if (namn === 'attgora') ritaAttGora();
+    // Listan delas av tva personer, sa den hamtas om varje gang fliken oppnas.
+    if (namn === 'anteckningar') { antStyrKnapp(); laddaAnteckningar(); }
   }
 
   var flikKnappar = document.querySelectorAll('nav.flikar button');
