@@ -1305,8 +1305,21 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   margin: 0; color: var(--on-dark);
   font-size: 1rem; font-weight: 700; letter-spacing: -.01em; text-transform: none;
 }
+.chatt-verktyg { display: flex; align-items: center; gap: .25rem; flex: 0 0 auto; }
+/* Diskret: mindre än rubriken och i dämpad kremvit, så att den inte tävlar
+   med krysset om uppmärksamheten. */
+.chatt-omstart {
+  min-height: 44px; padding: 0 .6rem;
+  border: 0; background: transparent;
+  color: rgba(255, 255, 255, .72);
+  font-family: inherit; font-size: .82rem; font-weight: 500;
+  cursor: pointer; border-radius: var(--radius-btn); white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.chatt-omstart:hover { background: rgba(255, 255, 255, .14); color: var(--on-dark); }
+
 .chatt-stang {
-  width: 44px; height: 44px; margin: -.4rem -.4rem -.4rem 0;
+  width: 44px; height: 44px; margin: -.4rem -.4rem -.4rem 0; flex: 0 0 auto;
   border: 0; background: transparent; color: var(--on-dark);
   font-size: 1.4rem; line-height: 1; cursor: pointer; border-radius: var(--radius-btn);
   transition: background-color 150ms ease;

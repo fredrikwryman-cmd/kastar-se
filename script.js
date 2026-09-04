@@ -441,6 +441,10 @@ if (chattKnapp) {
   const W3_NYCKEL = 'a5ea7bbf-870d-4db3-9a82-d8e5283fa26e';
   const W3_AMNE = 'Offertförfrågan från chatten på bohagsbolaget.se';
   const SANT = 'Förfrågan skickad till Fredrik.';
+  const AVSLUTAT = 'Samtalet är avslutat. Skriv gärna om du har fler frågor.';
+  /* Tva timmar. Aterkommer kunden senare an sa ar det ett nytt arende,
+     och assistenten ska inte blanda ihop det med ett avslutat. */
+  const LIVSLANGD = 2 * 60 * 60 * 1000;
   const EJ_SANT = 'Jag fick inte iväg förfrågan. Mejla uppgifterna till boka@bohagsbolaget.se eller ring 070-561 48 45 så tar vi det den vägen.';
 
   const panel = document.getElementById('chattPanel');
@@ -448,20 +452,35 @@ if (chattKnapp) {
   const falt = document.getElementById('chattFalt');
   const skicka = document.getElementById('chattSkicka');
   const stang = document.getElementById('chattStang');
+  const omstart = document.getElementById('chattOmstart');
 
   let historik = [];
   let vantar = false;
 
+  /* Lagrat format: { tid, historik }. Aldre poster utan tid behandlas som
+     fardiga att slanga - de kommer fran en tidigare version av widgeten. */
   function las() {
     try {
       const ratt = sessionStorage.getItem(NYCKEL);
-      const lista = ratt ? JSON.parse(ratt) : [];
-      return Array.isArray(lista) ? lista : [];
+      if (!ratt) return [];
+      const paket = JSON.parse(ratt);
+      if (!paket || !Array.isArray(paket.historik) || typeof paket.tid !== 'number') return [];
+      if (Date.now() - paket.tid > LIVSLANGD) return [];
+      return paket.historik;
     } catch (e) { return []; }
   }
 
   function spara() {
-    try { sessionStorage.setItem(NYCKEL, JSON.stringify(historik)); } catch (e) {}
+    try {
+      sessionStorage.setItem(NYCKEL, JSON.stringify({ tid: Date.now(), historik: historik }));
+    } catch (e) {}
+  }
+
+  /* Bada eller ingen. Rensas bara lagringen ligger minnesarrayen kvar och
+     foljer med i nasta anrop - den klassiska buggen har. */
+  function tomHistorik() {
+    historik = [];
+    try { sessionStorage.removeItem(NYCKEL); } catch (e) {}
   }
 
   /* textContent, aldrig innerHTML: serverns text ska aldrig kunna tolkas
@@ -508,6 +527,10 @@ if (chattKnapp) {
       });
       if (!svar.ok) throw new Error('Web3Forms svarade ' + svar.status);
       systemrad(SANT);
+      /* Forfragan ar levererad. Samtalet nollstalls, men bubblorna star kvar
+         sa lange fonstret ar oppet - kunden ska kunna lasa vad som sagts. */
+      tomHistorik();
+      systemrad(AVSLUTAT);
     } catch (e) {
       console.error('Offertförfrågan kunde inte skickas:', e);
       bubbla('assistant', EJ_SANT);
@@ -540,8 +563,28 @@ if (chattKnapp) {
   function oppna() {
     panel.hidden = false;
     chattKnapp.hidden = true;
+
+    /* Lagringen avgor vad som visas. Ar den tom har samtalet antingen
+       avslutats med en skickad forfragan, rensats, eller hunnit bli aldre an
+       livslangden - i alla tre fallen borjar vi om med bara halsningen, utan
+       forklaring. Det ska kannas som en ny chatt. */
+    const sparad = las();
+    if (!sparad.length) {
+      tomHistorik();
+      flode.textContent = '';
+    } else {
+      historik = sparad;
+    }
+
     if (!flode.childElementCount) rita();
     tillBotten();
+    falt.focus();
+  }
+
+  function borjaOm() {
+    tomHistorik();
+    flode.textContent = '';
+    rita();
     falt.focus();
   }
 
@@ -601,6 +644,7 @@ if (chattKnapp) {
 
   chattKnapp.addEventListener('click', oppna);
   stang.addEventListener('click', stangNed);
+  omstart.addEventListener('click', borjaOm);
   skicka.addEventListener('click', skickaFraga);
 
   falt.addEventListener('keydown', (e) => {

@@ -358,7 +358,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=40" />
+  <link rel="stylesheet" href="styles.css?v=41" />
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
@@ -1633,7 +1633,10 @@
   <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
     <div class="chatt-huvud">
       <h2 id="chattRubrik">Fråga oss</h2>
-      <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
+      <div class="chatt-verktyg">
+        <button type="button" class="chatt-omstart" id="chattOmstart" aria-label="Börja om samtalet">Börja om</button>
+        <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
+      </div>
     </div>
     <div class="chatt-flode" id="chattFlode" aria-live="polite"></div>
     <div class="chatt-rad">
@@ -1644,7 +1647,7 @@
     </div>
   </div>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
