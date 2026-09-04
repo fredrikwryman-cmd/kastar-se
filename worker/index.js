@@ -14,10 +14,6 @@ const MAX_HISTORY = 20;
 const MAX_CHARS = 2000;
 const MAX_TOKENS = 1024;
 
-/* Web3Forms tar emot offertforfragningar. Nyckeln ar publik i formularet pa
-   sajten och ar inte en hemlighet - den identifierar bara mottagaren. */
-const WEB3FORMS_KEY = 'a5ea7bbf-870d-4db3-9a82-d8e5283fa26e';
-
 const TOOL = {
   name: 'skicka_forfragan',
   description:
@@ -123,50 +119,17 @@ async function anropaAnthropic(messages, apiKey) {
   return svar.json();
 }
 
-/* Loggvanlig kopia: access_key hor inte hemma i loggen. */
-function utanNyckel(objekt) {
-  const kopia = {};
-  for (const nyckel in objekt) {
-    if (Object.prototype.hasOwnProperty.call(objekt, nyckel) && nyckel !== 'access_key') {
-      kopia[nyckel] = objekt[nyckel];
-    }
-  }
-  return kopia;
-}
-
-/* Skickar forfragan. Kastar ALDRIG: en kund som lamnat alla sina uppgifter ska
-   aldrig motas av ett felmeddelande for att Web3Forms strular. Utfallet
-   returneras i stallet, och en misslyckad sandning loggas i sin helhet sa att
-   forfragan gar att fiska upp ur wrangler tail. */
-async function skickaForfragan(input) {
-  /* Platt JSON. Falten i verktygsschemat ar alla strangar, men ett objekt som
-     smiter in skulle nastlas och Web3Forms avvisar det - darfor tvingas allt
-     till strang har. */
-  const platt = { access_key: WEB3FORMS_KEY, subject: 'Offertförfrågan från chatten på bohagsbolaget.se' };
-  for (const nyckel in input) {
-    if (!Object.prototype.hasOwnProperty.call(input, nyckel)) continue;
-    const varde = input[nyckel];
-    if (varde === undefined || varde === null) continue;
-    platt[nyckel] = typeof varde === 'object' ? JSON.stringify(varde) : String(varde);
-  }
-
+/* Workern skickar inte langre sjalv. Cloudflare Workers gar ut fran delade
+   IP-adresser och Web3Forms begransar per IP, sa varje sandning harifran gav
+   429. Forfragan returneras i stallet till widgeten, som postar den fran
+   besokarens egen webblasare - samma vag som sajtens vanliga formular.
+   Loggningen ligger kvar som skyddsnat: gar klientens sandning fel finns
+   uppgifterna anda kvar i wrangler tail. */
+function loggaForfragan(input) {
   try {
-    const svar = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify(platt),
-    });
-    /* Bodyn lases EN gang, som text. */
-    const text = await svar.text();
-    if (!svar.ok) {
-      console.error('Web3Forms misslyckades', svar.status, text.slice(0, 300),
-        'FORFRAGAN:', JSON.stringify(utanNyckel(platt)));
-    }
-    return { ok: svar.ok, status: svar.status, body: String(text).slice(0, 300) };
+    console.error('OFFERTFORFRAGAN fran chatten:', JSON.stringify(input));
   } catch (fel) {
-    console.error('Web3Forms nadde inte fram:', fel && fel.message ? fel.message : fel,
-      'FORFRAGAN:', JSON.stringify(utanNyckel(platt)));
-    return { ok: false, status: 0, body: String(fel && fel.message ? fel.message : fel).slice(0, 300) };
+    console.error('OFFERTFORFRAGAN kunde inte serialiseras');
   }
 }
 
@@ -210,7 +173,7 @@ export default {
       return json({ fel: fel.message || 'Ogiltig förfrågan' }, 400, origin);
     }
 
-    let web3 = null;
+    let forfragan = null;
 
     try {
       const apiKey = env.ANTHROPIC_API_KEY;
@@ -235,7 +198,8 @@ export default {
           break;
         }
 
-        web3 = await skickaForfragan(verktyg.input || {});
+        forfragan = verktyg.input || {};
+        loggaForfragan(forfragan);
 
         messages = messages.concat([
           { role: 'assistant', content: data.content },
@@ -245,7 +209,7 @@ export default {
               {
                 type: 'tool_result',
                 tool_use_id: verktyg.id,
-                content: 'Förfrågan skickad',
+                content: 'Förfrågan mottagen och vidarebefordrad',
               },
             ],
           },
@@ -254,17 +218,21 @@ export default {
         data = await anropaAnthropic(messages, apiKey);
       }
 
-      /* Gick sandningen inte igenom far kunden anda ett vanligt svar, med en
-         rad om hur hon nar oss. Forfragan ligger loggad via console.error och
-         gar att fiska upp ur wrangler tail. Aldrig ett rott fel efter att
-         kunden lamnat alla sina uppgifter. */
-      let reply = textUr(data);
-      if (web3 && !web3.ok) {
-        const rad = 'Om du inte hört något inom ett dygn, mejla boka@bohagsbolaget.se eller ring 070-561 48 45.';
-        reply = reply ? reply + '\n\n' + rad : rad;
+      /* Modellen svarar ibland med enbart ett verktygsblock och ingen text.
+         Kunden ska aldrig mota en tom bubbla, sist i flodet allra minst. */
+      let text = textUr(data);
+      if (!text) {
+        text = forfragan
+          ? 'Tack! Jag skickar uppgifterna vidare till Fredrik nu. Han hör av sig med ett fast pris.'
+          : 'Kan du formulera om frågan? Jag hängde inte riktigt med.';
       }
 
-      return json({ reply: reply }, 200, origin);
+      /* forfragan foljer med bara nar verktyget anropats. Widgeten postar den
+         vidare och ager beskedet om huruvida den kom fram. */
+      const svar = { reply: text };
+      if (forfragan) svar.forfragan = forfragan;
+
+      return json(svar, 200, origin);
 
     } catch (fel) {
       console.error('Fel i assistenten:', fel && fel.message ? fel.message : fel);

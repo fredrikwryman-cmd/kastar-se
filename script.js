@@ -433,6 +433,15 @@ if (chattKnapp) {
   const MAX_TECKEN = 2000;   // samma sak per meddelande
   const HALSNING = 'Hej! Jag svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vad kan jag hjälpa dig med?';
   const FELTEXT = 'Något gick fel. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
+  /* Samma nyckel och samma faltnamn som kontaktformularet i index.html.
+     Sandningen sker fran besokarens egen webblasare: workern gar ut fran
+     Cloudflares delade IP-adresser och blir alltid rate limitad av
+     Web3Forms. Kunden's egen IP har ingen sadan sparr. */
+  const W3_URL = 'https://api.web3forms.com/submit';
+  const W3_NYCKEL = 'a5ea7bbf-870d-4db3-9a82-d8e5283fa26e';
+  const W3_AMNE = 'Offertförfrågan från chatten på bohagsbolaget.se';
+  const SANT = 'Förfrågan skickad till Fredrik.';
+  const EJ_SANT = 'Jag fick inte iväg förfrågan. Mejla uppgifterna till boka@bohagsbolaget.se eller ring 070-561 48 45 så tar vi det den vägen.';
 
   const panel = document.getElementById('chattPanel');
   const flode = document.getElementById('chattFlode');
@@ -463,6 +472,47 @@ if (chattKnapp) {
     el.textContent = text;
     flode.appendChild(el);
     return el;
+  }
+
+  /* Sajtens eget besked om sandningen. Aldrig en assistentbubbla - det ar
+     inte modellen som vet om mejlet gick ivag. */
+  function systemrad(text) {
+    const el = document.createElement('div');
+    el.className = 'chatt-system';
+    el.textContent = text;
+    flode.appendChild(el);
+    return el;
+  }
+
+  /* Postar forfragan till Web3Forms. Platt objekt, alla varden strangar.
+     forfragan renderas aldrig som text i chatten - den ar data. */
+  async function skickaForfragan(forfragan) {
+    const kropp = {
+      access_key: W3_NYCKEL,
+      subject: W3_AMNE,
+      from_name: String(forfragan.namn || '').trim() || 'Chatten på bohagsbolaget.se',
+      replyto: String(forfragan.epost || '').trim() || 'boka@bohagsbolaget.se',
+      name: String(forfragan.namn || ''),
+      email: String(forfragan.epost || ''),
+      phone: String(forfragan.telefon || ''),
+      tjanst: String(forfragan.tjanst || ''),
+      ort: String(forfragan.ort || ''),
+      kundtyp: String(forfragan.kundtyp || ''),
+      message: String(forfragan.beskrivning || '')
+    };
+    try {
+      const svar = await fetch(W3_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(kropp)
+      });
+      if (!svar.ok) throw new Error('Web3Forms svarade ' + svar.status);
+      systemrad(SANT);
+    } catch (e) {
+      console.error('Offertförfrågan kunde inte skickas:', e);
+      bubbla('assistant', EJ_SANT);
+    }
+    tillBotten();
   }
 
   function tillBotten() {
@@ -529,6 +579,12 @@ if (chattKnapp) {
       historik.push({ role: 'assistant', content: reply });
       spara();
       bubbla('assistant', reply);
+
+      /* Direkt, inte vid nagon senare handelse - sandningen ska hinna iväg
+         aven om kunden stanger fliken strax efter. */
+      if (data && data.forfragan && typeof data.forfragan === 'object') {
+        await skickaForfragan(data.forfragan);
+      }
 
     } catch (e) {
       /* Frågan ligger kvar i historiken, så kunden kan skriva vidare eller
