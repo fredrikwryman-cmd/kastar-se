@@ -181,6 +181,10 @@ export default {
 
     try {
       const apiKey = env.ANTHROPIC_API_KEY;
+      /* Bara langden, aldrig nyckeln eller nagon del av den. Syns enbart i
+         serverloggen via wrangler tail - aldrig i svaret till klienten.
+         En orimlig langd avslojar en trasig inklistring direkt. */
+      console.log('ANTHROPIC_API_KEY längd:', apiKey ? String(apiKey).length : 0);
       if (!apiKey) {
         throw new Error('ANTHROPIC_API_KEY saknas i miljön');
       }
