@@ -238,7 +238,7 @@ if (contactForm && formStatus && submitBtn) {
 
     // Svar på mejlet ska gå till kunden, inte till oss själva.
     data.from_name = (data.name || '').trim() || 'Bohagsbolaget.se – webbformulär';
-    data.replyto   = (data.email || '').trim() || 'boka@kastar.se';
+    data.replyto   = (data.email || '').trim() || 'boka@bohagsbolaget.se';
 
     const originalLabel = submitBtn.textContent;
     submitBtn.disabled = true;
