@@ -419,3 +419,142 @@ narDetArLugnt(() => {
   initPaneler();
   initKalkylator();
 });
+
+/* ---------- Chattwidget – svarsassistenten ----------
+   Historiken lever i minnet och speglas i sessionStorage, så att den
+   överlever att kunden byter sida men försvinner när fliken stängs.
+   Öppningshälsningen är bara visuell och skickas aldrig till servern. */
+const chattKnapp = document.getElementById('chattKnapp');
+
+if (chattKnapp) {
+  const ENDPOINT = 'https://bohagsbolaget-assistent.bohagsbolaget-se.workers.dev';
+  const NYCKEL = 'bb_chatt_historik';
+  const MAX_HISTORIK = 20;   // samma tak som workern, annars svarar den 400
+  const MAX_TECKEN = 2000;   // samma sak per meddelande
+  const HALSNING = 'Hej! Jag svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vad kan jag hjälpa dig med?';
+  const FELTEXT = 'Något gick fel. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
+
+  const panel = document.getElementById('chattPanel');
+  const flode = document.getElementById('chattFlode');
+  const falt = document.getElementById('chattFalt');
+  const skicka = document.getElementById('chattSkicka');
+  const stang = document.getElementById('chattStang');
+
+  let historik = [];
+  let vantar = false;
+
+  function las() {
+    try {
+      const ratt = sessionStorage.getItem(NYCKEL);
+      const lista = ratt ? JSON.parse(ratt) : [];
+      return Array.isArray(lista) ? lista : [];
+    } catch (e) { return []; }
+  }
+
+  function spara() {
+    try { sessionStorage.setItem(NYCKEL, JSON.stringify(historik)); } catch (e) {}
+  }
+
+  /* textContent, aldrig innerHTML: serverns text ska aldrig kunna tolkas
+     som markup. Radbrytningar syns ändå tack vare white-space: pre-wrap. */
+  function bubbla(roll, text) {
+    const el = document.createElement('div');
+    el.className = 'chatt-bubbla chatt-bubbla--' + (roll === 'user' ? 'kund' : 'assistent');
+    el.textContent = text;
+    flode.appendChild(el);
+    return el;
+  }
+
+  function tillBotten() {
+    flode.scrollTop = flode.scrollHeight;
+  }
+
+  function rita() {
+    flode.textContent = '';
+    bubbla('assistant', HALSNING);
+    for (const m of historik) bubbla(m.role, m.content);
+    tillBotten();
+  }
+
+  function visaSkriver() {
+    const el = document.createElement('div');
+    el.className = 'chatt-skriver';
+    el.id = 'chattSkriver';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<span></span><span></span><span></span>';
+    flode.appendChild(el);
+    tillBotten();
+    return el;
+  }
+
+  function oppna() {
+    panel.hidden = false;
+    chattKnapp.hidden = true;
+    if (!flode.childElementCount) rita();
+    tillBotten();
+    falt.focus();
+  }
+
+  function stangNed() {
+    panel.hidden = true;
+    chattKnapp.hidden = false;
+    chattKnapp.focus();
+  }
+
+  async function skickaFraga() {
+    const text = falt.value.trim();
+    if (!text || vantar) return;
+
+    historik.push({ role: 'user', content: text.slice(0, MAX_TECKEN) });
+    spara();
+    bubbla('user', text);
+    falt.value = '';
+    tillBotten();
+
+    vantar = true;
+    skicka.disabled = true;
+    const skriver = visaSkriver();
+
+    try {
+      const svar = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: historik.slice(-MAX_HISTORIK) })
+      });
+      if (!svar.ok) throw new Error('Status ' + svar.status);
+      const data = await svar.json();
+      const reply = data && data.reply ? String(data.reply) : FELTEXT;
+
+      skriver.remove();
+      historik.push({ role: 'assistant', content: reply });
+      spara();
+      bubbla('assistant', reply);
+
+    } catch (e) {
+      /* Frågan ligger kvar i historiken, så kunden kan skriva vidare eller
+         ställa om den. Ingen tyst tystnad. */
+      skriver.remove();
+      bubbla('assistant', FELTEXT);
+    } finally {
+      vantar = false;
+      skicka.disabled = false;
+      tillBotten();
+      falt.focus();
+    }
+  }
+
+  chattKnapp.addEventListener('click', oppna);
+  stang.addEventListener('click', stangNed);
+  skicka.addEventListener('click', skickaFraga);
+
+  falt.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); skickaFraga(); }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) stangNed();
+  });
+
+  historik = las();
+  if (historik.length) rita();
+}

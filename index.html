@@ -358,7 +358,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=38" />
+  <link rel="stylesheet" href="styles.css?v=39" />
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
@@ -1625,7 +1625,26 @@
     <a href="#kontakt" class="mb-quote">Få pris</a>
   </div>
 
-  <script src="script.js?v=13"></script>
+  <!-- Chattwidget – svarsassistenten. All JS ligger i script.js. -->
+  <button type="button" class="chatt-knapp" id="chattKnapp" aria-label="Öppna chatten och ställ en fråga">
+    <img src="assets/maskot-transp.png" width="229" height="220" alt="" />
+  </button>
+
+  <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
+    <div class="chatt-huvud">
+      <h2 id="chattRubrik">Fråga oss</h2>
+      <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
+    </div>
+    <div class="chatt-flode" id="chattFlode" aria-live="polite"></div>
+    <div class="chatt-rad">
+      <label class="sr-only" for="chattFalt">Skriv din fråga</label>
+      <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
+                placeholder="Skriv din fråga …" autocomplete="off"></textarea>
+      <button type="button" class="chatt-skicka" id="chattSkicka">Skicka</button>
+    </div>
+  </div>
+
+  <script src="script.js?v=14"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
