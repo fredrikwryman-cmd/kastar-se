@@ -114,9 +114,10 @@ async function anropaAnthropic(messages, apiKey) {
   });
 
   if (!svar.ok) {
-    /* Statuskoden loggas, men gar aldrig vidare till klienten. */
+    /* Status och body loggas server-side via console.error, men gar aldrig
+       vidare till klienten. */
     const text = await svar.text();
-    throw new Error('Anthropic svarade ' + svar.status + ': ' + text.slice(0, 300));
+    throw new Error('Anthropic svarade ' + svar.status + ': ' + String(text).slice(0, 300));
   }
 
   return svar.json();
