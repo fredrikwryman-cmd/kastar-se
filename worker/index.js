@@ -44,6 +44,10 @@ const TOOL = {
   },
 };
 
+/* Formuleringar som pastar att nagot skickats. Tacker modellens vanligaste
+   satt att saga det utan att ha anropat verktyget. */
+const PASTAR_SKICKAT = /(skickar|skickat|skickad|skickats|vidarebefordra|hör av sig|hor av sig)/i;
+
 const FELSVAR =
   'Något gick fel på vår sida. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
 
@@ -92,7 +96,16 @@ function validera(body) {
   return messages.map((m) => ({ role: m.role, content: m.content }));
 }
 
-async function anropaAnthropic(messages, apiKey) {
+async function anropaAnthropic(messages, apiKey, toolChoice) {
+  const kropp = {
+    model: MODEL,
+    max_tokens: MAX_TOKENS,
+    system: SYSTEM_PROMPT,
+    tools: [TOOL],
+    messages,
+  };
+  if (toolChoice) kropp.tool_choice = toolChoice;
+
   const svar = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -100,13 +113,7 @@ async function anropaAnthropic(messages, apiKey) {
       'anthropic-version': '2023-06-01',
       'content-type': 'application/json',
     },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPT,
-      tools: [TOOL],
-      messages,
-    }),
+    body: JSON.stringify(kropp),
   });
 
   if (!svar.ok) {
@@ -216,6 +223,28 @@ export default {
         ]);
 
         data = await anropaAnthropic(messages, apiKey);
+      }
+
+      /* Sparr mot modellen som pastar att den skickat utan att ha anropat
+         verktyget. Da gors om anropet en gang med tvingat verktygsval, sa att
+         leadet atminstone far struktur. Leadet i sig ar redan sakrat av
+         widgetens egen detektering - detta ar ett komplement, inte skyddet. */
+      if (!forfragan && PASTAR_SKICKAT.test(textUr(data))) {
+        console.error('Modellen pastod att den skickat utan verktygsanrop. Hela konversationen:',
+          JSON.stringify(messages));
+        try {
+          const tvingat = await anropaAnthropic(messages, apiKey,
+            { type: 'tool', name: TOOL.name });
+          const block = (tvingat.content || []).find(
+            (b) => b && b.type === 'tool_use' && b.name === TOOL.name
+          );
+          if (block) {
+            forfragan = block.input || {};
+            loggaForfragan(forfragan);
+          }
+        } catch (fel) {
+          console.error('Tvingat verktygsanrop misslyckades:', fel && fel.message ? fel.message : fel);
+        }
       }
 
       /* Modellen svarar ibland med enbart ett verktygsblock och ingen text.

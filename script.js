@@ -429,23 +429,25 @@ const chattKnapp = document.getElementById('chattKnapp');
 if (chattKnapp) {
   const ENDPOINT = 'https://bohagsbolaget-assistent.bohagsbolaget-se.workers.dev';
   const NYCKEL = 'bb_chatt_historik';
+  const KO_NYCKEL = 'bb_chatt_ko';        // localStorage: överlever att fliken stängs
   const MAX_HISTORIK = 20;   // samma tak som workern, annars svarar den 400
   const MAX_TECKEN = 2000;   // samma sak per meddelande
+  const MAX_FORSOK = 10;
   const HALSNING = 'Hej! Jag svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vad kan jag hjälpa dig med?';
   const FELTEXT = 'Något gick fel. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
   /* Samma nyckel och samma faltnamn som kontaktformularet i index.html.
      Sandningen sker fran besokarens egen webblasare: workern gar ut fran
      Cloudflares delade IP-adresser och blir alltid rate limitad av
-     Web3Forms. Kunden's egen IP har ingen sadan sparr. */
+     Web3Forms. Besokarens egen IP har ingen sadan sparr. */
   const W3_URL = 'https://api.web3forms.com/submit';
   const W3_NYCKEL = 'a5ea7bbf-870d-4db3-9a82-d8e5283fa26e';
-  const W3_AMNE = 'Offertförfrågan från chatten på bohagsbolaget.se';
   const SANT = 'Förfrågan skickad till Fredrik.';
   const AVSLUTAT = 'Samtalet är avslutat. Skriv gärna om du har fler frågor.';
+  const NOTERAT = 'Jag noterar det här och ser till att Fredrik får det.';
   /* Tva timmar. Aterkommer kunden senare an sa ar det ett nytt arende,
      och assistenten ska inte blanda ihop det med ett avslutat. */
   const LIVSLANGD = 2 * 60 * 60 * 1000;
-  const EJ_SANT = 'Jag fick inte iväg förfrågan. Mejla uppgifterna till boka@bohagsbolaget.se eller ring 070-561 48 45 så tar vi det den vägen.';
+  const INAKTIV = 5 * 60 * 1000;
 
   const panel = document.getElementById('chattPanel');
   const flode = document.getElementById('chattFlode');
@@ -456,23 +458,52 @@ if (chattKnapp) {
 
   let historik = [];
   let vantar = false;
+  /* Allt som ror leadet. Speglas i sessionStorage tillsammans med historiken
+     sa att A och B inte kan skickas om efter en omladdning. */
+  let lage = nyttLage();
+  let inaktivTimer = null;
 
-  /* Lagrat format: { tid, historik }. Aldre poster utan tid behandlas som
-     fardiga att slanga - de kommer fran en tidigare version av widgeten. */
+  function nyttId() {
+    return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+  }
+
+  function nyttLage() {
+    return { id: nyttId(), aSkickat: false, bSkickat: false, telefon: '', epost: '', namn: '' };
+  }
+
+  /* ---------- deterministisk detektering ----------
+     Kunden avgor om samtalet ar ett lead, inte modellen. Lamnar hon ett
+     telefonnummer eller en mejladress ar det ett lead, oavsett vad
+     assistenten sedan sager eller later bli att gora. */
+  function hittaTelefon(text) {
+    const kandidater = String(text).match(/(?:\+?\d[\d\s\-()]{5,}\d)/g) || [];
+    for (const rad of kandidater) {
+      const siffror = rad.replace(/[^\d]/g, '');
+      if (siffror.length >= 7) return rad.replace(/\s+/g, ' ').trim();
+    }
+    return '';
+  }
+
+  function hittaEpost(text) {
+    const traff = String(text).match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/);
+    return traff ? traff[0] : '';
+  }
+
+  /* ---------- lagring ---------- */
   function las() {
     try {
       const ratt = sessionStorage.getItem(NYCKEL);
-      if (!ratt) return [];
+      if (!ratt) return null;
       const paket = JSON.parse(ratt);
-      if (!paket || !Array.isArray(paket.historik) || typeof paket.tid !== 'number') return [];
-      if (Date.now() - paket.tid > LIVSLANGD) return [];
-      return paket.historik;
-    } catch (e) { return []; }
+      if (!paket || !Array.isArray(paket.historik) || typeof paket.tid !== 'number') return null;
+      if (Date.now() - paket.tid > LIVSLANGD) return null;
+      return paket;
+    } catch (e) { return null; }
   }
 
   function spara() {
     try {
-      sessionStorage.setItem(NYCKEL, JSON.stringify({ tid: Date.now(), historik: historik }));
+      sessionStorage.setItem(NYCKEL, JSON.stringify({ tid: Date.now(), historik: historik, lage: lage }));
     } catch (e) {}
   }
 
@@ -480,11 +511,176 @@ if (chattKnapp) {
      foljer med i nasta anrop - den klassiska buggen har. */
   function tomHistorik() {
     historik = [];
+    lage = nyttLage();
     try { sessionStorage.removeItem(NYCKEL); } catch (e) {}
   }
 
-  /* textContent, aldrig innerHTML: serverns text ska aldrig kunna tolkas
-     som markup. Radbrytningar syns ändå tack vare white-space: pre-wrap. */
+  /* ---------- ko som overlever fel ----------
+     localStorage, inte sessionStorage: en post som inte kom ivag ska ligga
+     kvar aven om kunden stanger fliken och kommer tillbaka i morgon. */
+  function lasKo() {
+    try {
+      const ratt = localStorage.getItem(KO_NYCKEL);
+      const lista = ratt ? JSON.parse(ratt) : [];
+      return Array.isArray(lista) ? lista : [];
+    } catch (e) { return []; }
+  }
+
+  function sparaKo(ko) {
+    try { localStorage.setItem(KO_NYCKEL, JSON.stringify(ko)); } catch (e) {}
+  }
+
+  function koa(kropp) {
+    const ko = lasKo();
+    ko.push({ kropp: kropp, forsok: 0 });
+    sparaKo(ko);
+  }
+
+  /* Postar en kropp. Returnerar true bara vid bekraftat 2xx. */
+  async function posta(kropp) {
+    const svar = await fetch(W3_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(kropp)
+    });
+    if (!svar.ok) throw new Error('Web3Forms svarade ' + svar.status);
+    return true;
+  }
+
+  /* Tommer kon. En post som misslyckas raknas upp och ligger kvar tills den
+     provats MAX_FORSOK ganger. Kon skrivs om fran den fardiga listan, sa en
+     post kan aldrig forsvinna for att en annan lyckades. */
+  async function tomKo() {
+    let ko = lasKo();
+    if (!ko.length) return;
+    const kvar = [];
+    for (const post of ko) {
+      if (post.forsok >= MAX_FORSOK) { kvar.push(post); continue; }
+      try {
+        await posta(post.kropp);
+      } catch (e) {
+        post.forsok = (post.forsok || 0) + 1;
+        kvar.push(post);
+      }
+    }
+    sparaKo(kvar);
+  }
+
+  /* ---------- utskicken ---------- */
+  function samtalsText() {
+    const rader = [];
+    for (const m of historik) {
+      rader.push((m.role === 'user' ? 'Kund: ' : 'Assistent: ') + m.content);
+    }
+    return rader.join('\n\n');
+  }
+
+  function byggKropp(amne, forfragan) {
+    let message = '';
+    if (forfragan) {
+      message += 'SAMMANFATTNING FRÅN ASSISTENTEN\n';
+      message += 'Namn: ' + (forfragan.namn || '') + '\n';
+      message += 'Telefon: ' + (forfragan.telefon || '') + '\n';
+      message += 'E-post: ' + (forfragan.epost || '') + '\n';
+      message += 'Tjänst: ' + (forfragan.tjanst || '') + '\n';
+      message += 'Ort: ' + (forfragan.ort || '') + '\n';
+      message += 'Kundtyp: ' + (forfragan.kundtyp || '') + '\n';
+      message += 'Beskrivning: ' + (forfragan.beskrivning || '') + '\n\n';
+    }
+    /* Hela samtalet foljer alltid med, aven nar verktyget fungerat. Fredrik
+       ska kunna lasa vad kunden faktiskt skrev, inte bara modellens referat. */
+    message += 'HELA SAMTALET\n' + samtalsText();
+
+    const namn = String((forfragan && forfragan.namn) || lage.namn || '');
+    return {
+      access_key: W3_NYCKEL,
+      subject: amne + ' [' + lage.id + ']',
+      from_name: namn || 'Chatten på bohagsbolaget.se',
+      replyto: lage.epost || 'boka@bohagsbolaget.se',
+      name: namn,
+      email: lage.epost || '',
+      phone: lage.telefon || '',
+      message: message
+    };
+  }
+
+  /* Utskick A: sa fort en kontaktuppgift dyker upp. Sakrar leadet aven om
+     kunden stanger fliken i nasta sekund. Hogst en gang per samtal. */
+  async function skickaA() {
+    if (lage.aSkickat) return false;
+    lage.aSkickat = true;
+    spara();
+    const kropp = byggKropp('Chatt: pågående förfrågan', null);
+    await tomKo();
+    try {
+      await posta(kropp);
+      return true;
+    } catch (e) {
+      console.error('Utskick A kunde inte skickas, lagt i kö:', e && e.message ? e.message : e);
+      koa(kropp);
+      return false;
+    }
+  }
+
+  /* Utskick B: samtalet komplett. Hogst en gang per samtal. */
+  async function skickaB(forfragan) {
+    if (lage.bSkickat) return false;
+    if (!historik.length) return false;
+    lage.bSkickat = true;
+    spara();
+    const kropp = byggKropp('Chatt: komplett samtal', forfragan || null);
+    await tomKo();
+    try {
+      await posta(kropp);
+      return true;
+    } catch (e) {
+      console.error('Utskick B kunde inte skickas, lagt i kö:', e && e.message ? e.message : e);
+      koa(kropp);
+      return false;
+    }
+  }
+
+  /* Sidan lamnas: sendBeacon overlever navigeringen, fetch gor det inte. */
+  function skickaBViaBeacon() {
+    if (lage.bSkickat || !historik.length || !(lage.telefon || lage.epost)) return;
+    lage.bSkickat = true;
+    spara();
+    const kropp = byggKropp('Chatt: komplett samtal', null);
+    try {
+      const blob = new Blob([JSON.stringify(kropp)], { type: 'application/json' });
+      if (!navigator.sendBeacon(W3_URL, blob)) koa(kropp);
+    } catch (e) {
+      koa(kropp);
+    }
+  }
+
+  function nollstallInaktiv() {
+    if (inaktivTimer) clearTimeout(inaktivTimer);
+    inaktivTimer = setTimeout(() => {
+      if (lage.telefon || lage.epost) skickaB(null);
+    }, INAKTIV);
+  }
+
+  /* ---------- sanningskrav ----------
+     Widgeten far aldrig aterge ett pastaende om att nagot skickats som den
+     inte sjalv verifierat. Modellen sager det ibland utan tackning. */
+  const SKICKAT_MONSTER = /(skickar|skickat|skickad|har skickats|vidarebefordrat|vidarebefordrar|hör av sig|hor av sig|är på väg|noterat och skickat)/i;
+
+  function sanningsfiltrera(text, bekraftat) {
+    if (bekraftat) return text;
+    const stycken = String(text).split(/\n{2,}/);
+    const rensade = stycken.map((stycke) => {
+      const meningar = stycke.split(/(?<=[.!?])\s+/);
+      const kvar = meningar.filter((m) => !SKICKAT_MONSTER.test(m));
+      if (kvar.length === meningar.length) return stycke;
+      const bevarat = kvar.join(' ').trim();
+      return bevarat ? bevarat + ' ' + NOTERAT : NOTERAT;
+    });
+    const ut = rensade.join('\n\n').trim();
+    return ut || NOTERAT;
+  }
+
+  /* ---------- rendering ---------- */
   function bubbla(roll, text) {
     const el = document.createElement('div');
     el.className = 'chatt-bubbla chatt-bubbla--' + (roll === 'user' ? 'kund' : 'assistent');
@@ -493,49 +689,12 @@ if (chattKnapp) {
     return el;
   }
 
-  /* Sajtens eget besked om sandningen. Aldrig en assistentbubbla - det ar
-     inte modellen som vet om mejlet gick ivag. */
   function systemrad(text) {
     const el = document.createElement('div');
     el.className = 'chatt-system';
     el.textContent = text;
     flode.appendChild(el);
     return el;
-  }
-
-  /* Postar forfragan till Web3Forms. Platt objekt, alla varden strangar.
-     forfragan renderas aldrig som text i chatten - den ar data. */
-  async function skickaForfragan(forfragan) {
-    const kropp = {
-      access_key: W3_NYCKEL,
-      subject: W3_AMNE,
-      from_name: String(forfragan.namn || '').trim() || 'Chatten på bohagsbolaget.se',
-      replyto: String(forfragan.epost || '').trim() || 'boka@bohagsbolaget.se',
-      name: String(forfragan.namn || ''),
-      email: String(forfragan.epost || ''),
-      phone: String(forfragan.telefon || ''),
-      tjanst: String(forfragan.tjanst || ''),
-      ort: String(forfragan.ort || ''),
-      kundtyp: String(forfragan.kundtyp || ''),
-      message: String(forfragan.beskrivning || '')
-    };
-    try {
-      const svar = await fetch(W3_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(kropp)
-      });
-      if (!svar.ok) throw new Error('Web3Forms svarade ' + svar.status);
-      systemrad(SANT);
-      /* Forfragan ar levererad. Samtalet nollstalls, men bubblorna star kvar
-         sa lange fonstret ar oppet - kunden ska kunna lasa vad som sagts. */
-      tomHistorik();
-      systemrad(AVSLUTAT);
-    } catch (e) {
-      console.error('Offertförfrågan kunde inte skickas:', e);
-      bubbla('assistant', EJ_SANT);
-    }
-    tillBotten();
   }
 
   function tillBotten() {
@@ -565,15 +724,15 @@ if (chattKnapp) {
     chattKnapp.hidden = true;
 
     /* Lagringen avgor vad som visas. Ar den tom har samtalet antingen
-       avslutats med en skickad forfragan, rensats, eller hunnit bli aldre an
-       livslangden - i alla tre fallen borjar vi om med bara halsningen, utan
-       forklaring. Det ska kannas som en ny chatt. */
-    const sparad = las();
-    if (!sparad.length) {
+       avslutats, rensats, eller hunnit bli aldre an livslangden - i alla tre
+       fallen borjar vi om med bara halsningen, utan forklaring. */
+    const paket = las();
+    if (!paket || !paket.historik.length) {
       tomHistorik();
       flode.textContent = '';
     } else {
-      historik = sparad;
+      historik = paket.historik;
+      if (paket.lage) lage = paket.lage;
     }
 
     if (!flode.childElementCount) rita();
@@ -581,7 +740,8 @@ if (chattKnapp) {
     falt.focus();
   }
 
-  function borjaOm() {
+  async function borjaOm() {
+    if (lage.telefon || lage.epost) await skickaB(null);
     tomHistorik();
     flode.textContent = '';
     rita();
@@ -599,10 +759,24 @@ if (chattKnapp) {
     if (!text || vantar) return;
 
     historik.push({ role: 'user', content: text.slice(0, MAX_TECKEN) });
+
+    /* Deterministisk detektering, fore allt annat. Beslutet fattas har,
+       aldrig av modellen. */
+    if (!lage.telefon) lage.telefon = hittaTelefon(text);
+    if (!lage.epost) lage.epost = hittaEpost(text);
     spara();
+
     bubbla('user', text);
     falt.value = '';
     tillBotten();
+    nollstallInaktiv();
+
+    /* Utskick A gar ivag direkt, utan att invanta modellen. */
+    let bekraftat = false;
+    if ((lage.telefon || lage.epost) && !lage.aSkickat) {
+      bekraftat = await skickaA();
+      if (bekraftat) { systemrad(SANT); tillBotten(); }
+    }
 
     vantar = true;
     skicka.disabled = true;
@@ -616,22 +790,31 @@ if (chattKnapp) {
       });
       if (!svar.ok) throw new Error('Status ' + svar.status);
       const data = await svar.json();
-      const reply = data && data.reply ? String(data.reply) : FELTEXT;
+      const rasvar = data && data.reply ? String(data.reply) : FELTEXT;
 
       skriver.remove();
-      historik.push({ role: 'assistant', content: reply });
+      historik.push({ role: 'assistant', content: rasvar });
       spara();
-      bubbla('assistant', reply);
 
-      /* Direkt, inte vid nagon senare handelse - sandningen ska hinna iväg
-         aven om kunden stanger fliken strax efter. */
-      if (data && data.forfragan && typeof data.forfragan === 'object') {
-        await skickaForfragan(data.forfragan);
+      const forfragan = (data && data.forfragan && typeof data.forfragan === 'object') ? data.forfragan : null;
+      if (forfragan && forfragan.namn) { lage.namn = String(forfragan.namn); spara(); }
+
+      /* Verktyget anropat = samtalet avslutas. Utskick B far den strukturerade
+         sammanfattningen med sig, plus hela samtalet. */
+      let levererat = lage.aSkickat && bekraftat;
+      if (forfragan) {
+        levererat = (await skickaB(forfragan)) || levererat;
+      }
+
+      bubbla('assistant', sanningsfiltrera(rasvar, levererat));
+
+      if (forfragan) {
+        if (levererat) systemrad(SANT);
+        systemrad(AVSLUTAT);
+        tomHistorik();
       }
 
     } catch (e) {
-      /* Frågan ligger kvar i historiken, så kunden kan skriva vidare eller
-         ställa om den. Ingen tyst tystnad. */
       skriver.remove();
       bubbla('assistant', FELTEXT);
     } finally {
@@ -655,6 +838,13 @@ if (chattKnapp) {
     if (e.key === 'Escape' && !panel.hidden) stangNed();
   });
 
-  historik = las();
+  window.addEventListener('pagehide', skickaBViaBeacon);
+
+  const start = las();
+  if (start) {
+    historik = start.historik;
+    if (start.lage) lage = start.lage;
+  }
   if (historik.length) rita();
+  tomKo();
 }
