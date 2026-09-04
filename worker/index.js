@@ -123,19 +123,50 @@ async function anropaAnthropic(messages, apiKey) {
   return svar.json();
 }
 
-async function skickaForfragan(input) {
-  const svar = await fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', accept: 'application/json' },
-    body: JSON.stringify({
-      access_key: WEB3FORMS_KEY,
-      subject: 'Offertförfrågan från chatten på bohagsbolaget.se',
-      ...input,
-    }),
-  });
+/* Loggvanlig kopia: access_key hor inte hemma i loggen. */
+function utanNyckel(objekt) {
+  const kopia = {};
+  for (const nyckel in objekt) {
+    if (Object.prototype.hasOwnProperty.call(objekt, nyckel) && nyckel !== 'access_key') {
+      kopia[nyckel] = objekt[nyckel];
+    }
+  }
+  return kopia;
+}
 
-  if (!svar.ok) {
-    throw new Error('Web3Forms svarade ' + svar.status);
+/* Skickar forfragan. Kastar ALDRIG: en kund som lamnat alla sina uppgifter ska
+   aldrig motas av ett felmeddelande for att Web3Forms strular. Utfallet
+   returneras i stallet, och en misslyckad sandning loggas i sin helhet sa att
+   forfragan gar att fiska upp ur wrangler tail. */
+async function skickaForfragan(input) {
+  /* Platt JSON. Falten i verktygsschemat ar alla strangar, men ett objekt som
+     smiter in skulle nastlas och Web3Forms avvisar det - darfor tvingas allt
+     till strang har. */
+  const platt = { access_key: WEB3FORMS_KEY, subject: 'Offertförfrågan från chatten på bohagsbolaget.se' };
+  for (const nyckel in input) {
+    if (!Object.prototype.hasOwnProperty.call(input, nyckel)) continue;
+    const varde = input[nyckel];
+    if (varde === undefined || varde === null) continue;
+    platt[nyckel] = typeof varde === 'object' ? JSON.stringify(varde) : String(varde);
+  }
+
+  try {
+    const svar = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify(platt),
+    });
+    /* Bodyn lases EN gang, som text. */
+    const text = await svar.text();
+    if (!svar.ok) {
+      console.error('Web3Forms misslyckades', svar.status, text.slice(0, 300),
+        'FORFRAGAN:', JSON.stringify(utanNyckel(platt)));
+    }
+    return { ok: svar.ok, status: svar.status, body: String(text).slice(0, 300) };
+  } catch (fel) {
+    console.error('Web3Forms nadde inte fram:', fel && fel.message ? fel.message : fel,
+      'FORFRAGAN:', JSON.stringify(utanNyckel(platt)));
+    return { ok: false, status: 0, body: String(fel && fel.message ? fel.message : fel).slice(0, 300) };
   }
 }
 
@@ -179,6 +210,8 @@ export default {
       return json({ fel: fel.message || 'Ogiltig förfrågan' }, 400, origin);
     }
 
+    let web3 = null;
+
     try {
       const apiKey = env.ANTHROPIC_API_KEY;
       /* Bara langden, aldrig nyckeln eller nagon del av den. Syns enbart i
@@ -202,7 +235,7 @@ export default {
           break;
         }
 
-        await skickaForfragan(verktyg.input || {});
+        web3 = await skickaForfragan(verktyg.input || {});
 
         messages = messages.concat([
           { role: 'assistant', content: data.content },
@@ -221,7 +254,17 @@ export default {
         data = await anropaAnthropic(messages, apiKey);
       }
 
-      return json({ reply: textUr(data) }, 200, origin);
+      /* Gick sandningen inte igenom far kunden anda ett vanligt svar, med en
+         rad om hur hon nar oss. Forfragan ligger loggad via console.error och
+         gar att fiska upp ur wrangler tail. Aldrig ett rott fel efter att
+         kunden lamnat alla sina uppgifter. */
+      let reply = textUr(data);
+      if (web3 && !web3.ok) {
+        const rad = 'Om du inte hört något inom ett dygn, mejla boka@bohagsbolaget.se eller ring 070-561 48 45.';
+        reply = reply ? reply + '\n\n' + rad : rad;
+      }
+
+      return json({ reply: reply }, 200, origin);
 
     } catch (fel) {
       console.error('Fel i assistenten:', fel && fel.message ? fel.message : fel);
