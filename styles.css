@@ -805,6 +805,38 @@ body:not(.kort-sida) main p a:not(.btn) {
    stycket ovanför. */
 .villkor h3 + p ~ h3 { margin-top: 2.2rem; }
 
+/* ---------- Omdömen ----------
+   Rutnät i stället för en fast kolumnbredd: ett omdöme fyller raden, fler
+   lägger sig bredvid varandra på desktop och staplas på mobil. Inga
+   Trustpilot-tillgångar används - stjärnorna är egna, i husets orange. */
+.omdomen {
+  display: grid; gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  max-width: 1000px; margin: 0 auto;
+}
+.omdome {
+  margin: 0; padding: 1.9rem;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: var(--radius-card); box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.omdome-stjarnor { display: flex; gap: .25rem; }
+.omdome-stjarnor svg { display: block; }
+.omdome blockquote { margin: 0; }
+.omdome blockquote p {
+  margin: 0; color: var(--body-c);
+  font-size: 1.02rem; line-height: 1.7;
+}
+.omdome figcaption {
+  margin-top: auto; color: var(--muted);
+  font-size: .9rem; font-weight: 500;
+}
+.omdome-lankar {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;
+  margin: 2rem 0 0; text-align: center;
+}
+.omdome-lankar a { color: var(--orange-ink); font-weight: 500; }
+
 /* ---------- Kontakt (ljus sektion, vitt formulärkort) ----------
    Bakgrunden kommer från .section-cream i markupen, inte härifrån. */
 #kontakt h2, #kontakt h3 { color: var(--ink); }
