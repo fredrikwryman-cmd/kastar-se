@@ -1312,6 +1312,12 @@ body:not(.kort-sida) main p a:not(.btn) {
   /* Pil-länken behåller sitt läge: marginalen minskar lika mycket
      som paddingen växer, så texten står kvar där den stod. */
   .card-cta { min-height: 44px; margin-top: .6rem; padding: .5rem 0 0; }
+  /* min-height ger elva av korten – de som är <button> – vertikalt centrerat
+     innehåll på köpet. Magasineringskortets <a> fick det inte, och texten låg
+     8 px högre än grannarnas. align-content centrerar innehållet i det lediga
+     utrymmet utan att röra radbrytningen, så pilen fortsätter flöda efter
+     sista ordet. Äldre webbläsare utan stöd får läget som var förut. */
+  a.card-cta { align-content: center; }
 }
 
 @media (max-width: 560px) {
