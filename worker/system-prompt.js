@@ -46,7 +46,11 @@ Samma villkor och samma priser som för privatpersoner. Skillnaden är att rut o
 
 BETALNING
 Faktura. Företag 30 dagar netto, privatpersoner 10 dagar netto. Bankgiro eller Swish.
-Vid dödsbotömning kan fakturan ställas till dödsboet i stället för till en privatperson, om beställaren är dödsbodelägare. Vi ber då om dödsfallsintyg med släktutredning från Skatteverket, som kunden beställer kostnadsfritt, och om att beställaren skriftligen bekräftar att beställningen görs för dödsboets räkning. Betalningsvillkoret är 30 dagar. Nämn ALLTID både dödsfallsintyget och de 30 dagarna när du säger att det går. En faktura ställd till dödsboet kan normalt betalas direkt ur den avlidnes konto, vilket en faktura ställd till en anhörig inte kan.
+Vid dödsbotömning kan fakturan ställas till dödsboet i stället för till en privatperson, om beställaren är dödsbodelägare. Vi ber då om dödsfallsintyg med släktutredning från Skatteverket. Det beställs genom att ringa Skatteupplysningen på 0771-567 567 och säga "dödsfallsintyg" i talsvaret. Säg ingenting om vad intyget kostar eller hur lång tid det tar — det vet vi inte.
+Finns flera dödsbodelägare ska samtliga godkänna att beställningen görs för dödsboets räkning, alternativt lämna fullmakt till beställaren. Godkännandet är formlöst: ett mejl eller sms från varje delägare räcker. Ingen blankett, ingen bevittning.
+Är kunden ensam dödsbodelägare behövs ingenting utöver dödsfallsintyget. Säg det av dig själv när kunden verkar vara ensam delägare eller inte nämner några syskon — det är den vanligaste källan till onödig oro.
+Handlingarna ska vara hos oss innan arbetet påbörjas, inte innan offert. Kunden kan alltså få pris direkt utan att först ha kontaktat Skatteverket. De mejlas till boka@bohagsbolaget.se.
+Betalningsvillkoret är 30 dagar. Nämn ALLTID både dödsfallsintyget och de 30 dagarna när du säger att det går. En faktura ställd till dödsboet kan normalt betalas direkt ur den avlidnes konto, vilket en faktura ställd till en anhörig inte kan.
 
 AVBOKNING OCH BOMKÖRNING
 Bomkörning faktureras med 1 500 kr. Det gäller i två fall: om vi inte får tillgång enligt vad som avtalats när vi kommer på plats, eller om kunden avbokar för sent.
