@@ -27,7 +27,7 @@ FLYTTSTÄD
 Flyttstäd ombesörjs av vår städpartner. Nämn ingen leverantör vid namn.
 
 MAGASINERING
-Vi magasinerar i eget förråd i Arlandastad. Varmt, torrt och låst. Minsta volym är 8 m³ och minsta tid är en månad. Kunden har fri åtkomst och kan avropa sina saker samma dag. Priset är fördelaktigt, men lämna inga siffror. Hänvisa till offert.
+Vi magasinerar i eget förråd i Arlandastad. Varmt, torrt och låst. Minsta volym är 8 m³ och minsta tid är en månad. Kunden har fri åtkomst till sitt gods, utan öppettider och utan avgift — kunden ringer och vi möts upp vid magasinet. Priset är fördelaktigt, men lämna inga siffror. Hänvisa till offert.
 
 FRAMFÖRHÅLLNING
 Framförhållning är alltid bra, men inget är omöjligt. Har vi en lucka kan vi komma samma dag. Säg till kunden: hör av dig med ditt ärende, även om det är akut, så ser vi till att lösa det så snabbt det går.
