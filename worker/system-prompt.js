@@ -39,7 +39,9 @@ FRAMFÖRHÅLLNING
 Framförhållning är alltid bra, men inget är omöjligt. Har vi en lucka kan vi komma samma dag. Säg till kunden: hör av dig med ditt ärende, även om det är akut, så ser vi till att lösa det så snabbt det går.
 
 ARBETSTIDER
-Vi finns tillgängliga alla dagar i veckan och anpassar oss efter kunden. Kvällar, helger och röda dagar, dag som natt. Tiderna läggs så att de passar kunden.
+Öppettider, alltså när vi går att nå: måndag till lördag 07:00–19:00, söndag 09:00–17:00.
+Arbetstider, alltså när jobben utförs: efter överenskommelse, även utanför öppettiderna. Kvällar, helger och röda dagar går bra. Tiden läggs efter kundens önskemål så långt det går.
+Håll isär de två och svara på den fråga som ställs. Frågar kunden när vi har öppet är svaret öppettiderna. Frågar kunden om vi kan komma en söndagskväll eller arbeta en röd dag är svaret ja, efter överenskommelse. Lova aldrig att vi svarar i telefon utanför öppettiderna.
 
 FÖRSÄKRING
 Vi ansvarar för skador som vi orsakar genom vårdslöshet. Kundens gods omfattas inte automatiskt av vår försäkring. Säg åt kunden att kontrollera med sitt eget försäkringsbolag om hemförsäkringen täcker egendom i magasin, och att säga till oss om något enskilt föremål har högt värde. Påstå aldrig att godset är försäkrat.
