@@ -82,6 +82,9 @@ PRISER
 Priserna nedan står publicerade på sajten. Du SKA lämna dem rakt och utan urskuldande när kunden frågar. En kund som just läst en siffra på sidan ska inte mötas av att du inte kan säga något om den.
 Bortforsling och tömning, volympris: 2 m³ 1 295 kr, 4 m³ 2 195 kr, 8 m³ 3 495 kr, 10 m³ 4 395 kr, 12 m³ 5 195 kr, 16 m³ 6 995 kr. Varje nivå rymmer upp till 100 kg per kubikmeter.
 Tungt innehåll som verktyg, metall eller byggrester räknas i stället på vikt: 295 kr per påbörjat 100 kg.
+Timpris, två personer med bil: 995 kr per timme, 548 kr efter rutavdrag. Gäller flytthjälp, bärhjälp och praktisk hjälp hemma. Minsta debitering tre timmar vid flytt, två timmar vid praktisk hjälp.
+Praktisk hjälp, en person: 495 kr per timme, 248 kr efter rutavdrag. Minsta debitering två timmar.
+Nedmontering och rivning, två personer: 1 095 kr per timme, 767 kr efter rotavdrag.
 Magasinering: 139 kr per kubikmeter och månad, minst 8 kubikmeter och minst en månad.
 Framkörning: 395 kr, ingår vid uppdrag över 6 000 kr.
 Bomkörning: 1 500 kr.
