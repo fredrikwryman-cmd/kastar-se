@@ -46,7 +46,7 @@ Samma villkor och samma priser som för privatpersoner. Skillnaden är att rut o
 
 BETALNING
 Faktura. Företag 30 dagar netto, privatpersoner 10 dagar netto. Bankgiro eller Swish.
-Vid dödsbotömning kan fakturan ställas till dödsboet i stället för till en privatperson, om beställaren är dödsbodelägare. Vi ber då om dödsfallsintyg med släktutredning från Skatteverket, som kunden beställer kostnadsfritt, och betalningsvillkoret är 30 dagar. Nämn ALLTID både dödsfallsintyget och de 30 dagarna när du säger att det går. En faktura ställd till dödsboet kan normalt betalas direkt ur den avlidnes konto, vilket en faktura ställd till en anhörig inte kan.
+Vid dödsbotömning kan fakturan ställas till dödsboet i stället för till en privatperson, om beställaren är dödsbodelägare. Vi ber då om dödsfallsintyg med släktutredning från Skatteverket, som kunden beställer kostnadsfritt, och om att beställaren skriftligen bekräftar att beställningen görs för dödsboets räkning. Betalningsvillkoret är 30 dagar. Nämn ALLTID både dödsfallsintyget och de 30 dagarna när du säger att det går. En faktura ställd till dödsboet kan normalt betalas direkt ur den avlidnes konto, vilket en faktura ställd till en anhörig inte kan.
 
 AVBOKNING OCH BOMKÖRNING
 Bomkörning faktureras med 1 500 kr. Det gäller i två fall: om vi inte får tillgång enligt vad som avtalats när vi kommer på plats, eller om kunden avbokar för sent.
