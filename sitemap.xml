@@ -25,6 +25,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://bohagsbolaget.se/tjanster/foretag/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://bohagsbolaget.se/tjanster/magasinering/</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
