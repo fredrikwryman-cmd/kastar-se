@@ -415,9 +415,132 @@ const narDetArLugnt = (fn) => {
   }
 };
 
+/* ---------- Volymkalkylator för magasinering ----------
+   Tjänstesidan /tjanster/magasinering/ ska svara på en enda fråga: vad kostar
+   det ungefär? Kunden vet sin boyta, inte sin kubik, så vi räknar om.
+
+   MAGASINERAD volym, inte transportvolym. I bilen finns luft mellan sakerna;
+   i magasinet staplas det tätt och möbler plockas isär. De två förväxlas lätt
+   och faktorerna nedan gäller det senare. Ändra dem inte utan att veta varför.
+
+   Priset som visas är alltid det kunden faktiskt betalar, alltså räknat på
+   minsta debiteringen när uppskattningen hamnar under den. */
+const MAG_PRIS_M3 = 139;
+const MAG_MIN_M3  = 8;
+const MAG_FAKTOR  = { latt: 0.19, normal: 0.24, mycket: 0.30 };
+const MAG_NAMN    = { latt: 'lätt möblerad', normal: 'normal möblerad', mycket: 'mycket möblerad' };
+const MAG_MIN_YTA = 15;
+const MAG_MAX_YTA = 400;
+
+// Bryggan till offertformuläret på startsidan. sessionStorage i stället för
+// query-parameter: uppgifterna hamnar inte i adressfältet, i historiken eller
+// i någon logg, och de försvinner när fliken stängs.
+const MAG_FORIFYLL = 'bb_offert_forifyll';
+
+function initMagasinKalkyl() {
+  const ytaEl = document.getElementById('magYta');
+  if (!ytaEl) return;
+
+  const snabbEl = document.getElementById('magSnabbval');
+  const gradEl  = document.getElementById('magGrad');
+  const volEl   = document.getElementById('magVolym');
+  const prisEl  = document.getElementById('magPris');
+  const minEl   = document.getElementById('magMinimum');
+  const cta     = document.getElementById('magOffert');
+
+  let grad = 'normal';
+  let yta  = Number(ytaEl.value) || 76;
+
+  const tusental = (n) => n.toLocaleString('sv-SE').replace(/ /g, ' ');
+
+  function rakna() {
+    const volym = Math.round(yta * MAG_FAKTOR[grad]);
+    const debiteradVolym = Math.max(volym, MAG_MIN_M3);
+    return { volym, debiteradVolym, pris: debiteradVolym * MAG_PRIS_M3 };
+  }
+
+  function rita() {
+    const r = rakna();
+    volEl.textContent  = '≈ ' + r.volym + ' m³';
+    prisEl.textContent = tusental(r.pris) + ' kr/mån';
+    minEl.hidden = r.volym >= MAG_MIN_M3;
+
+    // Snabbvalet markeras bara när fältet står på exakt den ytan.
+    snabbEl.querySelectorAll('button').forEach((b) => {
+      b.classList.toggle('active', Number(b.dataset.yta) === yta);
+    });
+  }
+
+  // Fältet är sanningen; snabbvalen skriver in i det. Vi klampar till
+  // intervallet vid beräkning men skriver inte om siffran medan kunden
+  // skriver – då kan man inte radera en sjua för att skriva 70.
+  function lasFalt() {
+    const n = Number(ytaEl.value);
+    if (!Number.isFinite(n) || ytaEl.value.trim() === '') return;
+    yta = Math.min(Math.max(Math.round(n), MAG_MIN_YTA), MAG_MAX_YTA);
+    rita();
+  }
+
+  ytaEl.addEventListener('input', lasFalt);
+  ytaEl.addEventListener('change', () => { lasFalt(); ytaEl.value = yta; });
+
+  snabbEl.addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    yta = Number(b.dataset.yta);
+    ytaEl.value = yta;
+    rita();
+  });
+
+  gradEl.addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    grad = b.dataset.grad;
+    gradEl.querySelectorAll('button').forEach((x) => {
+      const on = x === b;
+      x.classList.toggle('active', on);
+      x.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    rita();
+  });
+
+  if (cta) {
+    cta.addEventListener('click', () => {
+      const r = rakna();
+      const text = 'Magasinering. Bostad ' + yta + ' m², ' + MAG_NAMN[grad] +
+                   '. Uppskattad volym ' + r.volym + ' m³.';
+      try { sessionStorage.setItem(MAG_FORIFYLL, text); } catch (err) { /* privat läge */ }
+    });
+  }
+
+  rita();
+}
+
+/* Andra halvan av bryggan: startsidan plockar upp texten och lägger den i
+   meddelandefältet. Bara om fältet är tomt – kunden ska aldrig få något
+   överskrivet – och nyckeln töms direkt så texten inte dyker upp igen. */
+function initForifylltMeddelande() {
+  const falt = document.getElementById('message');
+  if (!falt) return;
+  let text = null;
+  // Privat lage kan kasta pa sessionStorage. Da finns det inget att fylla i.
+  try {
+    text = sessionStorage.getItem(MAG_FORIFYLL);
+  } catch (err) {
+    return;
+  }
+  if (!text) return;
+  try { sessionStorage.removeItem(MAG_FORIFYLL); } catch (err) { /* ignoreras */ }
+  if (!falt.value.trim()) falt.value = text;
+}
+
+// Direkt, inte i vantelaget: kunden kan hinna borja skriva i faltet.
+initForifylltMeddelande();
+
 narDetArLugnt(() => {
   initPaneler();
   initKalkylator();
+  initMagasinKalkyl();
 });
 
 /* ---------- Chattwidget – svarsassistenten ----------
