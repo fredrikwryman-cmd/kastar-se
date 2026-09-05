@@ -252,7 +252,7 @@ export default {
       let text = textUr(data);
       if (!text) {
         text = forfragan
-          ? 'Tack! Jag skickar uppgifterna vidare till Fredrik nu. Han hör av sig med ett fast pris.'
+          ? 'Tack, då har jag uppgifterna. Fredrik lämnar ett fast pris när han sett dem.'
           : 'Kan du formulera om frågan? Jag hängde inte riktigt med.';
       }
 
