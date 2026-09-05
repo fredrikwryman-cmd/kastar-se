@@ -531,6 +531,12 @@ body:not(.kort-sida) main p a:not(.btn) {
   text-transform: uppercase; letter-spacing: .03em;
   color: var(--orange-ink); cursor: pointer;
 }
+/* Magasineringskortet har en <a> här i stället för en <button>, eftersom det
+   leder till en egen sida. Enda skillnaden i utseende var att a:hover längre
+   upp i filen strök under texten. Resten – display, padding, ram, botten,
+   färg, typsnitt, cursor – sätts redan explicit ovan. */
+.card-cta:hover { text-decoration: none; }
+
 /* Bara pilen rör sig – texten står stilla. */
 .card-cta span { display: inline-block; margin-left: .35rem; transition: transform 150ms ease; }
 .cards-services .card:hover .card-cta span,

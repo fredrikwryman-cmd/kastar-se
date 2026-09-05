@@ -60,6 +60,16 @@ function initPaneler() {
   let lastTrigger = null;
 
   serviceGrid.addEventListener('click', (e) => {
+    // Kort som har en egen sida gar dit i stallet for att oppna en panel.
+    // Ligger fore panelupp-slaget: ett kort ar antingen det ena eller det
+    // andra, aldrig bada. Traffar klicket redan en <a> lamnas det ifred, sa
+    // att ctrl-klick, mittenklick och hogerklick beter sig som vanligt.
+    const lank = e.target.closest('.card[data-href]');
+    if (lank) {
+      if (!e.target.closest('a')) window.location.href = lank.dataset.href;
+      return;
+    }
+
     const card = e.target.closest('.card[data-panel]');
     if (!card) return;
     const panel = document.getElementById(card.dataset.panel);
