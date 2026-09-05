@@ -49,7 +49,7 @@ Primärknappen är petroltext på orange: var(--petrol-deep) mot var(--orange) g
 ## Magasineringsvillkor
 
 Magasinering löper från det datum godset ställs in och förnyas automatiskt
-en kalendermånad i taget. Minst 4 m³, minst en månad. 139 kr per m³ och
+en kalendermånad i taget. Minst 8 m³, minst en månad. 139 kr per m³ och
 månad, faktureras i förskott, påbörjad månad debiteras helt. Skriftlig
 uppsägning senast sju dagar före ny period, och avtalet upphör först när
 godset hämtats ut. Hämtning och utkörning är rutberättigat arbete,

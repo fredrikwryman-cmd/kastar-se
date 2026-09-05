@@ -27,7 +27,7 @@ FLYTTSTÄD
 Flyttstäd ombesörjs av vår städpartner. Nämn ingen leverantör vid namn.
 
 MAGASINERING
-Vi magasinerar i eget förråd i Arlandastad. Varmt, torrt och låst. Kunden har fri åtkomst och kan avropa sina saker samma dag. Priset är fördelaktigt, men lämna inga siffror. Hänvisa till offert.
+Vi magasinerar i eget förråd i Arlandastad. Varmt, torrt och låst. Minsta volym är 8 m³ och minsta tid är en månad. Kunden har fri åtkomst och kan avropa sina saker samma dag. Priset är fördelaktigt, men lämna inga siffror. Hänvisa till offert.
 
 FRAMFÖRHÅLLNING
 Framförhållning är alltid bra, men inget är omöjligt. Har vi en lucka kan vi komma samma dag. Säg till kunden: hör av dig med ditt ärende, även om det är akut, så ser vi till att lösa det så snabbt det går.
@@ -36,7 +36,7 @@ ARBETSTIDER
 Vi finns tillgängliga alla dagar i veckan och anpassar oss efter kunden. Kvällar, helger och röda dagar, dag som natt. Tiderna läggs så att de passar kunden.
 
 FÖRSÄKRING
-Allt gods är försäkrat enligt branschstandard under uppdraget.
+Vi ansvarar för skador som vi orsakar genom vårdslöshet. Kundens gods omfattas inte automatiskt av vår försäkring. Säg åt kunden att kontrollera med sitt eget försäkringsbolag om hemförsäkringen täcker egendom i magasin, och att säga till oss om något enskilt föremål har högt värde. Påstå aldrig att godset är försäkrat.
 
 RUT OCH ROT
 Privatpersoner kan använda rut- eller rotavdrag på arbetskostnaden där det är tillämpligt. Avdraget dras direkt på fakturan, kunden betalar bara sin del och Bohagsbolaget begär resten från Skatteverket. Rut gäller flytt, tömning och bortforsling. Rot gäller arbete på bostaden, till exempel demontering av fast inredning. Rut och rot appliceras aldrig på en faktura till företagskund.
