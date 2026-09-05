@@ -805,6 +805,17 @@ body:not(.kort-sida) main p a:not(.btn) {
    stycket ovanför. */
 .villkor h3 + p ~ h3 { margin-top: 2.2rem; }
 
+/* ---------- Brödsmulor och panellänk ----------
+   Två små tillägg för tjänstesidorna. Allt annat på de sidorna återanvänder
+   befintliga klasser. */
+.smulor {
+  margin: 0 0 1.25rem; font-size: .88rem; color: var(--muted);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+}
+.smulor a { color: var(--orange-ink); }
+.panel-lank { margin: .25rem 0 0; }
+.panel-lank a { color: var(--orange-ink); font-weight: 500; }
+
 /* ---------- Omdömen ----------
    Rutnät i stället för en fast kolumnbredd: ett omdöme fyller raden, fler
    lägger sig bredvid varandra på desktop och staplas på mobil. Inga
