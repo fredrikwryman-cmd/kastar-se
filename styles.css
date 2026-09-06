@@ -574,6 +574,14 @@ body:not(.kort-sida) main p a:not(.btn) {
 .feature-icon img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 4px; }
 .feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: #fff; }
 .feature p { margin: 0; }
+/* Notrad under rutnätet. Sajtens övriga notrader (.price-note, .magkalk-not)
+   dämpas med var(--muted), som är avsedd för ljus botten och blir för svag mot
+   petrol. Här dämpas raden i stället med grad och vikt, och färgen lämnas åt
+   .section-alt p som redan sätter var(--on-dark-body) för hela sektionen. */
+.features-not {
+  max-width: 940px; margin: 2.5rem auto 0; text-align: center;
+  font-size: .85rem; font-weight: 300; line-height: 1.6;
+}
 
 /* ---------- FAQ (dragspel på <details>, ingen JavaScript) ---------- */
 /* Samma ljusa botten som kontaktsektionen. */
