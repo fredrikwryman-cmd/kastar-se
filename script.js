@@ -48,93 +48,24 @@ if (siteHeader) {
   updateHeader();
 }
 
-/* ---------- Tjänstepaneler ----------
-   Varje kort öppnar en <dialog> som visas modalt. Elementet ger Esc-stängning
-   och fokusfälla av sig självt; här läggs klick utanför, scroll-lås och
-   återlämning av fokus till kortet ovanpå. */
+/* ---------- Klickbara tjänstekort ----------
+   Varje kort leder till sin tjänstesida. Kortets <a class="card-cta"> sköter
+   tangentbord, ctrl-klick och mittenklick av sig självt; den här lyssnaren gör
+   resten av kortytan klickbar utan att lägga sig i de fallen. */
 const serviceGrid = document.querySelector('.cards-services');
-const panels = document.querySelectorAll('.panel');
 
-function initPaneler() {
-  if (!serviceGrid || !panels.length) return;
-  let lastTrigger = null;
+function initKortlankar() {
+  if (!serviceGrid) return;
 
   serviceGrid.addEventListener('click', (e) => {
-    // Kort som har en egen sida gar dit i stallet for att oppna en panel.
-    // Ligger fore panelupp-slaget: ett kort ar antingen det ena eller det
-    // andra, aldrig bada. Traffar klicket redan en <a> lamnas det ifred, sa
-    // att ctrl-klick, mittenklick och hogerklick beter sig som vanligt.
-    const lank = e.target.closest('.card[data-href]');
-    if (lank) {
-      if (!e.target.closest('a')) window.location.href = lank.dataset.href;
-      return;
-    }
-
-    const card = e.target.closest('.card[data-panel]');
-    if (!card) return;
-    const panel = document.getElementById(card.dataset.panel);
-    if (!panel || typeof panel.showModal !== 'function' || panel.open) return;
-
-    lastTrigger = card.querySelector('.card-cta') || card;
-    panel.showModal();
-    document.documentElement.style.overflow = 'hidden';
-
-    const close = panel.querySelector('.panel-close');
-    if (close) close.focus();
-  });
-
-  // Släpper scroll-låset och lämnar tillbaka fokus. Körs bara när ingen panel
-  // är öppen, så att en sen stängning inte låser upp bakom en nyöppnad panel.
-  // Idempotent – kan anropas flera gånger för samma stängning.
-  const releasePanel = () => {
-    if (document.querySelector('.panel[open]')) return;
-    document.documentElement.style.overflow = '';
-    const trigger = lastTrigger;
-    lastTrigger = null;
-    if (trigger) trigger.focus();
-  };
-
-  const closePanel = (panel) => {
-    panel.close();
-    releasePanel();
-  };
-
-  // Bevakar open-attributet på dialogerna. Slår till både när en panel öppnas
-  // och när den stängs – releasePanel avbryter själv så länge någon panel är
-  // öppen, så bara den sista stängningen släpper låset.
-  const oppetVakt = new MutationObserver(releasePanel);
-
-  panels.forEach((panel) => {
-    // Klick på bakgrunden träffar dialogrutan själv, inte innehållet
-    panel.addEventListener('click', (e) => {
-      if (e.target === panel) closePanel(panel);
-    });
-
-    const close = panel.querySelector('.panel-close');
-    if (close) close.addEventListener('click', () => closePanel(panel));
-
-    // "Begär offert" leder till formuläret – panelen ska inte ligga kvar över det
-    const cta = panel.querySelector('.panel-btn');
-    if (cta) cta.addEventListener('click', () => closePanel(panel));
-
-    // Noternas länkar leder vidare på sidan – samma sak där, panelen ska inte
-    // ligga kvar över det man klickat sig till
-    panel.querySelectorAll('.price-note a[href^="#"]').forEach((link) => {
-      link.addEventListener('click', () => closePanel(panel));
-    });
-
-    // Esc och webbläsarens egen stängning går inte via closePanel. Dialogens
-    // close-händelse levereras inte pålitligt i alla lägen, så låset kopplas
-    // till open-attributet i stället: det försvinner vid VARJE stängning,
-    // oavsett väg. close-händelsen får ligga kvar som extra sele.
-    panel.addEventListener('close', releasePanel);
-    oppetVakt.observe(panel, { attributes: true, attributeFilter: ['open'] });
+    const kort = e.target.closest('.card[data-href]');
+    if (!kort) return;
+    // Traffar klicket redan en <a> lamnas det ifred, sa att ctrl-klick,
+    // mittenklick och hogerklick beter sig som vanligt.
+    if (e.target.closest('a')) return;
+    window.location.href = kort.dataset.href;
   });
 }
-
-/* ---------- Årtal i sidfoten ---------- */
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
 
 /* ---------- Priskalkylator ----------
    Enda sanningskällan för stegen: knapparna under reglaget byggs härifrån och
@@ -406,10 +337,10 @@ if (heroSektion && heroLager && heroInnehall) {
 }
 
 /* ---------- Uppskjuten initiering ----------
-   Tjänstepanelerna och priskalkylatorn syns inte på första skärmen, men deras
-   uppsättning är det tyngsta script.js gör: tio dialogrutor med fokushantering,
-   scroll-lås och ARIA-koppling, plus sex knappar som byggs ur TIERS. Kört direkt
-   låg det i vägen för hero-renderingen. Nu väntar det tills huvudtråden är ledig.
+   Priskalkylatorn syns inte på första skärmen, men uppsättningen är det tyngsta
+   script.js gör: sex knappar som byggs ur TIERS, plus kortlänkarna och
+   magasineringskalkylatorn. Kört direkt låg det i vägen för hero-renderingen.
+   Nu väntar det tills huvudtråden är ledig.
 
    requestIdleCallback med timeout: 1000 garanterar att det körs inom en sekund
    även om tråden aldrig blir riktigt ledig. setTimeout är reserv för Safari,
@@ -548,7 +479,7 @@ function initForifylltMeddelande() {
 initForifylltMeddelande();
 
 narDetArLugnt(() => {
-  initPaneler();
+  initKortlankar();
   initKalkylator();
   initMagasinKalkyl();
 });

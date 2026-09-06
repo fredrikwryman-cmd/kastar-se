@@ -31,7 +31,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=46" />
+  <link rel="stylesheet" href="/styles.css?v=47" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -311,6 +311,8 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
+    <!-- Dold för ögat, läses av skärmläsare. Utan den saknar sidfotens
+         kolumnrubriker en nivå ovanför sig och rubrikordningen hoppar. -->
     <h2 class="sr-only">Bohagsbolaget.se</h2>
     <div class="container footer-inner">
       <div class="footer-brand">
@@ -321,21 +323,25 @@
             <span class="brand-tagline">Tömning · Flytt · Demontering · Magasinering</span>
           </span>
         </div>
-        <p>Snabb, trygg och miljövänlig tömning av bostäder och lokaler.</p>
+        <p>Tömning, flytt, bortforsling, montering, demontering och magasinering i Stockholm och Uppsala.</p>
       </div>
       <div class="footer-col">
         <h3>Tjänster</h3>
-        <a href="/tjanster/bortforsling/">Möbler &amp; inventarier</a>
+        <a href="/tjanster/flytthjalp/">Flytthjälp</a>
+        <a href="/tjanster/tomning/">Tömning</a>
         <a href="/tjanster/dodsbo/">Dödsbon &amp; bostäder</a>
+        <a href="/tjanster/bortforsling/">Möbler &amp; inventarier</a>
+        <a href="/tjanster/nedmontering/">Nedmontering &amp; rivning</a>
         <a href="/tjanster/magasinering/">Magasinering</a>
-        <a href="/tjanster/flytthjalp/">Mindre flyttar</a>
+        <a href="/tjanster/foretag/">Företag &amp; föreningar</a>
       </div>
       <div class="footer-col">
         <h3>Kontakt</h3>
         <a href="tel:0703433440">Thom – 070-343 34 40</a>
         <a href="tel:0705614845">Fredrik – 070-561 48 45</a>
         <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se</a>
-        <span>Arlandastad</span>
+        <a class="footer-kort" href="/thom">Thoms visitkort</a>
+        <a class="footer-kort" href="/fredrik">Fredriks visitkort</a>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -343,7 +349,13 @@
     </div>
 
     <div class="container footer-legal">
+      <!-- TODO: DOLD TILLS RIKTIGA UPPGIFTER LEVERERATS.
+           Raden nedan får inte publiceras med platshållare. Fyll i företagsnamn
+           och organisationsnummer och ta sedan bort kommentarstecknen.
+      <p>Bohagsbolaget.se drivs av [Företagsnamn AB] · Org.nr: [559XXX-XXXX]</p>
+      -->
       <p>Org.nr 850218-0014 <span aria-hidden="true">·</span> Momsreg.nr SE850218001401 <span aria-hidden="true">·</span> Godkänd för F-skatt</p>
+      <p><span class="orter">Upplands Väsby · Knivsta · Arlandastad</span> – uppdrag i hela Stockholm och Uppsala med omnejd</p>
       <p class="footer-credit">Webbplats utvecklad av <a href="https://aimstudios.se">AiMstudios.se</a></p>
     </div>
   </footer>
@@ -370,7 +382,7 @@
     </div>
   </div>
 
-  <script src="/script.js?v=19"></script>
+  <script src="/script.js?v=20"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
