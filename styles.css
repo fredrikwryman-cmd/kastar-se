@@ -498,9 +498,10 @@ body:not(.kort-sida) main p a:not(.btn) {
 
 /* ---------- Tjänstekort (vita kort på kräm) ---------- */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
-/* Tjänstekorten ligger i fyra kolumner – omdömena använder samma .cards och ska inte följa med.
+/* Tjänstekorten ligger i fyra kolumner, till skillnad från .cards egna tre.
    grid-auto-rows: 1fr gör alla rader lika höga, så korten blir lika höga även
-   när texterna är olika långa. */
+   när texterna är olika långa – och även när situationsraden bryts till två
+   rader på ett kort men inte på grannen. */
 .cards-services { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
 /* Surfplatta: två i bredd. Fyra kort blir för smala redan strax över 1000px. */
 @media (max-width: 1060px) {
