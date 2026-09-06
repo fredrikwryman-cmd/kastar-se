@@ -155,9 +155,9 @@
     </div>
   </details>
 
-  <!-- 2. RIVNINGSMASSOR -->
+  <!-- 2. RIVNINGSAVFALL -->
   <details class="card">
-    <summary>Rivningsmassor, vikt <span class="sum-amt" data-sum="vikt"></span></summary>
+    <summary>Rivningsavfall, vikt <span class="sum-amt" data-sum="vikt"></span></summary>
     <div class="body">
       <div class="row">
         <label>Uppskattad vikt
@@ -173,7 +173,7 @@
   <details class="card">
     <summary>Nedmontering &amp; rivning <span class="sum-amt" data-sum="ned"></span></summary>
     <div class="body">
-      <div class="row"><label>Kök, skåp och bänkskiva <span class="hint">3 295 kr</span></label><input type="number" class="ned" data-p="3295" min="0" step="1" value="0"></div>
+      <div class="row"><label>Enkelkök, en vägg, utan vinkel eller kakel <span class="hint">3 295 kr fast</span></label><input type="number" class="ned" data-p="3295" min="0" step="1" value="0"></div>
       <div class="row"><label>Kök inkl. kakel ovanför bänk <span class="hint">4 995 kr</span></label><input type="number" class="ned" data-p="4995" min="0" step="1" value="0"></div>
       <div class="row"><label>Parkettgolv, rum upp till 20 m² <span class="hint">2 795 kr per rum</span></label><input type="number" class="ned" data-p="2795" min="0" step="1" value="0"></div>
       <div class="row"><label>Klinker/kakel golv, rum upp till 10 m² <span class="hint">5 495 kr per rum</span></label><input type="number" class="ned" data-p="5495" min="0" step="1" value="0"></div>
@@ -364,11 +364,11 @@
     if (vandor > 0) { lines.push([vandor + ' extra vända' + (vandor > 1 ? 'or' : ''), vandor * 1200]); trans += vandor * 1200; }
     var sumVol = volPris + vandor * 1200;
 
-    // Rivningsmassor
+    // Rivningsavfall
     var kg = num('kg'), viktPris = 0;
     if (kg > 0) {
       viktPris = Math.max(995, Math.ceil(kg / 100) * 295);
-      lines.push(['Rivningsmassor, ' + kg + ' kg', viktPris]);
+      lines.push(['Rivningsavfall, ' + kg + ' kg', viktPris]);
       trans += viktPris;
     }
 
