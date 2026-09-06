@@ -123,7 +123,7 @@
         </label>
         <input type="number" id="fordon" min="0" step="10" value="100">
       </div>
-      <p class="note">Dras från flytthjälpens timpris och redovisas som egen rad. Allt övrigt arbete – tungflytt, nedmontering, praktisk hjälp och flyttstädning – är arbete fullt ut.</p>
+      <p class="note">Dras från timpriset för två personer med bil och redovisas som egen rad. Det gäller både flytthjälp och praktisk hjälp med två personer, eftersom det är samma timpris. Enmanstimmen, tungflytt, nedmontering och flyttstädning är arbete fullt ut.</p>
     </div>
   </details>
 
@@ -173,12 +173,12 @@
   <details class="card">
     <summary>Nedmontering &amp; rivning <span class="sum-amt" data-sum="ned"></span></summary>
     <div class="body">
-      <div class="row"><label>Enkelkök, en vägg, utan vinkel eller kakel <span class="hint">3 295 kr fast</span></label><input type="number" class="ned" data-p="3295" min="0" step="1" value="0"></div>
-      <div class="row"><label>Kök inkl. kakel ovanför bänk <span class="hint">4 995 kr</span></label><input type="number" class="ned" data-p="4995" min="0" step="1" value="0"></div>
-      <div class="row"><label>Parkettgolv, rum upp till 20 m² <span class="hint">2 795 kr per rum</span></label><input type="number" class="ned" data-p="2795" min="0" step="1" value="0"></div>
-      <div class="row"><label>Klinker/kakel golv, rum upp till 10 m² <span class="hint">5 495 kr per rum</span></label><input type="number" class="ned" data-p="5495" min="0" step="1" value="0"></div>
+      <div class="row"><label>Enkelkök, en vägg, utan vinkel eller kakel <span class="hint">3 295 kr fast · underskåp, överskåp och bänkskiva</span></label><input type="number" class="ned" data-p="3295" min="0" step="1" value="0"></div>
+      <div class="row"><label>Kök inkl. kakel ovanför bänk <span class="hint">från 4 995 kr</span></label><input type="number" class="ned" data-p="4995" min="0" step="1" value="0"></div>
+      <div class="row"><label>Parkettgolv, rum upp till 20 m² <span class="hint">från 2 795 kr per rum</span></label><input type="number" class="ned" data-p="2795" min="0" step="1" value="0"></div>
+      <div class="row"><label>Klinker/kakel golv, rum upp till 10 m² <span class="hint">från 5 495 kr per rum</span></label><input type="number" class="ned" data-p="5495" min="0" step="1" value="0"></div>
       <div class="row"><label>Gipsvägg, icke bärande <span class="hint">595 kr per löpmeter</span></label><input type="number" class="ned" data-p="595" min="0" step="1" value="0"></div>
-      <div class="row"><label>Garderober, inbyggda möbler <span class="hint">1 895 kr</span></label><input type="number" class="ned" data-p="1895" min="0" step="1" value="0"></div>
+      <div class="row"><label>Garderober, inbyggda möbler <span class="hint">från 1 895 kr</span></label><input type="number" class="ned" data-p="1895" min="0" step="1" value="0"></div>
       <div class="row"><label>Timpris, två personer <span class="hint">1 095 kr per timme</span></label><input type="number" class="ned" data-p="1095" min="0" step="0.5" value="0"></div>
       <p class="note">ROT-grundande arbete. Bortforslingen av massorna är det inte – håll posterna separata i offerten.</p>
     </div>
@@ -214,7 +214,7 @@
     <div class="body">
       <div class="row"><label>Kubikmeter <span class="hint">139 kr per m³ och månad, minst 8 m³</span></label><input type="number" id="magm3" min="0" step="1" value="0"></div>
       <div class="row"><label>Antal månader <span class="hint">Minst 1 månad</span></label><input type="number" id="magman" min="0" step="1" value="0"></div>
-      <p class="note">Hämtning och utkörning räknas som bortforsling ovan. Själva förvaringen ger inget avdrag.</p>
+      <p class="note">Hämtning och utkörning prissätts på ordinarie timpris, 995 kr för två personer med bil, och bokförs på flyttraden ovan — inte som bortforsling. Sker de i samband med en flytt mellan två bostäder är arbetsdelen rutgrundande. Själva förvaringen ger aldrig avdrag.</p>
     </div>
   </details>
 
@@ -419,8 +419,8 @@
 
     // Magasinering
     var m3 = num('magm3'), man = num('magman'), sumMag = 0;
-    if (m3 > 0 && man > 0) {
-      var dm3 = Math.max(4, m3), dman = Math.max(1, man);
+    if (m3 > 0) {
+      var dm3 = Math.max(8, m3), dman = Math.max(1, man);
       sumMag = dm3 * dman * 139;
       lines.push(['Magasinering, ' + dm3 + ' m³ i ' + dman + ' mån', sumMag]);
       ovr += sumMag;
@@ -441,12 +441,22 @@
       sumHjalp += dh * 495;
       lines.push(['Praktisk hjälp, ' + dh + ' tim (1 pers)', dh * 495]);
     }
+    var hjalpFordon = 0;
     if (hh2 > 0) {
       var dh2 = Math.max(2, hh2);
-      sumHjalp += dh2 * 995;
-      lines.push(['Praktisk hjälp, ' + dh2 + ' tim (2 pers)', dh2 * 995]);
+      var radHjalp2 = dh2 * 995;
+      sumHjalp += radHjalp2;
+      lines.push(['Praktisk hjälp, ' + dh2 + ' tim (2 pers)', radHjalp2]);
+      // Samma timpris som flytthjalpen, alltsa samma uppdelning: bilen bryts UT
+      // ur beloppet, den laggs aldrig ovanpa. Totalpriset mot kund ar detsamma.
+      hjalpFordon = Math.min(radHjalp2, Math.round(dh2 * fordonTim));
+      if (hjalpFordon > 0) {
+        lines.push(['  varav fordon och drivmedel', -hjalpFordon]);
+        lines.push(['  varav arbete', radHjalp2 - hjalpFordon]);
+      }
     }
-    rut += sumHjalp;
+    rut += sumHjalp - hjalpFordon;
+    trans += hjalpFordon;
 
     // Flyttstädning – arbetskostnad till 100 procent, hela beloppet är därför
     // RUT-grundande. Priset styrs av bostadens yta, inte av tid.
@@ -476,7 +486,7 @@
     var framVal = document.getElementById('fram').value;
     var fram = 0;
     if (framVal === 'ja') fram = 395;
-    else if (framVal === 'auto' && del > 0 && del < 6000) fram = 395;
+    else if (framVal === 'auto' && del > 0 && del <= 6000) fram = 395;
     if (fram) { lines.push(['Framkörning', fram]); trans += fram; sumTill += fram; }
 
     var bom = num('bom');
@@ -585,8 +595,8 @@
     });
     t += '------------------------------------------\n';
     t += pad('Att betala', 32) + kr(r.total) + '\n';
-    t += 'Alla priser anges före RUT-avdrag. Avdraget\n';
-    t += 'redovisas nedan.\n\n';
+    t += 'Alla priser anges före rot- och rutavdrag.\n';
+    t += 'Avdraget redovisas nedan.\n\n';
     if (r.rot > 0) t += 'Varav ROT-grundande arbete: ' + kr(r.rot) + ' → avdrag ' + kr(r.rotAvd) + '\n';
     if (r.rut > 0) t += 'Varav RUT-grundande arbete: ' + kr(r.rut) + ' → avdrag ' + kr(r.rutAvd) + '\n';
     if (r.rot > 0 || r.rut > 0) t += 'Efter avdrag, om villkoren uppfylls: ' + kr(r.efter) + '\n';
