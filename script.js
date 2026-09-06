@@ -67,6 +67,10 @@ function initKortlankar() {
   });
 }
 
+/* ---------- Årtal i sidfoten ---------- */
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
+
 /* ---------- Priskalkylator ----------
    Enda sanningskällan för stegen: knapparna under reglaget byggs härifrån och
    reglagets max sätts efter antalet steg. Lägg till eller ta bort ett steg här

@@ -44,7 +44,7 @@ filerna.
 - **Noll renderingsblockerande resurser.** Den externa typsnittslänken var den
   enda och är borta.
 - **Tung initiering är flyttad till `requestIdleCallback`**, med `setTimeout`
-  som reserv. Tjänstepanelernas fokushantering och priskalkylatorns uppsättning
+  som reserv. Priskalkylatorns uppsättning och kortlänkarna
   är det tyngsta skriptet gör, och ingenting av det syns på första skärmen.
   Mobilmenyn, headern och hero-parallaxen initieras direkt — de hör till första
   skärmen.
@@ -109,7 +109,7 @@ krämvitt och den varmare ytan `#F1EAE0` i faktarutan på rot- och rut-sidan.
 | `integritetspolicy.html`, `tack.html` | Policy respektive kvittens efter formulär |
 | `fredrik/`, `thom/` | Digitala visitkort med `.vcf`-fil och QR-kod |
 | `styles.css` | All styling för sajten. Paletten ligger överst i `:root` |
-| `script.js` | Meny, header, paneler, priskalkylator, formulär, hero-parallax |
+| `script.js` | Meny, header, kortlänkar, priskalkylator, formulär, hero-parallax |
 | `kort.css`, `kort.js` | Enbart visitkorten |
 | `verktyg/kalkyl.html` | Internt offertverktyg, inte länkat från sajten |
 | `assets/` | Bilder i WebP, Open Graph-bilder i JPEG, ikoner, typsnitt |
