@@ -310,6 +310,7 @@
     <div class="tbig"><span>Kund betalar efter avdrag</span><strong id="tEfter">0 kr</strong></div>
     <p class="tsplit" id="tSplit">Du fakturerar 0 kr, Skatteverket betalar 0 kr</p>
     <div class="flag bad" id="takflag">Beräknat ROT-avdrag överstiger 50 000 kr per person och år.</div>
+    <div class="flag bad" id="takflag2">Rot och rut överstiger tillsammans det gemensamma taket.</div>
     <div class="btns">
       <button id="copy">Skapa offerttext</button>
       <button class="ghost" id="reset">Nollställ</button>
@@ -580,6 +581,20 @@
 
     var tf = document.getElementById('takflag');
     tf.className = 'flag bad' + (rotRatt > 50000 ? ' on' : '');
+
+    // Visar bara det som redan raknats ovan: skillnaden mellan det avdrag
+    // kunden hade haft ratt till och det som blev kvar efter taken. Rakningen
+    // ar ororad; utan den har raden trimmas rotavdraget under tystnad.
+    var tf2 = document.getElementById('takflag2');
+    var trimmat = (rotRatt - rotAvd) + (rutRatt - rutAvd);
+    if (trimmat > 0) {
+      tf2.className = 'flag bad on';
+      tf2.textContent = 'Taket slår i: ' + kr(trimmat) + ' av det beräknade avdraget faller '
+        + 'bort. Rot och rut delar 75 000 kr per person och år, varav högst 50 000 kr får '
+        + 'vara rotavdrag.';
+    } else {
+      tf2.className = 'flag bad';
+    }
 
     return {lines:lines, rot:rot, rut:rut, trans:trans, total:total, rotAvd:rotAvd, rutAvd:rutAvd, efter:efter};
   }
