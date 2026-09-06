@@ -544,6 +544,20 @@ body:not(.kort-sida) main p a:not(.btn) {
 
 .card h3 { margin-bottom: .5rem; }
 .card p { margin: 0; }
+/* Situationsraden står över tjänsterubriken och säger vilket läge kunden är i.
+   Den är en etikett, inte en rubrik. Formen är sajtens eyebrow, men färgen är
+   dämpad i stället för orange: annars hade kortet fått två orangea versalrader,
+   en överst och pil-länken nederst, och etiketten hade tävlat med rubriken.
+   .card p sätter margin:0 och är mer specifik än en ensam klass, därför
+   .card .card-situation. */
+.card .card-situation {
+  margin: 0 0 .35rem;
+  font-size: .78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .063em;
+  color: var(--muted);
+}
 
 /* ---------- "Varför välja oss" (mörk sektion, orange konturikoner) ---------- */
 .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 3rem; max-width: 940px; margin: 0 auto; }
@@ -829,19 +843,26 @@ body:not(.kort-sida) main p a:not(.btn) {
 .smulor a { color: var(--orange-ink); }
 
 /* ---------- Omdömen ----------
-   Rutnät i stället för en fast kolumnbredd: ett omdöme fyller raden, fler
-   lägger sig bredvid varandra på desktop och staplas på mobil. Inga
-   Trustpilot-tillgångar används - stjärnorna är egna, i husets orange. */
+   Centrerade kolumner utan ram, botten eller skugga - bara luft skiljer dem
+   åt. Flexrad i stället för rutnät: med bara två omdömen hade auto-fit
+   sträckt ut dem över hela sidbredden, medan en flexrad med tak på
+   kolumnbredden håller ihop dem mitt på sidan. Basbredden 240px mot taket
+   300px gör att tre omdömen ryms på en rad och att fyra eller fem bryter av
+   sig själva, utan ny CSS. Under cirka 560px ryms bara en kolumn och de
+   staplas. align-items: flex-start toppjusterar - kolumnerna är olika långa
+   och ska inte sträckas till samma höjd. Inga Trustpilot-tillgångar används -
+   stjärnorna är egna, i husets orange. */
 .omdomen {
-  display: grid; gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex; flex-wrap: wrap;
+  justify-content: center; align-items: flex-start;
+  gap: 2.75rem;
   max-width: 1000px; margin: 0 auto;
 }
 .omdome {
-  margin: 0; padding: 1.9rem;
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: var(--radius-card); box-shadow: var(--shadow);
-  display: flex; flex-direction: column; gap: 1rem;
+  flex: 1 1 240px; max-width: 300px;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; align-items: center; gap: .9rem;
+  text-align: center;
 }
 .omdome-stjarnor { display: flex; gap: .25rem; }
 .omdome-stjarnor svg { display: block; }
@@ -850,10 +871,19 @@ body:not(.kort-sida) main p a:not(.btn) {
   margin: 0; color: var(--body-c);
   font-size: 1.02rem; line-height: 1.7;
 }
+/* Citattecknen sätts här och inte i markupen: omdömestexten är ordagrant vad
+   kunden skrev och ska inte kompletteras med tecken hon inte skrivit. */
+.omdome blockquote p::before { content: "\201C"; }
+.omdome blockquote p::after  { content: "\201D"; }
 .omdome figcaption {
-  margin-top: auto; color: var(--muted);
-  font-size: .9rem; font-weight: 500;
+  margin-top: 0; color: var(--muted); font-size: .9rem;
 }
+/* Namnet och datumet ligger på var sin rad. Punkten mellan dem behövdes när
+   de stod på samma rad; den är dekor med aria-hidden och döljs här i stället
+   för att tas bort ur markupen, som inte ska röras. */
+.omdome figcaption [aria-hidden="true"] { display: none; }
+.omdome-namn  { display: block; font-weight: 700; color: var(--body-c); }
+.omdome-datum { display: block; margin-top: .15rem; font-size: .85em; }
 .omdome-lankar {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;
   margin: 2rem 0 0; text-align: center;
