@@ -507,12 +507,24 @@ body:not(.kort-sida) main p a:not(.btn) {
 @media (max-width: 1060px) {
   .cards-services { grid-template-columns: repeat(2, 1fr); }
 }
+/* Kortet star pa vit botten och ar sjalvt vitt, sa kanten far bara 1,33:1 ur
+   var(--line) och kortet laser som platt. Kantfargen kan inte hjalpa: nasta
+   neutrala ton i paletten ar var(--muted) med 5,61:1, en wireframe snarare an
+   en kortkant, och gapet daremellan rymmer bara de tva orangea tonerna. Den
+   tata skuggan gor jobbet i stallet. Vardet ar inte nytt - det ar samma
+   0 2px 8px rgba(0,36,46,.28) som reglageknappen redan anvander langre ned. */
 .card {
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
-  padding: 0; overflow: hidden; box-shadow: var(--shadow); text-align: center;
+  padding: 0; overflow: hidden; text-align: center;
+  box-shadow: var(--shadow), 0 2px 8px rgba(0,36,46,.28);
   transition: transform .18s ease, box-shadow .18s ease;
 }
-.card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,36,46,.12); }
+/* Den tata skuggan foljer med in i hover-laget. Utan den tappar kortet sin
+   kant just nar det lyfts, och ser plattare ut hovrat an i vila. */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0,36,46,.12), 0 2px 8px rgba(0,36,46,.28);
+}
 /* height:auto krävs – annars slår height-attributet på <img> igenom som
    presentationshint och kopplar bort aspect-ratio, så bilden blir 900px hög. */
 .card-img {
