@@ -104,7 +104,7 @@ krämvitt och den varmare ytan `#F1EAE0` i faktarutan på rot- och rut-sidan.
 
 | Fil | Innehåll |
 |---|---|
-| `index.html` | Startsidan: hero, priser, rot och rut, tjänster, FAQ, kontakt |
+| `index.html` | Startsidan: hero, trygghet, tjänster, magasinering, så går det till, priser, rot och rut, varför oss, omdömen, FAQ, kontakt |
 | `rot-rut.html` | Vad som ger avdrag och vad som inte gör det |
 | `integritetspolicy.html`, `tack.html` | Policy respektive kvittens efter formulär |
 | `fredrik/`, `thom/` | Digitala visitkort med `.vcf`-fil och QR-kod |

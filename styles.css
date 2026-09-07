@@ -496,7 +496,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 /* På mörk sektion skulle den dämpade grå tonen ovan bli oläslig */
 .section-alt .section-head .lead { color: var(--on-dark-body); }
 
-/* ---------- Tjänstekort (vita kort på kräm) ---------- */
+/* ---------- Tjänstekort (vita kort; ram och skugga bär mot båda bottnarna) ---------- */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
 /* Tjänstekorten ligger i fyra kolumner, till skillnad från .cards egna tre.
    grid-auto-rows: 1fr gör alla rader lika höga, så korten blir lika höga även
