@@ -1009,7 +1009,10 @@ body:not(.kort-sida) main p a:not(.btn) {
 .legal { max-width: 760px; margin: 0 auto; }
 .legal h1 { margin-bottom: 1.5rem; overflow-wrap: break-word; }
 .legal h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
-.legal p, .legal li { color: var(--body-c); }
+/* Samma skydd som .legal h1 ovan. Policyn namnger vardvamn och adresser -
+   static.cloudflareinsights.com ar 29 tecken utan brytpunkt och stack ut ur
+   textspalten vid 320 px. */
+.legal p, .legal li { color: var(--body-c); overflow-wrap: break-word; }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
 .legal li { margin-bottom: .35rem; }
 .legal .updated { font-size: .85rem; font-weight: 300; color: var(--muted); }

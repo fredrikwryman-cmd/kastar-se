@@ -162,7 +162,7 @@ const formStatus  = document.getElementById('formStatus');
 const submitBtn   = document.getElementById('contactSubmit');
 
 const OK_TEXT    = 'Tack! Vi har fått din förfrågan och återkommer så snart vi kan.';
-const ERROR_TEXT = 'Något gick fel. Ring oss på 070-343 34 40 eller maila boka@bohagsbolaget.se så hjälper vi dig.';
+const ERROR_TEXT = 'Något gick fel. Ring oss på 070-561 48 45 eller maila boka@bohagsbolaget.se så hjälper vi dig.';
 
 if (contactForm && formStatus && submitBtn) {
   const showStatus = (text, ok) => {
