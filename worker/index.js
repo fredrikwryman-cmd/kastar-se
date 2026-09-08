@@ -100,7 +100,21 @@ async function anropaAnthropic(messages, apiKey, toolChoice) {
   const kropp = {
     model: MODEL,
     max_tokens: MAX_TOKENS,
-    system: SYSTEM_PROMPT,
+    /* Systemprompten ar 17 807 tecken och identisk i varje anrop. Som blockform
+       med cache_control cachas den i stallet for att skickas om: brytpunkten
+       tacker allt fore sig, alltsa bade tools och system. Cachen lever fem
+       minuter och forlangs vid varje traff, sa en pagaende konversation betalar
+       full input-kostnad en gang. Verktygsloopen kan ge tre anrop per
+       besokarfraga - da traffar tva av tre cachen.
+       claude-haiku-4-5 kraver minst 2048 tokens for att cachen ska aktiveras;
+       prompten ligger pa runt 5 000 och klarar granskan med marginal. */
+    system: [
+      {
+        type: 'text',
+        text: SYSTEM_PROMPT,
+        cache_control: { type: 'ephemeral' },
+      },
+    ],
     tools: [TOOL],
     messages,
   };
