@@ -1192,17 +1192,36 @@ body:not(.kort-sida) main p a:not(.btn) {
 .calc-desc { color: var(--body-c); font-size: .95rem; margin-top: .35rem; }
 
 /* Reglage */
+/* Traffytan var 8px hog - hela reglaget var lika hogt som sparet. Elementet
+   ar nu 44px och genomskinligt, och sjalva sparet ritas i track-pseudot i
+   stallet. Marginalerna dras ned med 18px i bada andar, exakt halva
+   hojdokningen, sa att sparet hamnar pa samma pixel som forut. --pct arvs in
+   i pseudoelementet och styr fyllningen som tidigare. */
 .calc-range {
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 8px; border-radius: 99px; margin: 2rem 0 1rem;
-  background: linear-gradient(to right, var(--orange) 0%, var(--orange) var(--pct,40%), var(--line) var(--pct,40%), var(--line) 100%);
+  /* display: block kravs. Som inline-block sitter reglaget pa en radbox, och
+     radhojden lade 11px under elementet som inte gick att marginera bort -
+     stegknapparna hamnade 10px for langt ned nar elementet vaxte. */
+  display: block;
+  width: 100%; height: 44px; margin: calc(2rem - 18px) 0 calc(1rem - 18px);
+  background: transparent;
   cursor: pointer;
+}
+.calc-range::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 99px;
+  background: linear-gradient(to right, var(--orange) 0%, var(--orange) var(--pct,40%), var(--line) var(--pct,40%), var(--line) 100%);
+}
+.calc-range::-moz-range-track {
+  height: 8px; border-radius: 99px;
+  background: linear-gradient(to right, var(--orange) 0%, var(--orange) var(--pct,40%), var(--line) var(--pct,40%), var(--line) 100%);
 }
 .calc-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 28px; height: 28px; border-radius: 50%;
   background: var(--orange); border: 4px solid #fff;
   box-shadow: 0 2px 8px rgba(0,36,46,.28); cursor: grab;
+  /* Sparet ar 8px, knappen 28px: halva skillnaden lyfter den pa mitten. */
+  margin-top: -10px;
 }
 .calc-range::-moz-range-thumb {
   width: 28px; height: 28px; border-radius: 50%; border: 4px solid #fff;
@@ -1293,7 +1312,13 @@ body:not(.kort-sida) main p a:not(.btn) {
   .trust { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1.25rem; }
   .steps { grid-template-columns: 1fr; gap: 2rem; }
 
-  body { padding-bottom: 68px; }
+  /* Raden ar 77px hog och far dessutom env(safe-area-inset-bottom) i sin
+     padding. 68px lamnade 9px underskott pa vanlig mobil och 43px pa iPhone
+     med hemindikator, sa sista raden i sidfoten hamnade bakom baren.
+     4.9rem = 78.4px tacker sjalva raden, och env() laggs till ovanpa sa att
+     hemindikatorn far sitt eget utrymme. Vald framfor att mata i JS: vardet
+     ar i praktiken statiskt, och CSS haller redan innan skriptet laddat. */
+  body { padding-bottom: calc(4.9rem + env(safe-area-inset-bottom)); }
   .mobile-bar {
     display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
