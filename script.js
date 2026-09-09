@@ -126,6 +126,10 @@ function renderTier(i) {
   descEl.textContent  = t.desc;
   priceEl.textContent = formatPrice(t.price);
 
+  /* Utan aria-valuetext laser skarmlasaren bara reglagets rautal, 0-5, som
+     inte betyder nagot for kunden. Nu lases volymen och priset i stallet. */
+  range.setAttribute('aria-valuetext', t.vol + ', ' + formatPrice(t.price));
+
   // färgad del av reglaget
   range.style.setProperty('--pct', (i / (TIERS.length - 1)) * 100 + '%');
 
@@ -165,11 +169,15 @@ const OK_TEXT    = 'Tack! Vi har fått din förfrågan och återkommer så snart
 const ERROR_TEXT = 'Något gick fel. Ring oss på 070-561 48 45 eller maila boka@bohagsbolaget.se så hjälper vi dig.';
 
 if (contactForm && formStatus && submitBtn) {
+  /* Ordningen ar avsiktlig. Ett live-omrade som ar hidden nar texten satts
+     annonseras inte alls i flera skarmlasare - forandringen sker medan
+     omradet ligger utanfor tillgangslighetstradet, och att avsloja det
+     efterat raknas inte som en ny forandring. Darfor: visa forst, satt sen. */
   const showStatus = (text, ok) => {
-    formStatus.textContent = text;
     formStatus.classList.toggle('is-ok', ok);
     formStatus.classList.toggle('is-error', !ok);
     formStatus.hidden = false;
+    formStatus.textContent = text;
   };
 
   contactForm.addEventListener('submit', async (e) => {
@@ -519,6 +527,7 @@ if (chattKnapp) {
 
   const panel = document.getElementById('chattPanel');
   const flode = document.getElementById('chattFlode');
+  const avisering = document.getElementById('chattAvisering');
   const falt = document.getElementById('chattFalt');
   const skicka = document.getElementById('chattSkicka');
   const stang = document.getElementById('chattStang');
@@ -776,6 +785,14 @@ if (chattKnapp) {
     tillBotten();
   }
 
+  /* Skarmlasaren far bara det nya svaret, aldrig hela flodet. Textnoden
+     nollstalls forst sa att tva identiska svar i rad annonseras bada. */
+  function annonsera(text) {
+    if (!avisering) return;
+    avisering.textContent = '';
+    avisering.textContent = text;
+  }
+
   function visaSkriver() {
     const el = document.createElement('div');
     el.className = 'chatt-skriver';
@@ -874,7 +891,9 @@ if (chattKnapp) {
         levererat = (await skickaB(forfragan)) || levererat;
       }
 
-      bubbla('assistant', sanningsfiltrera(rasvar, levererat));
+      const utText = sanningsfiltrera(rasvar, levererat);
+      bubbla('assistant', utText);
+      annonsera(utText);
 
       if (forfragan) {
         if (levererat) systemrad(SANT);
@@ -885,6 +904,7 @@ if (chattKnapp) {
     } catch (e) {
       skriver.remove();
       bubbla('assistant', FELTEXT);
+      annonsera(FELTEXT);
     } finally {
       vantar = false;
       skicka.disabled = false;
@@ -904,6 +924,38 @@ if (chattKnapp) {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !panel.hidden) stangNed();
+  });
+
+  /* Fokusfalla. Panelen ar aria-modal, sa tabb far inte vandra ut till sidan
+     bakom - da hamnar tangentbordsanvandaren i en sida som skarmlasaren
+     redan behandlar som dold. Listan hamtas vid varje tryck i stallet for att
+     cachas: flodet byggs om varje gang ett meddelande laggs till, och
+     Skicka-knappen kan vara avstangd medan svaret hamtas.
+     Escape, fokus in vid oppning och fokus tillbaka vid stangning ligger
+     kvar oforandrade ovan. */
+  const FOKUSERBARA =
+    'a[href], button:not([disabled]), textarea:not([disabled]), ' +
+    'input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || panel.hidden) return;
+    const kan = Array.prototype.filter.call(
+      panel.querySelectorAll(FOKUSERBARA),
+      (el) => el.offsetWidth || el.offsetHeight || el.getClientRects().length
+    );
+    if (!kan.length) return;
+    const forst = kan[0];
+    const sist = kan[kan.length - 1];
+    if (!panel.contains(document.activeElement)) {
+      e.preventDefault();
+      forst.focus();
+    } else if (e.shiftKey && document.activeElement === forst) {
+      e.preventDefault();
+      sist.focus();
+    } else if (!e.shiftKey && document.activeElement === sist) {
+      e.preventDefault();
+      forst.focus();
+    }
   });
 
   window.addEventListener('pagehide', skickaBViaBeacon);

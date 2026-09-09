@@ -645,7 +645,7 @@
               <span class="calc-label" id="calcLabel">8 m³</span>
               <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
-              <span class="calc-price" id="calcPrice">3 495 kr</span>
+              <span class="calc-price" id="calcPrice" aria-live="polite">3 495 kr</span>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
             </div>
@@ -653,7 +653,8 @@
 
           <!-- Reglage -->
           <label class="sr-only" for="calcRange">Välj hur mycket som ska bort</label>
-          <input class="calc-range" id="calcRange" type="range" min="0" max="5" step="1" value="2" />
+          <input class="calc-range" id="calcRange" type="range" min="0" max="5" step="1" value="2"
+                 aria-label="Volym" aria-describedby="calcDesc" />
 
           <!-- Knapparna byggs av script.js ur TIERS – en enda sanningskälla -->
           <div class="calc-steps" id="calcSteps"></div>
@@ -1155,7 +1156,11 @@
         <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
       </div>
     </div>
-    <div class="chatt-flode" id="chattFlode" aria-live="polite"></div>
+    <div class="chatt-flode" id="chattFlode"></div>
+    <!-- Bara det senaste svaret annonseras. Lag aria-live pa hela flodet
+         forut, och eftersom rita() bygger om flodet fran grunden lastes hela
+         konversationen om vid varje omritning. -->
+    <p class="sr-only" id="chattAvisering" aria-live="polite"></p>
     <div class="chatt-rad">
       <label class="sr-only" for="chattFalt">Skriv din fråga</label>
       <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
@@ -1164,7 +1169,7 @@
     </div>
   </div>
 
-  <script src="script.js?v=21"></script>
+  <script src="script.js?v=22"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

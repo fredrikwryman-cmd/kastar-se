@@ -325,7 +325,11 @@
         <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
       </div>
     </div>
-    <div class="chatt-flode" id="chattFlode" aria-live="polite"></div>
+    <div class="chatt-flode" id="chattFlode"></div>
+    <!-- Bara det senaste svaret annonseras. Lag aria-live pa hela flodet
+         forut, och eftersom rita() bygger om flodet fran grunden lastes hela
+         konversationen om vid varje omritning. -->
+    <p class="sr-only" id="chattAvisering" aria-live="polite"></p>
     <div class="chatt-rad">
       <label class="sr-only" for="chattFalt">Skriv din fråga</label>
       <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
@@ -334,7 +338,7 @@
     </div>
   </div>
 
-  <script src="/script.js?v=21"></script>
+  <script src="/script.js?v=22"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
