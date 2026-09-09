@@ -666,70 +666,70 @@
         <div class="prislista">
           <div class="prisrad">
             <div class="prisrad__namn">Framkörning, ingår vid uppdrag över 6 000 kr</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">395 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Bomkörning</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">1 500 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Rivningsavfall, per påbörjat 100 kg, minst 995 kr</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">295 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Magasinering, per m³ och månad, minst 8 m³</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">139 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor-magasinering">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Röjning för bostadsrättsförening, källare 12 m³</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">5 195 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Röjning för bostadsrättsförening, vind 8 m³</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">3 495 kr</div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Röjning för bostadsrättsförening, timpris två personer</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">995 kr<span class="pris__enhet">/tim</span></div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Kontorsflytt, 8 arbetsplatser</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">7 900 kr</div>
               <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Lagerflytt, en fullastad bil</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">5 600 kr</div>
               <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
             </div>
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Kontorsflytt, timpris två personer med bil</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">795 kr<span class="pris__enhet">/tim</span></div>
               <a class="pris__badge pris__badge--moms" href="#villkor">Ex moms</a>
             </div>
@@ -756,7 +756,7 @@
           </div>
           <div class="prisrad">
             <div class="prisrad__namn">Kilometer enkel väg</div>
-            <div class="pris pris--fast">
+            <div class="pris">
               <div class="pris__netto">15 kr<span class="pris__enhet">/km</span></div>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
             </div>
@@ -773,9 +773,9 @@
           <div class="langd-rad"><span data-etikett="Sträcka">Stockholm–Malmö</span><span data-etikett="Avstånd">615 km</span><span data-etikett="Ordinarie">14 200 kr</span><span class="langd-netto" data-etikett="Efter RUT">11 963 kr</span></div>
         </div>
 
-        <p class="langd-not">Exemplen gäller en tvårumslägenhet med fem timmars lastning och lossning.</p>
-        <p class="langd-not">Avdraget bygger på arbetskostnaden 895 kr per timme, alltså timpriset minus 100 kr för bil och drivmedel. Vid lokal flytt räknar vi i stället per timme: 548 kr efter rut mot 995 kr ordinarie.</p>
-        <p class="langd-arg">Avdraget gäller arbetet med lastning och lossning. Körning, bil och drivmedel ger aldrig rutavdrag – därför blir avdraget mindre ju längre flytten är. Vi visar det rakt av istället för att räkna med halva totalpriset.</p>
+        <p>Exemplen gäller en tvårumslägenhet med fem timmars lastning och lossning.</p>
+        <p>Avdraget bygger på arbetskostnaden 895 kr per timme, alltså timpriset minus 100 kr för bil och drivmedel. Vid lokal flytt räknar vi i stället per timme: 548 kr efter rut mot 995 kr ordinarie.</p>
+        <p>Avdraget gäller arbetet med lastning och lossning. Körning, bil och drivmedel ger aldrig rutavdrag – därför blir avdraget mindre ju längre flytten är. Vi visar det rakt av istället för att räkna med halva totalpriset.</p>
         </div>
       </div>
     </section>
@@ -844,6 +844,11 @@
               <p>Det som går att skänka eller återvinna sorteras ut. Du får veta vart sakerna tar vägen.</p>
             </div>
           </div>
+          <!-- De fyra punkterna nedan har tomma ikonrutor. Ramen kommer ur
+               .feature-icon i styles.css, sa en tom ruta har samma matt,
+               hornradie, linjetjocklek och farg som ikonerna ovan. Nar
+               assets/varfor-5 till varfor-8 finns byts varje tom div mot
+               samma <img>-markup som punkt 1-4. -->
           <div class="feature">
             <div class="feature-icon" aria-hidden="true"></div>
             <div>
@@ -1064,7 +1069,7 @@
           <input type="hidden" name="replyto" value="boka@bohagsbolaget.se" />
           <input type="hidden" name="redirect" value="https://bohagsbolaget.se/tack.html" />
           <!-- Honeypot: osynligt fält som bara robotar fyller i -->
-          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div class="field">
             <label for="name">Namn</label>

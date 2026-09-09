@@ -31,7 +31,7 @@
 
 /* ==========================================================================
    Bohagsbolaget.se – stilmall
-   Färger, typsnitt och stil hämtade från befintliga www.kastar.se:
+   Färger, typsnitt och stil ärvda från den tidigare sajten:
    - Mörk petrol #0E3A44 som sektionsbakgrund med vit text (hero, "varför oss", footer)
    - Krämvita mellansektioner #FAF5EF med svarta versala rubriker
    - ORANGE knappar #E8862E (nästan raka hörn, versal fet text, vit text)
@@ -41,7 +41,7 @@
    ========================================================================== */
 
 :root {
-  /* Palett från www.kastar.se (custom-palette-1, HSL→hex) */
+  /* Palett ärvd från den tidigare sajten (custom-palette-1, HSL→hex) */
   --petrol:       #0E3A44;  /* sektionsbakgrund mörk */
   --petrol-rgb:   14, 58, 68; /* samma färg som --petrol, för overlay med alfa */
   --petrol-deep:  #092F38;  /* footer / djupare ton */
