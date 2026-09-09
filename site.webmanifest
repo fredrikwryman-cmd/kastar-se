@@ -10,14 +10,26 @@
   "lang": "sv",
   "icons": [
     {
-      "src": "/favicon-32.png",
+      "src": "/assets/favicon-32.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "/apple-touch-icon.png",
+      "src": "/assets/apple-touch-icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "/assets/app-ikon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/app-ikon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

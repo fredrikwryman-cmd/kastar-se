@@ -6,12 +6,29 @@
   <title>Tack för din förfrågan – Bohagsbolaget.se</title>
   <meta name="description" content="Tack! Din offertförfrågan är skickad till Bohagsbolaget.se. Vi återkommer inom kort." />
   <!-- Kvittosida – ska inte indexeras eller ligga i sitemap -->
+  <link rel="canonical" href="https://bohagsbolaget.se/tack.html" />
   <meta name="robots" content="noindex, follow" />
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-180.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0E3A44" />
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:title" content="Tack för din förfrågan – Bohagsbolaget.se" />
+  <meta property="og:description" content="Din offertförfrågan är skickad. Vi återkommer inom kort, oftast samma dag." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bohagsbolaget.se/tack.html" />
+  <meta property="og:locale" content="sv_SE" />
+  <meta property="og:site_name" content="Bohagsbolaget.se" />
+  <meta property="og:image" content="https://bohagsbolaget.se/assets/og-bohagsbolaget.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Vi tömmer, flyttar, monterar, demonterar, magasinerar – fast pris från 1 295 kr" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tack för din förfrågan – Bohagsbolaget.se" />
+  <meta name="twitter:description" content="Din offertförfrågan är skickad. Vi återkommer inom kort, oftast samma dag." />
+  <meta name="twitter:image" content="https://bohagsbolaget.se/assets/og-bohagsbolaget.png" />
 
   <!-- Typsnittet hostas lokalt. Space Grotesk är en variabel fil med
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
@@ -30,6 +47,19 @@
           <span class="brand-tagline"><span class="tag-full">Tömning · Flytt · Demontering · Magasinering</span><span class="tag-short">Tömning · Flytt · Demontering</span></span>
         </span>
       </a>
+
+      <nav class="nav" id="nav">
+        <a href="/#tjanster">Tjänster</a>
+        <a href="/#priser">Priser</a>
+        <a href="/#varfor">Varför oss</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#kontakt">Kontakt</a>
+        <a href="/#kontakt" class="btn btn-primary btn-sm nav-cta">Få offert</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Öppna meny" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -37,7 +67,7 @@
     <section class="section section-alt">
       <div class="container section-head">
         <p class="eyebrow">Tack för din förfrågan</p>
-        <h2>Vi har tagit emot ditt meddelande</h2>
+        <h1>Vi har tagit emot ditt meddelande</h1>
         <p class="lead">Vi återkommer så snart vi kan med ett prisförslag – oftast samma dag. Brådskar det är du varmt välkommen att ringa oss direkt.</p>
         <p style="margin-top:2rem">
           <a href="tel:0703433440" class="btn btn-primary">Thom 070-343 34 40</a>
@@ -58,6 +88,34 @@
       Webbplats utvecklad av <a href="https://aimstudios.se">AiMstudios.se</a>
     </div>
   </footer>
+
+  <!-- Chattwidget – svarsassistenten. All JS ligger i script.js. -->
+  <button type="button" class="chatt-knapp" id="chattKnapp" aria-label="Öppna chatten och ställ en fråga">
+    <img src="assets/maskot-transp.png" width="229" height="220" alt="" loading="eager" decoding="async" />
+  </button>
+
+  <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
+    <div class="chatt-huvud">
+      <h2 id="chattRubrik">Fråga oss</h2>
+      <div class="chatt-verktyg">
+        <button type="button" class="chatt-omstart" id="chattOmstart" aria-label="Börja om samtalet">Börja om</button>
+        <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
+      </div>
+    </div>
+    <div class="chatt-flode" id="chattFlode"></div>
+    <!-- Bara det senaste svaret annonseras. Lag aria-live pa hela flodet
+         forut, och eftersom rita() bygger om flodet fran grunden lastes hela
+         konversationen om vid varje omritning. -->
+    <p class="sr-only" id="chattAvisering" aria-live="polite"></p>
+    <div class="chatt-rad">
+      <label class="sr-only" for="chattFalt">Skriv din fråga</label>
+      <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
+                placeholder="Skriv din fråga …" autocomplete="off"></textarea>
+      <button type="button" class="chatt-skicka" id="chattSkicka">Skicka</button>
+    </div>
+  </div>
+
+  <script src="script.js?v=22"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
