@@ -414,7 +414,7 @@ function initMagasinKalkyl() {
 
   function rita() {
     const r = rakna();
-    volEl.textContent  = '≈ ' + r.volym + ' m³';
+    volEl.textContent  = 'cirka ' + r.volym + ' m³';
     prisEl.textContent = tusental(r.pris) + ' kr/mån';
     minEl.hidden = r.volym >= MAG_MIN_M3;
 

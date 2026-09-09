@@ -24,15 +24,11 @@ body.kort-sida {
   max-width: 420px;
   background: var(--bg-card);
   border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(0, 36, 46, .35);
+  box-shadow: 0 24px 60px rgba(var(--petrol-rgb), .35);
   overflow: hidden; /* medierutans övre hörn följer kortets radie */
   text-align: center;
 }
 
-/* ---------- Medieruta 4:5 ----------
-   Rutan har fast förhållande och egen bakgrund. Bild och film delar samma
-   regel och fyller rutan via object-fit: cover, så kortet ser likadant ut
-   oavsett vilket som ligger i rutan – höjden är redan låst av 4:5. */
 /* Foten är numera ett eget <footer> utanför <main>, för att bli en riktig
    contentinfo-landmark. Kroppen tappar därför sin underkant och foten får
    samma sidmått som marginal, så att linjen och luften ser exakt likadana
