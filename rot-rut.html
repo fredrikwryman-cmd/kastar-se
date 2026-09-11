@@ -33,6 +33,11 @@
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
   <link rel="stylesheet" href="styles.css?v=54" />
+
+  <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
+       skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
+       alls när JavaScript är på, så animationerna är oförändrade. -->
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>

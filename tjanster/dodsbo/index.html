@@ -132,6 +132,11 @@
     ]
   }
   </script>
+
+  <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
+       skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
+       alls när JavaScript är på, så animationerna är oförändrade. -->
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
