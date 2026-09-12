@@ -567,11 +567,10 @@
             </div>
           </article>
           <article class="card" data-href="#kontakt">
-            <!-- PLATSHÅLLARE: byts mot en riktig <img class="card-img"> med samma
-                 attribut som de övriga korten så snart assets/tjanst-osaker-800.webp
-                 och assets/tjanst-osaker-400.webp finns. Ta bort inline-stilen då. -->
-            <div class="card-img" aria-hidden="true"
-                 style="aspect-ratio:4/3;background:var(--bg);border-bottom:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;">Bild kommer</div>
+            <img class="card-img" src="assets/tjanst-osaker-800.webp"
+                 srcset="assets/tjanst-osaker-400.webp 400w, assets/tjanst-osaker-800.webp 800w"
+                 sizes="(max-width: 560px) 92vw, (max-width: 1060px) 46vw, 23vw"
+                 alt="Nästan tomt rum med grön accentvägg där en flyttkartong märkt Bohagsbolaget.se, en orange fåtölj, en tom bokhylla, en pirra, en kökslucka med skruvdragare, en kontorsstol och en hopvikt flyttfilt står utspridda över golvet" width="800" height="600" loading="lazy" decoding="async" />
             <div class="card-body">
               <p class="card-situation">Inget av det här passar in</p>
               <h3>Är du osäker?</h3>
