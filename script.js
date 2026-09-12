@@ -161,14 +161,22 @@ function initKalkylator() {
    Skickas i bakgrunden så besökaren får svar direkt på sidan i stället för att
    hamna på Web3Forms egen tacksida. Kundens namn blir avsändarnamn och kundens
    e-post blir svarsadress, så att "Svara" i mejlen går rakt till kunden. */
-const contactForm = document.getElementById('contactForm');
-const formStatus  = document.getElementById('formStatus');
-const submitBtn   = document.getElementById('contactSubmit');
-
 const OK_TEXT    = 'Tack! Vi har fått din förfrågan och återkommer så snart vi kan.';
 const ERROR_TEXT = 'Något gick fel. Ring oss på 070-561 48 45 eller maila boka@bohagsbolaget.se så hjälper vi dig.';
 
-if (contactForm && formStatus && submitBtn) {
+/* Samma kod driver bade sektionens formular och offertrutans. Darfor binds den
+   mot varje form.contact-form och letar upp sin egen statusrad i formularet i
+   stallet for via id - rutans kopia har suffixade id:n och skulle annars krava
+   en egen hanterare. */
+function bindKontaktformular(form) {
+  if (!form || form.dataset.bunden === 'ja') return;
+
+  const formStatus = form.querySelector('.form-status');
+  const submitBtn  = form.querySelector('button[type="submit"]');
+  if (!formStatus || !submitBtn) return;
+
+  form.dataset.bunden = 'ja';
+
   /* Ordningen ar avsiktlig. Ett live-omrade som ar hidden nar texten satts
      annonseras inte alls i flera skarmlasare - forandringen sker medan
      omradet ligger utanfor tillgangslighetstradet, och att avsloja det
@@ -180,10 +188,10 @@ if (contactForm && formStatus && submitBtn) {
     formStatus.textContent = text;
   };
 
-  contactForm.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(contactForm).entries());
+    const data = Object.fromEntries(new FormData(form).entries());
 
     // "redirect" används bara när JavaScript är av – skickas den med här
     // svarar Web3Forms med en omdirigering i stället för JSON.
@@ -199,7 +207,7 @@ if (contactForm && formStatus && submitBtn) {
     formStatus.hidden = true;
 
     try {
-      const res = await fetch(contactForm.action, {
+      const res = await fetch(form.action, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(data)
@@ -207,7 +215,7 @@ if (contactForm && formStatus && submitBtn) {
       const result = await res.json().catch(() => ({}));
 
       if (res.ok && result.success) {
-        contactForm.reset();
+        form.reset();
         showStatus(OK_TEXT, true);
       } else {
         // Serverns egen text visas inte för besökaren – den säger inget
@@ -224,6 +232,125 @@ if (contactForm && formStatus && submitBtn) {
     }
   });
 }
+
+document.querySelectorAll('form.contact-form').forEach(bindKontaktformular);
+
+/* ---------- Offertruta (modal) ----------
+   "Fa offert" i headern ledde till #kontakt: en lang rullning pa startsidan och
+   ett hopp tillbaka till startsidan fran tjanstesidorna, dar besokaren tappade
+   det hen last. Formularet oppnas i stallet ovanpa sidan man star pa.
+
+   Webblasarens egen <dialog> med showModal() anvands for att fa fokusfalla,
+   Escape och inert bakgrund utan egen kod. Rutan byggs har och injiceras i
+   <body>, sa att ingen sida behover egen markup for den.
+
+   Saknas stodet fangas klicket inte alls: lanken beter sig da precis som forut
+   och tar besokaren till #kontakt. Ingen ska kunna hamna vid en knapp som inte
+   gor nagot. */
+const OFFERT_UTLOSARE = 'a.nav-cta, article.card[data-href="#kontakt"]';
+
+let offertruta = null;
+let offertAterfokus = null;
+
+function harDialogStod() {
+  return typeof window.HTMLDialogElement === 'function' &&
+         typeof window.HTMLDialogElement.prototype.showModal === 'function';
+}
+
+/* Fälten är en kopia av #contactForm. name-attributen måste vara identiska –
+   Web3Forms läser name, inte id – medan varje id suffixas med -d, annars får
+   dokumentet två element med samma id när rutan ligger på startsidan.
+   Länken till integritetspolicyn är absolut: rutan visas även på
+   tjänstesidorna, där en relativ länk skulle peka fel. */
+function byggOffertruta() {
+  const ruta = document.createElement('dialog');
+  ruta.className = 'offertruta';
+  ruta.setAttribute('aria-labelledby', 'offertrutaTitel');
+  ruta.innerHTML = [
+    '<button type="button" class="offertruta-stang" aria-label="Stäng"><span aria-hidden="true">&times;</span></button>',
+    '<h2 class="offertruta-titel" id="offertrutaTitel">Få offert</h2>',
+    '<p class="offertruta-ingress">Beskriv läget så återkommer vi med förslag och pris.</p>',
+    '<form class="contact-form" id="contactForm-d" action="https://api.web3forms.com/submit" method="POST">',
+    '  <input type="hidden" name="access_key" value="a5ea7bbf-870d-4db3-9a82-d8e5283fa26e" />',
+    '  <input type="hidden" name="subject" value="Ny offertförfrågan från bohagsbolaget.se" />',
+    '  <input type="hidden" name="from_name" value="Bohagsbolaget.se – webbformulär" />',
+    '  <input type="hidden" name="replyto" value="boka@bohagsbolaget.se" />',
+    '  <input type="hidden" name="redirect" value="https://bohagsbolaget.se/tack.html" />',
+    '  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />',
+    '  <div class="field"><label for="name-d">Namn</label>',
+    '    <input id="name-d" name="name" type="text" required autocomplete="name" /></div>',
+    '  <div class="field"><label for="email-d">E-post</label>',
+    '    <input id="email-d" name="email" type="email" required autocomplete="email" /></div>',
+    '  <div class="field"><label for="phone-d">Telefon</label>',
+    '    <input id="phone-d" name="phone" type="tel" autocomplete="tel" /></div>',
+    '  <div class="field"><label for="message-d">Vad behöver du hjälp med?</label>',
+    '    <textarea id="message-d" name="message" rows="4" required></textarea></div>',
+    '  <button type="submit" class="btn btn-primary btn-block" id="contactSubmit-d">Skicka förfrågan</button>',
+    '  <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>',
+    '  <p class="form-status" id="formStatus-d" role="status" aria-live="polite" hidden></p>',
+    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:0703433440">Thom 070-343 34 40</a> eller <a href="tel:0705614845">Fredrik 070-561 48 45</a></p>',
+    '</form>'
+  ].join('\n');
+
+  document.body.appendChild(ruta);
+  bindKontaktformular(ruta.querySelector('form.contact-form'));
+
+  ruta.querySelector('.offertruta-stang').addEventListener('click', () => ruta.close());
+
+  // Klick pa morkret utanfor rutan stanger den. Traffar klicket <dialog>
+  // sjalv ligger det per definition utanfor innehallet.
+  ruta.addEventListener('click', (e) => {
+    if (e.target === ruta) ruta.close();
+  });
+
+  // Galler bade stangknappen och Escape: fokus tillbaka dit besokaren var.
+  ruta.addEventListener('close', () => {
+    if (offertAterfokus && document.contains(offertAterfokus) &&
+        typeof offertAterfokus.focus === 'function') {
+      offertAterfokus.focus();
+    }
+  });
+
+  return ruta;
+}
+
+function oppnaOffertruta(utlosare) {
+  if (!offertruta) offertruta = byggOffertruta();
+
+  // Kortet ar inget fokuserbart element - da far dess lank ta emot fokus igen.
+  offertAterfokus = utlosare.matches('a') ? utlosare : (utlosare.querySelector('a') || utlosare);
+
+  // Samma brygga som sektionens formular: texten fran magasineringskalkylen.
+  fyllForifyllning(offertruta.querySelector('#message-d'));
+
+  offertruta.showModal();
+  const forsta = offertruta.querySelector('#name-d');
+  if (forsta) forsta.focus();
+}
+
+function initOffertruta() {
+  if (!harDialogStod()) return;
+  if (!document.querySelector(OFFERT_UTLOSARE)) return;
+
+  // Fangas i capture-fasen: kortlankshanteraren pa .cards-services ligger i
+  // bubbelfasen och skulle annars hinna satta location.href forst.
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0) return;
+    // Ctrl-, meta- och skiftklick ska fortsatta oppna lanken som vanligt.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    const utlosare = e.target.closest(OFFERT_UTLOSARE);
+    if (!utlosare) return;
+
+    e.preventDefault();
+    // Bara for kortet: hindra kortlankshanteraren fran att navigera.
+    if (utlosare.matches('.card')) e.stopPropagation();
+
+    oppnaOffertruta(utlosare);
+  }, true);
+}
+
+initOffertruta();
 
 /* ---------- Scroll-animationer ---------- */
 const revealEls = document.querySelectorAll('.reveal');
@@ -472,8 +599,7 @@ function initMagasinKalkyl() {
 /* Andra halvan av bryggan: startsidan plockar upp texten och lägger den i
    meddelandefältet. Bara om fältet är tomt – kunden ska aldrig få något
    överskrivet – och nyckeln töms direkt så texten inte dyker upp igen. */
-function initForifylltMeddelande() {
-  const falt = document.getElementById('message');
+function fyllForifyllning(falt) {
   if (!falt) return;
   let text = null;
   // Privat lage kan kasta pa sessionStorage. Da finns det inget att fylla i.
@@ -485,6 +611,12 @@ function initForifylltMeddelande() {
   if (!text) return;
   try { sessionStorage.removeItem(MAG_FORIFYLL); } catch (err) { /* ignoreras */ }
   if (!falt.value.trim()) falt.value = text;
+}
+
+/* Sektionens formular pa startsidan. Offertrutan anropar samma funktion med
+   sitt eget falt nar den oppnas - logiken finns bara pa ett stalle. */
+function initForifylltMeddelande() {
+  fyllForifyllning(document.getElementById('message'));
 }
 
 // Direkt, inte i vantelaget: kunden kan hinna borja skriva i faltet.

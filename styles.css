@@ -1557,3 +1557,64 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
     width: auto; height: auto; max-width: none; max-height: none;
   }
 }
+
+/* ---------- Offertruta (modal) ----------
+   Byggs av script.js och injiceras i <body>. Webbläsarens egen <dialog> sköter
+   fokusfälla, Escape och inert bakgrund; här sätts bara utseendet.
+   Formuläret inuti ärver .contact-form, så bara ramen runt det behöver stil. */
+.offertruta {
+  /* 100% (inte 100vw) raknas mot ytan utan rullningslist, sa marginalen blir
+     verkligen 16 px pa var sida aven nar sidan rullar. */
+  width: min(34rem, calc(100% - 2rem));
+  max-width: 34rem;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;                        /* rutan rullar internt, inte sidan */
+  margin: auto;                            /* centrerad i båda led */
+  padding: 1.75rem 1.5rem 1.5rem;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+  color: var(--body-c);
+  box-shadow: var(--shadow);
+}
+.offertruta::backdrop { background: var(--petrol-black); opacity: .62; }
+
+.offertruta-titel { margin: 0 2rem .35rem 0; font-size: 1.5rem; color: var(--ink); }
+.offertruta-ingress { margin: 0 0 1.25rem; color: var(--muted); font-weight: 300; }
+
+/* Formuläret ligger redan i en ruta – ram, skugga och dubbel luft tas bort. */
+.offertruta .contact-form {
+  background: none; border: 0; box-shadow: none; padding: 0;
+}
+
+.offertruta-stang {
+  position: absolute; top: .6rem; right: .6rem;
+  width: 2.25rem; height: 2.25rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: var(--radius-btn);
+  background: var(--bg); color: var(--ink);
+  font-size: 1.4rem; line-height: 1; cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.offertruta-stang:hover { background: var(--bg-card); border-color: var(--orange); }
+.offertruta-stang:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .offertruta { padding: 1.5rem 1rem 1.25rem; }
+  .offertruta-titel { font-size: 1.3rem; }
+}
+
+/* In-animationen är ren dekor och stängs av för den som bett om mindre rörelse. */
+@media (prefers-reduced-motion: no-preference) {
+  .offertruta[open] { animation: offertruta-in .18s ease-out; }
+  .offertruta[open]::backdrop { animation: offertruta-backdrop .18s ease-out; }
+}
+@keyframes offertruta-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes offertruta-backdrop {
+  from { opacity: 0; }
+  to   { opacity: .62; }
+}
