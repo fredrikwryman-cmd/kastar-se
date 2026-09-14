@@ -49,23 +49,9 @@ if (siteHeader) {
 }
 
 /* ---------- Klickbara tjänstekort ----------
-   Varje kort leder till sin tjänstesida. Kortets <a class="card-cta"> sköter
-   tangentbord, ctrl-klick och mittenklick av sig självt; den här lyssnaren gör
-   resten av kortytan klickbar utan att lägga sig i de fallen. */
-const serviceGrid = document.querySelector('.cards-services');
-
-function initKortlankar() {
-  if (!serviceGrid) return;
-
-  serviceGrid.addEventListener('click', (e) => {
-    const kort = e.target.closest('.card[data-href]');
-    if (!kort) return;
-    // Traffar klicket redan en <a> lamnas det ifred, sa att ctrl-klick,
-    // mittenklick och hogerklick beter sig som vanligt.
-    if (e.target.closest('a')) return;
-    window.location.href = kort.dataset.href;
-  });
-}
+   Kortytan är klickbar via CSS: .card-cta::after spänns ut över hela kortet.
+   Ingen JS behövs, och kortet blir EN länk för mus, tangentbord och
+   skärmläsare i stället för en div som bara möss kan använda. */
 
 /* ---------- Årtal i sidfoten ---------- */
 const yearEl = document.getElementById('year');
@@ -247,7 +233,7 @@ document.querySelectorAll('form.contact-form').forEach(bindKontaktformular);
    Saknas stodet fangas klicket inte alls: lanken beter sig da precis som forut
    och tar besokaren till #kontakt. Ingen ska kunna hamna vid en knapp som inte
    gor nagot. */
-const OFFERT_UTLOSARE = 'a.nav-cta, article.card[data-href="#kontakt"]';
+const OFFERT_UTLOSARE = 'a.nav-cta, .cards-services .card-cta[href="#kontakt"]';
 
 let offertruta = null;
 let offertAterfokus = null;
@@ -288,7 +274,7 @@ function byggOffertruta() {
     '  <button type="submit" class="btn btn-primary btn-block" id="contactSubmit-d">Skicka förfrågan</button>',
     '  <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>',
     '  <p class="form-status" id="formStatus-d" role="status" aria-live="polite" hidden></p>',
-    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:+46703433440">Thom 070-343 34 40</a> eller <a href="tel:+46705614845">Fredrik 070-561 48 45</a></p>',
+    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt<span class="sr-only"> (öppnar ditt e-postprogram)</span></a> · ring <a href="tel:+46703433440">Thom 070-343 34 40</a> eller <a href="tel:+46705614845">Fredrik 070-561 48 45</a></p>',
     '</form>'
   ].join('\n');
 
@@ -332,8 +318,7 @@ function initOffertruta() {
   if (!harDialogStod()) return;
   if (!document.querySelector(OFFERT_UTLOSARE)) return;
 
-  // Fangas i capture-fasen: kortlankshanteraren pa .cards-services ligger i
-  // bubbelfasen och skulle annars hinna satta location.href forst.
+  // Capture-fasen racker och racker val: ingen annan lyssnare star mellan.
   document.addEventListener('click', (e) => {
     if (e.defaultPrevented || e.button !== 0) return;
     // Ctrl-, meta- och skiftklick ska fortsatta oppna lanken som vanligt.
@@ -343,8 +328,6 @@ function initOffertruta() {
     if (!utlosare) return;
 
     e.preventDefault();
-    // Bara for kortet: hindra kortlankshanteraren fran att navigera.
-    if (utlosare.matches('.card')) e.stopPropagation();
 
     oppnaOffertruta(utlosare);
   }, true);
@@ -623,7 +606,6 @@ function initForifylltMeddelande() {
 initForifylltMeddelande();
 
 narDetArLugnt(() => {
-  initKortlankar();
   initKalkylator();
   initMagasinKalkyl();
 });

@@ -238,6 +238,14 @@ body:not(.kort-sida) main p a:not(.btn) {
 .btn-sm { padding: .6rem 1.2rem; font-size: .82rem; }
 .btn-block { width: 100%; }
 
+/* Headern är sticky och skulle annars täcka det man hoppar till: ett ankare i
+   menyn, en skip-länk, eller nästa element när man tabbar nedåt. --header-h är
+   .header-inner 68px plus headerns 1px underkant, uppmätt i webbläsaren till
+   69px och lika på 390, 768 och 1440px – .header-inner har ingen höjdändring i
+   något mediablock. 8px marginal ovanpå, så målet inte tangerar underkanten. */
+:root { --header-h: 69px; }
+html { scroll-padding-top: calc(var(--header-h) + 8px); }
+
 /* ---------- Header (mörk petrol med vit text, som över hero:n) ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
@@ -538,7 +546,27 @@ body:not(.kort-sida) main p a:not(.btn) {
 .card-body { padding: 1.75rem 2rem 2rem; }
 
 /* ---------- Klickbara tjänstekort ---------- */
-.cards-services .card { cursor: pointer; }
+/* Hela kortytan är klickbar, men klickbarheten kommer från den länk som redan
+   finns i kortet – inte från JS. .card-cta::after spänns ut över kortet, så
+   kortet blir EN länk med ETT tabbstopp som också skärmläsare hittar.
+   ::after är positionerad och målas därför över .card-img och .card-body, som
+   båda är statiska. Ingen z-index behövs, och inget i kortet är interaktivt
+   och behöver lyftas över ytan. */
+.cards-services .card { position: relative; cursor: pointer; }
+.cards-services .card-cta::after {
+  content: ''; position: absolute; inset: 0;
+}
+/* Fokusringen måste rita sig runt hela kortet, inte bara runt textlänken –
+   annars pekar den på en yta som är mycket mindre än den klickbara. Den inre
+   ringen tas bort först när :has() faktiskt stöds, så att en webbläsare utan
+   stöd behåller sin ring i stället för att bli helt utan. */
+.cards-services .card:has(.card-cta:focus-visible) {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+@supports selector(:has(*)) {
+  .cards-services .card-cta:focus-visible { outline: none; }
+}
 /* Inline, inte flex: då flödar pilen med texten och hamnar direkt efter sista
    ordet även när raden bryts, i stället för att ligga kvar längst till höger. */
 .card-cta {
