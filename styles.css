@@ -928,8 +928,11 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   display: flex; flex-direction: column; align-items: center; gap: .9rem;
   text-align: center;
 }
-.omdome-stjarnor { display: flex; gap: .25rem; }
-.omdome-stjarnor svg { display: block; }
+/* Wrappern hade display:flex och gap, fran nar stjarnorna var fem separata
+   svg. Nu ar de en enda, sa bada deklarationerna var verkningslosa och ar
+   borttagna. display:block pa svg:n behovs fortfarande - annars satter den
+   pa en radbox och far nagra pixlar under sig. */
+.omdome-stjarnor svg { display: block; fill: var(--orange); }
 .omdome blockquote { margin: 0; }
 .omdome blockquote p {
   margin: 0; color: var(--body-c);
