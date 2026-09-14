@@ -559,7 +559,11 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    ::after är positionerad och målas därför över .card-img och .card-body, som
    båda är statiska. Ingen z-index behövs, och inget i kortet är interaktivt
    och behöver lyftas över ytan. */
-.cards-services .card { position: relative; cursor: pointer; }
+/* Ingen cursor här. Den utsträckta ::after tillhör .card-cta, så det översta
+   elementet under muspekaren över hela kortet är ankaret, som har sin egen
+   cursor: pointer. Satt på kortet ärvde även .card-img den, och då läser en
+   heuristisk granskare bilden som ett klickbart element. */
+.cards-services .card { position: relative; }
 .cards-services .card-cta::after {
   content: ''; position: absolute; inset: 0;
 }
@@ -1247,8 +1251,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   display: block;
   width: 100%; height: 44px; margin: calc(2rem - 18px) 0 calc(1rem - 18px);
   background: transparent;
-  cursor: pointer;
+  /* grab, inte pointer: reglaget dras, det klickas inte. Tummarna hade redan
+     grab, så själva spåret var det enda som sa något annat. */
+  cursor: grab;
 }
+.calc-range:active { cursor: grabbing; }
+.calc-range:active::-webkit-slider-thumb { cursor: grabbing; }
+.calc-range:active::-moz-range-thumb { cursor: grabbing; }
 .calc-range::-webkit-slider-runnable-track {
   height: 8px; border-radius: 99px;
   background: linear-gradient(to right, var(--orange) 0%, var(--orange) var(--pct,40%), var(--line) var(--pct,40%), var(--line) 100%);
