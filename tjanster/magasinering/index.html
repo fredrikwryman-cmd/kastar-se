@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=57" />
+  <link rel="stylesheet" href="/styles.css?v=58" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -201,13 +201,13 @@
                 <label for="magYta">Hur stort bor du? Ange ytan i kvadratmeter</label>
                 <input id="magYta" type="number" inputmode="numeric" min="15" max="400" step="1" value="76" />
               </div>
-              <div class="calc-steps magkalk-snabb" id="magSnabbval" style="--steg: 6">
-                <button type="button" data-yta="30">30 m²</button>
-                <button type="button" data-yta="50">50 m²</button>
-                <button type="button" data-yta="70">70 m²</button>
-                <button type="button" data-yta="90">90 m²</button>
-                <button type="button" data-yta="110">110 m²</button>
-                <button type="button" data-yta="150">150 m²</button>
+              <div class="calc-steps magkalk-snabb" id="magSnabbval" role="group" aria-label="Snabbval för yta" style="--steg: 6">
+                <button type="button" data-yta="30" aria-pressed="false">30 m²</button>
+                <button type="button" data-yta="50" aria-pressed="false">50 m²</button>
+                <button type="button" data-yta="70" aria-pressed="false">70 m²</button>
+                <button type="button" data-yta="90" aria-pressed="false">90 m²</button>
+                <button type="button" data-yta="110" aria-pressed="false">110 m²</button>
+                <button type="button" data-yta="150" aria-pressed="false">150 m²</button>
               </div>
             </div>
 
@@ -352,7 +352,7 @@
     </div>
   </div>
 
-  <script src="/script.js?v=25"></script>
+  <script src="/script.js?v=26"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

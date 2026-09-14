@@ -528,9 +528,13 @@ function initMagasinKalkyl() {
     prisEl.textContent = tusental(r.pris) + ' kr/mån';
     minEl.hidden = r.volym >= MAG_MIN_M3;
 
-    // Snabbvalet markeras bara när fältet står på exakt den ytan.
+    // Snabbvalet markeras bara när fältet står på exakt den ytan. aria-pressed
+    // sätts här och inte i klicklyssnaren: markeringen följer fältet, inte
+    // klicket, så den måste uppdateras även när kunden skriver en siffra själv.
     snabbEl.querySelectorAll('button').forEach((b) => {
-      b.classList.toggle('active', Number(b.dataset.yta) === yta);
+      const on = Number(b.dataset.yta) === yta;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
 

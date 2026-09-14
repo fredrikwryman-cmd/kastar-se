@@ -543,7 +543,14 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
   border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
-.card-body { padding: 1.75rem 2rem 2rem; }
+/* Rutnätet sträcker alla kort till radens höjd. För att överskottet ska hamna
+   mellan brödtexten och länken, i stället för som död yta under länken, blir
+   kortet en flexkolumn, .card-body växer till resten av höjden och CTA:n
+   skjuts ned med margin-top:auto. padding-top håller minimiluften kvar när
+   auto går till noll i det högsta kortet – margin-top:auto äter annars upp
+   den 1.1rem som stod här förut. */
+.card { display: flex; flex-direction: column; }
+.card-body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.75rem 2rem 2rem; }
 
 /* ---------- Klickbara tjänstekort ---------- */
 /* Hela kortytan är klickbar, men klickbarheten kommer från den länk som redan
@@ -571,7 +578,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    ordet även när raden bryts, i stället för att ligga kvar längst till höger. */
 .card-cta {
   display: inline-block; text-align: center;
-  margin-top: 1.1rem; padding: 0; background: none; border: 0;
+  margin-top: auto; padding: 1.1rem 0 0; background: none; border: 0;
   font: inherit; font-size: .8rem; font-weight: 500; line-height: 1.5;
   text-transform: uppercase; letter-spacing: .03em;
   color: var(--orange-ink); cursor: pointer;
@@ -1385,9 +1392,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   .mobile-bar a { min-height: 44px; }
   /* Strecken ska stå mitt i den högre ytan, inte klistras uppåt. */
   .nav-toggle { justify-content: center; }
-  /* Pil-länken behåller sitt läge: marginalen minskar lika mycket
-     som paddingen växer, så texten står kvar där den stod. */
-  .card-cta { min-height: 44px; margin-top: .6rem; padding: .5rem 0 0; }
+  /* Bara träffytan höjs här. Varken margin-top eller padding skrivs över:
+     basregelns margin-top:auto måste få gälla också på smal skärm, annars
+     får korten tillbaka sin döda yta – rutnätet har grid-auto-rows:1fr och
+     sträcker alla kort till radhöjd även i en enda kolumn. Minimiluften över
+     länken är densamma som förut, 1.1rem, och kommer nu från basens
+     padding-top i stället för .6rem marginal plus .5rem padding. */
+  .card-cta { min-height: 44px; }
   /* Korten är <a> och får inte <button>-elementets vertikala centrering av
      min-height. align-content centrerar innehållet i det lediga utrymmet utan
      att röra radbrytningen, så pilen fortsätter flöda efter sista ordet.

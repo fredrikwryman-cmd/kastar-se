@@ -11,6 +11,21 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-180.png" />
   <meta name="theme-color" content="#0E3A44" />
 
+  <!-- Person-nod som knyter visitkortet till företagsnoden på startsidan via
+       worksFor och dess @id. Ingen address: företagsnoden bär ort och
+       postnummer, och en person ska inte ha någon adress alls här. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://bohagsbolaget.se/thom/#person",
+    "name": "Thom",
+    "url": "https://bohagsbolaget.se/thom/",
+    "telephone": "+46703433440",
+    "worksFor": { "@id": "https://bohagsbolaget.se/#business" }
+  }
+  </script>
+
   <!-- Open Graph / social sharing -->
   <meta property="og:title" content="Thom – Bohagsbolaget.se" />
   <meta property="og:description" content="Transport och utförande. Ring 070-343 34 40 eller spara kontakten direkt från kortet." />
@@ -31,7 +46,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=57" />
+  <link rel="stylesheet" href="/styles.css?v=58" />
   <link rel="stylesheet" href="/kort.css?v=9" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
