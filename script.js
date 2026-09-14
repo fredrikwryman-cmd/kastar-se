@@ -262,7 +262,7 @@ function byggOffertruta() {
     '  <input type="hidden" name="from_name" value="Bohagsbolaget.se – webbformulär" />',
     '  <input type="hidden" name="replyto" value="boka@bohagsbolaget.se" />',
     '  <input type="hidden" name="redirect" value="https://bohagsbolaget.se/tack.html" />',
-    '  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />',
+    '  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" autocomplete="off" />',
     '  <div class="field"><label for="name-d">Namn</label>',
     '    <input id="name-d" name="name" type="text" required autocomplete="name" /></div>',
     '  <div class="field"><label for="email-d">E-post</label>',

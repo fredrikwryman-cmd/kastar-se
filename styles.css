@@ -54,6 +54,12 @@
      Gäller bara TEXT; orange som ifylld knappfärg är oförändrad.
      Två orangea toner finns, inga fler – se Färgpalett i CLAUDE.md. */
   --orange-ink:   #A85610;
+  /* Fokusringens färg är kontextberoende. Uppmätt mot de tre ytor som
+     faktiskt förekommer: --orange ger 2,66:1 mot vitt och 2,46:1 mot
+     krämvitt, alltså under WCAG 1.4.11:s krav på 3:1. --orange-ink ger
+     5,25:1 och 4,84:1 där. På petrol är det tvärtom: 4,62:1 mot 2,34:1.
+     Ljus botten är grundfallet; de mörka sektionerna skriver över. */
+  --focus-ring:   var(--orange-ink);
   --bg:           #FAF5EF;  /* krämvit sektionsbakgrund */
   --bg-card:      #FFFFFF;
   --line:         #E5DED6;
@@ -140,9 +146,15 @@ body:not(.kort-sida) main p a:not(.btn) {
 }
 
 /* ---------- Fokus (tangentbord) ---------- */
-/* Samma ring överallt. Orange syns både mot krämvitt och mot petrol. */
+/* Ringen byter färg med underlaget, se --focus-ring i :root. De tre
+   sektionerna nedan är de enda med petrolbotten på sajten — 27 av 81
+   fokuserbara element ligger i dem, resten på vitt eller krämvitt. */
+.site-header,
+.hero,
+.site-footer { --focus-ring: var(--orange); }
+
 :focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -166,7 +178,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 .skip:focus {
   left: .5rem;
   top: .5rem;
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -420,12 +432,24 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
               #FAF5EF 100%);
   background-size: 250% 250%;
   background-position: 0% 50%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  /* Genomskinlig textfyllning bara nar urklippet faktiskt stodjs. Utan
+     grinden ar color: var(--bg) daruppe en dod reserv: text-fill vinner
+     alltid, och rubriken skulle bli osynlig i en webblasare som stodjer
+     det ena men inte det andra. Uppmatt pa den malade gradienten mot
+     hjaltens faktiska bakgrund: samsta stoppet ger 3,75:1 mot kravet
+     3:1 for stor text, sa sjalva lasbarheten ar inte problemet. */
   /* Exakt tre varv, och stannar sedan i utgångsläget. Rörelse som pågår
      längre än fem sekunder skulle annars behöva gå att pausa. */
   animation: gradient-shift 5s ease 3 forwards;
+}
+
+/* Grinden for gradienttexten, se kommentaren ovan. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-gradient {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
@@ -572,7 +596,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    ringen tas bort först när :has() faktiskt stöds, så att en webbläsare utan
    stöd behåller sin ring i stället för att bli helt utan. */
 .cards-services .card:has(.card-cta:focus-visible) {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 @supports selector(:has(*)) {
@@ -1655,7 +1679,7 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   transition: background .15s, border-color .15s;
 }
 .offertruta-stang:hover { background: var(--bg-card); border-color: var(--orange); }
-.offertruta-stang:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.offertruta-stang:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 @media (max-width: 560px) {
   .offertruta { padding: 1.5rem 1rem 1.25rem; }
