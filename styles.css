@@ -972,6 +972,12 @@ body:not(.kort-sida) main p a:not(.btn) {
 .footer-col .footer-kort { font-size: .85rem; font-weight: 300; color: #9FB3B9; }
 .footer-col a + .footer-kort { margin-top: .7rem; }
 .footer-col .footer-kort + .footer-kort { margin-top: .2rem; }
+/* Länkar till företagsprofilerna. Samma storlek som visitkortslänkarna, men
+   full textfärg i stället för dämpad: de är till för att klickas, och de bär
+   samma koppling sajt–profil som sameAs gör i den strukturerade datan. */
+.footer-col .footer-profil { font-size: .85rem; font-weight: 300; color: var(--on-dark-body); }
+.footer-col .footer-kort + .footer-profil { margin-top: .7rem; }
+.footer-col .footer-profil + .footer-profil { margin-top: .2rem; }
 /* Tjänstekolumnen är andra barnet i .footer-inner (första är .footer-brand).
    Vid hover glider en orange pil in från vänster och länken flyttar in lika
    långt, så pilen hamnar där texten började. */

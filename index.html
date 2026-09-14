@@ -32,7 +32,11 @@
 
   <!-- Lokal SEO: strukturerad data för Google. Typen MovingCompany är en
        underklass till LocalBusiness och den närmaste specifika typ som finns
-       för tömning, bortforsling och mindre flyttar. -->
+       för tömning, bortforsling och mindre flyttar.
+       Noden har ort och postnummer men INGEN streetAddress: firman är ett
+       serviceområdesföretag och har ingen besöksadress att visa.
+       Ort och postnummer räcker för att Google ska kunna matcha sajten mot
+       företagsprofilen, som sameAs pekar rakt på. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,13 +71,25 @@
     "currenciesAccepted": "SEK",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Arlandastad",
+      "addressLocality": "Upplands Väsby",
+      "postalCode": "194 74",
       "addressRegion": "Stockholms län",
       "addressCountry": "SE"
     },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 59.5167,
+      "longitude": 17.9167
+    },
     "areaServed": [
-      { "@type": "City", "name": "Stockholm" },
-      { "@type": "City", "name": "Uppsala" }
+      { "@type": "AdministrativeArea", "name": "Stockholms län" },
+      { "@type": "AdministrativeArea", "name": "Uppsala län" },
+      { "@type": "AdministrativeArea", "name": "Södermanlands län" },
+      { "@type": "AdministrativeArea", "name": "Västmanlands län" }
+    ],
+    "sameAs": [
+      "https://share.google/zt1uzehxTIENtOEtm",
+      "https://se.trustpilot.com/review/bohagsbolaget.se"
     ],
     "openingHoursSpecification": [
       {
@@ -358,7 +374,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=55" />
+  <link rel="stylesheet" href="styles.css?v=56" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -1057,9 +1073,9 @@
           <ul class="contact-list">
             <li>
               <span class="ci-label">Telefon</span>
-              <a href="tel:0703433440">Thom – 070-343 34 40</a>
+              <a href="tel:+46703433440">Thom – 070-343 34 40</a>
               <a class="btn btn-outline" href="/thom/">Visitkort <span class="btn-pil" aria-hidden="true">→</span></a>
-              <a href="tel:0705614845">Fredrik – 070-561 48 45</a>
+              <a href="tel:+46705614845">Fredrik – 070-561 48 45</a>
               <a class="btn btn-outline" href="/fredrik/">Visitkort <span class="btn-pil" aria-hidden="true">→</span></a>
             </li>
             <li>
@@ -1114,7 +1130,7 @@
           <button type="submit" class="btn btn-primary btn-block" id="contactSubmit">Skicka förfrågan</button>
             <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="integritetspolicy.html">integritetspolicyn</a>.</p>
           <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
-          <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:0703433440">Thom 070-343 34 40</a> eller <a href="tel:0705614845">Fredrik 070-561 48 45</a></p>
+          <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:+46703433440">Thom 070-343 34 40</a> eller <a href="tel:+46705614845">Fredrik 070-561 48 45</a></p>
         </form>
       </div>
     </section>
@@ -1149,11 +1165,13 @@
       </div>
       <div class="footer-col">
         <h3>Kontakt</h3>
-        <a href="tel:0703433440">Thom – 070-343 34 40</a>
-        <a href="tel:0705614845">Fredrik – 070-561 48 45</a>
+        <a href="tel:+46703433440">Thom – 070-343 34 40</a>
+        <a href="tel:+46705614845">Fredrik – 070-561 48 45</a>
         <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se</a>
         <a class="footer-kort" href="/thom/">Thoms visitkort</a>
         <a class="footer-kort" href="/fredrik/">Fredriks visitkort</a>
+        <a class="footer-profil" href="https://share.google/zt1uzehxTIENtOEtm" target="_blank" rel="noopener">Bohagsbolaget på Google</a>
+        <a class="footer-profil" href="https://se.trustpilot.com/review/bohagsbolaget.se" target="_blank" rel="noopener">Omdömen på Trustpilot</a>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -1169,7 +1187,7 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:0703433440" class="mb-call">📞 Ring nu</a>
+    <a href="tel:+46703433440" class="mb-call">📞 Ring nu</a>
     <a href="#kontakt" class="mb-quote">Få pris</a>
   </div>
 
@@ -1199,7 +1217,7 @@
     </div>
   </div>
 
-  <script src="script.js?v=23"></script>
+  <script src="script.js?v=24"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

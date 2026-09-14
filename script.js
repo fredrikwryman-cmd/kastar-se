@@ -288,7 +288,7 @@ function byggOffertruta() {
     '  <button type="submit" class="btn btn-primary btn-block" id="contactSubmit-d">Skicka förfrågan</button>',
     '  <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>',
     '  <p class="form-status" id="formStatus-d" role="status" aria-live="polite" hidden></p>',
-    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:0703433440">Thom 070-343 34 40</a> eller <a href="tel:0705614845">Fredrik 070-561 48 45</a></p>',
+    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt</a> · ring <a href="tel:+46703433440">Thom 070-343 34 40</a> eller <a href="tel:+46705614845">Fredrik 070-561 48 45</a></p>',
     '</form>'
   ].join('\n');
 

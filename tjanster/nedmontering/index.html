@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=55" />
+  <link rel="stylesheet" href="/styles.css?v=56" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -48,8 +48,25 @@
       "@type": "MovingCompany",
       "@id": "https://bohagsbolaget.se/#business",
       "name": "Bohagsbolaget.se",
+      "url": "https://bohagsbolaget.se/",
       "telephone": "+46705614845",
-      "email": "boka@bohagsbolaget.se"
+      "email": "boka@bohagsbolaget.se",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Upplands Väsby",
+        "postalCode": "194 74",
+        "addressRegion": "Stockholms län",
+        "addressCountry": "SE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 59.5167,
+        "longitude": 17.9167
+      },
+      "sameAs": [
+        "https://share.google/zt1uzehxTIENtOEtm",
+        "https://se.trustpilot.com/review/bohagsbolaget.se"
+      ]
     },
     "areaServed": [
       {
@@ -59,6 +76,14 @@
       {
         "@type": "AdministrativeArea",
         "name": "Uppsala län"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Södermanlands län"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Västmanlands län"
       }
     ],
     "offers": {
@@ -309,7 +334,7 @@
         <p>Nedmontering, skydd av golv och angränsande ytor, och att materialet samlas ihop och emballeras på plats. Bortforslingen står som egen rad i offerten.</p>
 
         <h2>Hör av dig</h2>
-        <p>Skicka bilder på det som ska rivas, så får du ett fast pris på arbetet och en rad för bortforslingen. Enklast är att ringa <a href="tel:0705614845">070-561 48 45</a>, eller att skriva till <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se</a>. Prislistan i sin helhet ligger under <a href="/#priser">Priser</a>.</p>
+        <p>Skicka bilder på det som ska rivas, så får du ett fast pris på arbetet och en rad för bortforslingen. Enklast är att ringa <a href="tel:+46705614845">070-561 48 45</a>, eller att skriva till <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se</a>. Prislistan i sin helhet ligger under <a href="/#priser">Priser</a>.</p>
 
         <p><a class="btn btn-primary" href="/#kontakt">Få pris på rivningen</a></p>
 
@@ -345,11 +370,13 @@
       </div>
       <div class="footer-col">
         <h3>Kontakt</h3>
-        <a href="tel:0703433440">Thom – 070-343 34 40</a>
-        <a href="tel:0705614845">Fredrik – 070-561 48 45</a>
+        <a href="tel:+46703433440">Thom – 070-343 34 40</a>
+        <a href="tel:+46705614845">Fredrik – 070-561 48 45</a>
         <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se</a>
         <a class="footer-kort" href="/thom/">Thoms visitkort</a>
         <a class="footer-kort" href="/fredrik/">Fredriks visitkort</a>
+        <a class="footer-profil" href="https://share.google/zt1uzehxTIENtOEtm" target="_blank" rel="noopener">Bohagsbolaget på Google</a>
+        <a class="footer-profil" href="https://se.trustpilot.com/review/bohagsbolaget.se" target="_blank" rel="noopener">Omdömen på Trustpilot</a>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -389,7 +416,7 @@
     </div>
   </div>
 
-  <script src="/script.js?v=23"></script>
+  <script src="/script.js?v=24"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
