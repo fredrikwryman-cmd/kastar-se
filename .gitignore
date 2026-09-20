@@ -4,8 +4,6 @@ assets/portratt-*.mp4
 assets/*-kalla.*
 _raw/
 assets/portratt-*.jpg
-assets/logo-mork.jpg
-assets/kastar ny logo.png
 
 # Levererade filer från Claude-appen. Hamnar i repomappen för att den
 # är den anslutna mappen. Hör inte till sajten och ska aldrig in i repot.
