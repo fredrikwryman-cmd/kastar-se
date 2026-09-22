@@ -925,6 +925,9 @@ if (chattKnapp) {
   function oppna() {
     panel.hidden = false;
     chattKnapp.hidden = true;
+    /* Tillstandet maste folja med aven nar knappen doljs: en skarmlasare som
+       star kvar pa knappen ska fa veta att panelen ar oppen. */
+    chattKnapp.setAttribute('aria-expanded', 'true');
 
     /* Lagringen avgor vad som visas. Ar den tom har samtalet antingen
        avslutats, rensats, eller hunnit bli aldre an livslangden - i alla tre
@@ -954,6 +957,7 @@ if (chattKnapp) {
   function stangNed() {
     panel.hidden = true;
     chattKnapp.hidden = false;
+    chattKnapp.setAttribute('aria-expanded', 'false');
     chattKnapp.focus();
   }
 

@@ -146,12 +146,21 @@ body:not(.kort-sida) main p a:not(.btn) {
 }
 
 /* ---------- Fokus (tangentbord) ---------- */
-/* Ringen byter färg med underlaget, se --focus-ring i :root. De tre
-   sektionerna nedan är de enda med petrolbotten på sajten — 27 av 81
-   fokuserbara element ligger i dem, resten på vitt eller krämvitt. */
+/* Ringen byter färg med underlaget, se --focus-ring i :root. Uppräkningen
+   nedan ska innehålla VARJE yta med petrolbotten. Standardringen
+   var(--orange-ink) ger bara 2,34:1 mot petrol, mot kravet 3,0:1 — den
+   ljusa tonen ger 4,62:1. Listan står på enskilda selektorer, så en ny
+   petrolsektion får fel ringfärg tyst om den inte läggs till här. */
 .site-header,
 .hero,
-.site-footer { --focus-ring: var(--orange); }
+.site-footer,
+.section-alt,
+.chatt-knapp,
+.chatt-panel,
+/* .skip ligger direkt under <body>, inte inuti .site-header, och arvde
+   darfor standardringen trots att den bade har egen petrolbotten och
+   ritas ovanpa sidhuvudet. Den maste sta med i egen rakning. */
+.skip { --focus-ring: var(--orange); }
 
 :focus-visible {
   outline: 3px solid var(--focus-ring);
@@ -438,9 +447,10 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
      det ena men inte det andra. Uppmatt pa den malade gradienten mot
      hjaltens faktiska bakgrund: samsta stoppet ger 3,75:1 mot kravet
      3:1 for stor text, sa sjalva lasbarheten ar inte problemet. */
-  /* Exakt tre varv, och stannar sedan i utgångsläget. Rörelse som pågår
-     längre än fem sekunder skulle annars behöva gå att pausa. */
-  animation: gradient-shift 5s ease 3 forwards;
+  /* Exakt ett varv, och stannar sedan i utgångsläget. Rörelse som pågår
+     längre än fem sekunder måste gå att pausa (WCAG 2.2.2), och varvet är
+     just fem sekunder. Tre varv vore femton och skulle kräva en pausknapp. */
+  animation: gradient-shift 5s ease 1 forwards;
 }
 
 /* Grinden for gradienttexten, se kommentaren ovan. */
@@ -520,7 +530,10 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    .trust, som saknar ram och därför alltid ska stå på krämvit. */
 .section-cream { background: var(--bg); }
 .section-white { background: var(--bg-card); }
-.section-alt h2, .section-alt h3 { color: #fff; }
+/* h1 måste stå med: tack.html är enda sidan med en huvudrubrik på
+   petrolbotten, och utan den här raden ärver den var(--ink) och ger
+   1,54:1 mot kravet 3,0:1. Vitt mot petrol ger 12,30:1. */
+.section-alt h1, .section-alt h2, .section-alt h3 { color: #fff; }
 .section-alt p { color: var(--on-dark-body); }
 .section-alt .eyebrow { color: var(--orange); }
 .section-head { max-width: 700px; margin: 0 auto 2.75rem; text-align: center; }
@@ -683,6 +696,17 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   transition: background-color 150ms ease, color 150ms ease;
 }
 .faq-fraga::-webkit-details-marker { display: none; }
+/* Fokusringen ritas INÅT med box-shadow i stället för utåt med outline.
+   .faq-post har overflow: hidden för att klippa innehållet till de rundade
+   hörnen, och den klipper allt som ett barn målar utanför sin egen kant —
+   både outline OCH utåtriktad box-shadow. Uppmätt före ändringen: bara
+   ringens underkant syntes. En inset-skugga målas innanför raden och klipps
+   därför aldrig. Samma färg och samma 3 px som den globala regeln.
+   outline: none står aldrig ensam här – box-shadow ersätter den. */
+.faq-fraga:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--focus-ring);
+}
 .faq-fraga:hover { background: var(--bg); color: var(--orange-ink); }
 /* Pilen är två kanter som bildar en vinkel. Den pekar nedåt när frågan är
    stängd och roterar uppåt när den öppnas. */
@@ -1118,9 +1142,18 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
     flex-direction: column; align-items: stretch; gap: 0;
     background: var(--petrol); border-bottom: 1px solid rgba(255,255,255,.1);
     padding: .5rem 20px 1rem; box-shadow: var(--shadow);
-    transform: translateY(-120%); transition: transform .25s ease; pointer-events: none;
+    /* visibility: hidden tar bort den stängda menyn ur BÅDE tabbordningen och
+       tillgänglighetsträdet. pointer-events ensamt räckte inte: sex länkar låg
+       kvar som fokuserbara utanför skärmen på varje sida. display: none får
+       inte användas – det dödar uttoningen. Fördröjningen på visibility gör
+       att den växlar till hidden FÖRST när uttoningen har kört klart. */
+    transform: translateY(-120%); visibility: hidden; pointer-events: none;
+    transition: transform .25s ease, visibility 0s linear .25s;
   }
-  .nav.open { transform: translateY(0); pointer-events: auto; }
+  .nav.open {
+    transform: translateY(0); visibility: visible; pointer-events: auto;
+    transition: transform .25s ease, visibility 0s linear 0s;
+  }
   .nav a { padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
   /* I den utfällda mobilmenyn har länkarna redan avdelare – ingen understrykning */
   .nav a::after { content: none; }

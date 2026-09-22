@@ -1,0 +1,15 @@
+# GitHub Pages bygger sajten med Jekyll. Allt som star i exclude kopieras
+# inte till den publicerade sajten och gar darfor inte att hamta utifran.
+#
+# Bakgrund: worker/system-prompt.js ar assistentens hela regelverk med
+# prislogik och saljinstruktioner, och lag oppet nedladdningsbar.
+# CLAUDE.md, PUBLICERA.md och README.md ar interna arbetsdokument.
+#
+# verktyg/ star medvetet INTE i listan - den mappen ska fortsatta
+# publiceras. Filer och mappar som borjar med _ hoppas over av Jekyll
+# automatiskt, sa _att-radera/ behover ingen egen rad.
+exclude:
+  - worker/
+  - CLAUDE.md
+  - PUBLICERA.md
+  - README.md
