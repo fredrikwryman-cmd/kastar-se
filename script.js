@@ -627,7 +627,10 @@ if (chattKnapp) {
   const MAX_HISTORIK = 20;   // samma tak som workern, annars svarar den 400
   const MAX_TECKEN = 2000;   // samma sak per meddelande
   const MAX_FORSOK = 10;
-  const HALSNING = 'Hej! Jag svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vad kan jag hjälpa dig med?';
+  /* AI-forordningen artikel 50 kraver att besokaren far veta att motparten ar
+     ett AI-system nar det inte ar uppenbart. Maskoten och "jag" pekade at
+     motsatt hall, sa upplysningen star forst och vagen till en manniska sist. */
+  const HALSNING = 'Hej! Jag är en automatisk AI-assistent och svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vill du prata med Fredrik eller Thom ringer du 070-561 48 45. Vad kan jag hjälpa dig med?';
   const FELTEXT = 'Något gick fel. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
   /* Samma nyckel och samma faltnamn som kontaktformularet i index.html.
      Sandningen sker fran besokarens egen webblasare: workern gar ut fran

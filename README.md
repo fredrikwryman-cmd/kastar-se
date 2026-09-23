@@ -1,6 +1,7 @@
 # Bohagsbolaget.se
 
-Webbplats för Bohagsbolaget.se, ett företag i Arlandastad som utför tömning,
+Webbplats för Bohagsbolaget.se, ett företag i Upplands Väsby med magasin i
+Arlandastad, som utför tömning,
 bortforsling, flytt, montering och magasinering i Stockholm och Uppsala med
 omnejd.
 

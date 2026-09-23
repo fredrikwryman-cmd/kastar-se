@@ -1640,6 +1640,15 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   display: flex; align-items: flex-end; gap: .5rem;
   padding: .7rem; border-top: 1px solid var(--line); background: var(--bg-card);
 }
+/* Informationsplikten vid insamlingstillfallet. Egen rad utanfor .chatt-rad
+   sa att den inte trycker ihop skrivfaltet, och flex: 0 0 auto sa att den
+   aldrig krymps bort nar panelen blir lag. Samma finstilta ton som sajtens
+   ovriga notrader: .85rem, vikt 300, var(--muted). */
+.chatt-info {
+  flex: 0 0 auto; margin: 0;
+  padding: 0 .7rem .6rem; background: var(--bg-card);
+  font-size: .78rem; font-weight: 300; line-height: 1.45; color: var(--muted);
+}
 .chatt-falt {
   flex: 1 1 auto; resize: none;
   min-height: 44px; max-height: 120px;
