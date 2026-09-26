@@ -74,6 +74,23 @@
   --muted:        #5B6A70;
   --on-dark:      #FFFFFF;
   --on-dark-body: #E7EEF0;
+
+  /* ---------- Typografisk skala ----------
+     Sex steg. Varje sammanslagning gick till det varde som REDAN hade flest
+     element, sa att storsta delen av sajten star pixeloforandrad och bara
+     avvikarna flyttar sig. Antalen ar raknade over nio sidor vid 1440 px.
+     Fyra grader star medvetet utanfor skalan och har var sin egen regel med
+     eget skal: .hero h1, .legal h2, .calc-price och .magkalk-vol. */
+  --grad-h1:      clamp(1.9rem, 4.2vw, 2.9rem);   /* 46,4 px vid 1440 */
+  --radh-h1:      1.16;
+  --grad-h2:      clamp(1.45rem, 2.9vw, 2.05rem); /* 32,8 px vid 1440 */
+  --radh-h2:      1.22;
+  --grad-h3:      1.2rem;    /* 19,2 px - vann over 18,4 (8 st) och 17,6 (7 st) med 25 st */
+  --radh-h3:      1.4;
+  --grad-ingress: 1.05rem;   /* 16,8 px - vann over 17,92 (1 st) med 7 st */
+  --grad-brod:    1rem;      /* 16 px - 170 element, storst pa hela sajten */
+  --grad-liten:   .82rem;    /* 13,12 px - 14 st, fler an 13,6 (9), 12,48 (10) och 14,08 (6) */
+  --radh-text:    1.75;
   /* Dampade toner pa petrolbotten. Sidfoten anvande dem som rena hexkoder. */
   --on-dark-soft:  #B9C9CE;
   --on-dark-muted: #9FB3B9;
@@ -116,18 +133,18 @@ h1, h2, h3, h4 { color: var(--ink); margin: 0 0 .5em; }
    gäller bara det som väger 700. */
 h1, h2, h3, h4 { letter-spacing: -.02em; }
 h1 {
-  font-size: clamp(1.9rem, 4.2vw, 2.9rem);
+  font-size: var(--grad-h1);
   font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.16;
+  line-height: var(--radh-h1);
 }
 h2 {
-  font-size: clamp(1.45rem, 2.9vw, 2.05rem);
+  font-size: var(--grad-h2);
   font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.22;
+  line-height: var(--radh-h2);
 }
-h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.4; }
+h3 { font-size: var(--grad-h3); font-weight: 700; line-height: var(--radh-h3); }
 p  { margin: 0 0 1rem; }
 /* Länkar står på ljus botten, där #A85610 klarar 5,25:1 mot vitt och
    4,84:1 mot krämvitt. Länkar på mörk botten sätter sin egen färg
@@ -543,8 +560,8 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   position: relative;
   z-index: 2;
 }
-.hero-copy .lead { color: var(--on-dark-body); font-size: 1.12rem; max-width: 46ch; }
-.lead { font-size: 1.05rem; }
+.hero-copy .lead { color: var(--on-dark-body); font-size: var(--grad-ingress); max-width: 46ch; }
+.lead { font-size: var(--grad-ingress); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin: 1.75rem 0 1.5rem; }
 /* Hero har två knappar. Under 480px bryter de annars till två rader med olika
    bredd, vilket ser ojämnt ut – här staplas de i stället i full bredd. */
@@ -552,7 +569,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .hero-actions .btn { width: 100%; }
 }
-.hero-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 1.3rem; padding: 0; margin: 0; color: var(--on-dark-body); font-weight: 600; font-size: .92rem; }
+.hero-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 1.3rem; padding: 0; margin: 0; color: var(--on-dark-body); font-weight: 600; font-size: var(--grad-brod); }
 
 /* ---------- Sektioner: ljus (kräm) och mörk (petrol) varvas ---------- */
 .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
@@ -684,7 +701,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    .card .card-situation. */
 .card .card-situation {
   margin: 0 0 .35rem;
-  font-size: .78rem;
+  font-size: var(--grad-liten);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: .063em;
@@ -703,7 +720,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* Ikonbilden fyller hela rutan innanför ramen. height:100% krävs – annars slår
    height-attributet igenom som presentationshint och bilden blir 240px hög. */
 .feature-icon img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 4px; }
-.feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: var(--on-dark); }
+.feature h3 { margin: 0 0 .3rem; font-size: var(--grad-h3); color: var(--on-dark); }
 .feature p { margin: 0; }
 /* Notrad under rutnätet. Sajtens övriga notrader (.price-note, .magkalk-not)
    dämpas med var(--muted), som är avsedd för ljus botten och blir för svag mot
@@ -714,7 +731,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
      bekvama spannet. Samma monster som .price-note, men i ch sa att gransen
      foljer graden. */
   max-width: 70ch; margin: 2.5rem auto 0; text-align: center;
-  font-size: .85rem; font-weight: 300; line-height: 1.6;
+  font-size: var(--grad-liten); font-weight: 300; line-height: var(--radh-text);
 }
 
 /* Knappen efter prisavsnittet pa tjanstesidorna. Marginalen ar samma 1rem
@@ -763,11 +780,16 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   pointer-events: auto;
 }
 
-/* Sidfotens kolumnlankar star staplade med 34 px delning: 28 px hog rad och
-   6 px mellanrum. De gar till OLIKA adresser, sa en 44 px yta skulle lagga
-   16 px av varje lank ovanpa grannen och skicka traffen fel. Ytan strackes
-   darfor till hela delningen, 34 px - allt utrymme som finns utan att
-   sidfotens hojd andras. 44 px hade krävt +140 px sidfot. */
+/* Traffytan ar 34 px, inte 44 som WCAG 2.5.8 begar. Skalet star har for att
+   nasta lasare inte ska tro att talet ar en slarvfel.
+   Kolumnlankarna star staplade med 34 px delning: 28 px hog rad och 6 px
+   mellanrum. De gar till OLIKA adresser - tva av dem ar Thoms och Fredriks
+   telefonnummer. En 44 px yta hade lagt 16 px av varje lank ovanpa grannen,
+   och en tumme som siktar pa det ena numret hade ringt det andra. 34 px ar
+   hela delningen, alltsa allt utrymme som finns utan overlapp.
+   Att na 44 px kraver 44 px delning, vilket ar +10 px per lank och +140 px
+   sidfotshojd for de fjorton lankarna. Det ar valt bort. Ska det andras ar
+   det hojden som ar priset, inte den har raden. */
 .footer-col a { position: relative; }
 .footer-col a::after {
   content: '';
@@ -822,7 +844,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 }
 .faq-post[open] .faq-tecken { transform: rotate(-135deg); }
 .faq-svar { padding: 0 1.25rem 1.25rem; }
-.faq-svar p { margin: 0; font-size: .95rem; line-height: 1.75; color: var(--body-c); }
+.faq-svar p { margin: 0; font-size: var(--grad-brod); line-height: var(--radh-text); color: var(--body-c); }
 
 @media (max-width: 560px) {
   .faq-fraga { padding: .95rem 1rem; font-size: .95rem; }
@@ -1012,7 +1034,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .magkalk { display: grid; grid-template-columns: 1.15fr .85fr; gap: 2rem; align-items: start; }
 .magkalk > * { min-width: 0; }
 .magkalk-fraga + .magkalk-fraga { margin-top: 1.75rem; }
-.magkalk-etikett { font-weight: 500; font-size: .88rem; margin: 0 0 .35rem; color: var(--ink); }
+.magkalk-etikett { font-weight: 500; font-size: var(--grad-liten); margin: 0 0 .35rem; color: var(--ink); }
 .magkalk .calc-steps button { min-height: 44px; }
 .magkalk-grad { gap: .4rem; }
 
@@ -1026,17 +1048,17 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 }
 .magkalk-ut .calc-price { margin: .25rem 0 0; }
 .magkalk-enhet {
-  margin: .1rem 0 0; font-size: .78rem; text-transform: uppercase;
+  margin: .1rem 0 0; font-size: var(--grad-liten); text-transform: uppercase;
   letter-spacing: .08em; color: var(--muted); font-weight: 500;
 }
 .magkalk-min {
-  margin: .85rem 0 0; font-size: .85rem; line-height: 1.5;
+  margin: var(--grad-liten) 0 0; font-size: var(--grad-liten); line-height: var(--radh-text);
   color: var(--orange-ink); font-weight: 500;
 }
 .magkalk-cta { margin-top: 1.25rem; }
 .magkalk-not {
   grid-column: 1 / -1; margin: 1.5rem 0 0;
-  font-size: .85rem; font-weight: 300; line-height: 1.65; color: var(--muted);
+  font-size: var(--grad-liten); font-weight: 300; line-height: var(--radh-text); color: var(--muted);
 }
 
 @media (max-width: 860px) {
@@ -1144,13 +1166,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   font: inherit; color: var(--ink); background: var(--bg-card); transition: border-color .15s;
 }
 .field input:focus, .field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,134,46,.18); }
-.form-alt { text-align: center; font-size: .9rem; font-weight: 300; color: var(--muted); margin: 1rem 0 0; }
+.form-alt { text-align: center; font-size: var(--grad-brod); font-weight: 300; color: var(--muted); margin: 1rem 0 0; }
 
 /* Bekräftelse/fel efter att formuläret skickats */
 .form-status {
   margin: 1rem 0 0; padding: .85rem 1rem;
   border-radius: var(--radius-btn);
-  font-size: .93rem; font-weight: 600; line-height: 1.45;
+  font-size: var(--grad-brod); font-weight: 600; line-height: var(--radh-text);
 }
 .form-status.is-ok    { background: var(--ok-bg); border: 1px solid var(--ok-line); color: var(--ok-ink); }
 .form-status.is-error { background: var(--error-bg); border: 1px solid var(--error-line); color: var(--error-ink); }
@@ -1219,7 +1241,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .legal p, .legal li { color: var(--body-c); overflow-wrap: break-word; }
 .legal ul { padding-left: 1.25rem; margin: .5rem 0; }
 .legal li { margin-bottom: .35rem; }
-.legal .updated { font-size: .85rem; font-weight: 300; color: var(--muted); }
+.legal .updated { font-size: var(--grad-liten); font-weight: 300; color: var(--muted); }
 /* Avvikande, mindre ruta för friskrivningar sist på en textsida */
 .legal-note {
   margin: 2.5rem 0 0;
@@ -1228,7 +1250,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   border-left: 3px solid var(--orange);
   border-radius: var(--radius-btn);
 }
-.legal-note p { margin: 0; font-size: .85rem; font-weight: 300; line-height: 1.65; color: var(--muted); }
+.legal-note p { margin: 0; font-size: var(--grad-liten); font-weight: 300; line-height: var(--radh-text); color: var(--muted); }
 
 /* ---------- Responsivt ---------- */
 @media (max-width: 860px) {
@@ -1339,7 +1361,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    botten och använder därför --orange-ink. */
 .pris-avdragsnot {
   max-width: 62ch; margin: .9rem auto 0;
-  text-align: center; font-size: .88rem; line-height: 1.6; color: var(--muted);
+  text-align: center; font-size: var(--grad-liten); line-height: var(--radh-text); color: var(--muted);
 }
 .pris-avdragsnot a { color: var(--orange-ink); text-decoration: underline; }
 
@@ -1498,13 +1520,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   /* 1.1rem, inte .82rem: en underrubrik far inte vara mindre an brodtexten
      den rubricerar - da laser den som bildtext. 1.1rem ar ett steg som redan
      finns i skalan, sa ingen ny grad tillkommer. */
-  font-size: 1.1rem; font-weight: 700;
+  font-size: var(--grad-h3); font-weight: 700;
   text-transform: uppercase; letter-spacing: .05em;
   /* 1.4, samma radhojd som sajtens ovriga h3 pa 1.1rem - annars star tva
      kombinationer i skalan som skiljer sig med fem hundradelar. */
   line-height: 1.4; color: var(--ink);
 }
-.trust-item p { margin: 0; font-size: .88rem; font-weight: 300; line-height: 1.55; color: var(--muted); }
+.trust-item p { margin: 0; font-size: var(--grad-liten); font-weight: 300; line-height: var(--radh-text); color: var(--muted); }
 
 /* Så går det till */
 /* Samma 900px som .calc och .trust – hela prissektionen delar kant */
@@ -1517,14 +1539,14 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   border-radius: 50%; background: var(--orange); color: var(--petrol-deep);
   font-weight: 700; font-size: 1.4rem; letter-spacing: -.02em;
 }
-.step h3 { margin-bottom: .4rem; font-size: 1.1rem; }
+.step h3 { margin-bottom: .4rem; font-size: var(--grad-h3); }
 .step p  { margin: 0; color: var(--body-c); }
 
 .price-note {
   /* 70ch, samma grans som .features-not och langdistanstexten fick i
      kodpaket 4. 720px gav 98 tecken per rad. */
   max-width: 70ch; margin: 2.5rem auto 0; text-align: center;
-  font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.6;
+  font-size: var(--grad-liten); font-weight: 300; color: var(--muted); line-height: var(--radh-text);
 }
 
 /* ==========================================================================
