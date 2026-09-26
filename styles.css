@@ -741,19 +741,40 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .pris__badge,
 .pris-avdragsnot a,
 .omdome-lankar a,
-.contact-list li > a {
+.contact-list li > a,
+.footer-bottom a,
+.footer-legal a,
+.form-alt a {
   position: relative;
 }
 .pris__badge::after,
 .pris-avdragsnot a::after,
 .omdome-lankar a::after,
-.contact-list li > a::after {
+.contact-list li > a::after,
+.footer-bottom a::after,
+.footer-legal a::after,
+.form-alt a::after {
   content: '';
   position: absolute;
   left: 0; right: 0;
   top: 50%; transform: translateY(-50%);
   min-height: 44px;
   /* Ytan ar bara till for pekaren och far aldrig mala nagot. */
+  pointer-events: auto;
+}
+
+/* Sidfotens kolumnlankar star staplade med 34 px delning: 28 px hog rad och
+   6 px mellanrum. De gar till OLIKA adresser, sa en 44 px yta skulle lagga
+   16 px av varje lank ovanpa grannen och skicka traffen fel. Ytan strackes
+   darfor till hela delningen, 34 px - allt utrymme som finns utan att
+   sidfotens hojd andras. 44 px hade krävt +140 px sidfot. */
+.footer-col a { position: relative; }
+.footer-col a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%; transform: translateY(-50%);
+  min-height: 34px;
   pointer-events: auto;
 }
 
@@ -1399,6 +1420,10 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
      stegknapparna hamnade 10px for langt ned nar elementet vaxte. */
   display: block;
   width: 100%; height: 44px; margin: calc(2rem - 18px) 0 calc(1rem - 18px);
+  /* Den negativa bottenmarginalen later stegknapparna ligga 2 px in over
+     reglagets underkant, sa traffytan var 42,5 av 44 px. z-index lyfter
+     reglaget i malningsordningen utan att flytta nagot en enda pixel. */
+  position: relative; z-index: 1;
   background: transparent;
   /* grab, inte pointer: reglaget dras, det klickas inte. Tummarna hade redan
      grab, så själva spåret var det enda som sa något annat. */
@@ -1439,6 +1464,17 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
               color 150ms ease,
               border-color 150ms ease,
               transform 100ms ease;
+}
+/* Reglaget ligger 2 px in over knapparnas overkant (se den negativa
+   bottenmarginalen pa .calc-range) och vinner traffen dar sedan reglaget
+   lyftes med z-index. Knappen hamtar igen de 2 px nedat i stallet, dar det
+   finns 74 px fritt utrymme. Ingenting flyttas: ytan ar osynlig. */
+.calc-steps button { position: relative; }
+.calc-steps button::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: -4px;
+  pointer-events: auto;
 }
 .calc-steps button:hover { border-color: var(--orange); color: var(--orange-ink); }
 .calc-steps button:active { transform: translateY(1px); }
@@ -1485,7 +1521,9 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .step p  { margin: 0; color: var(--body-c); }
 
 .price-note {
-  max-width: 720px; margin: 2.5rem auto 0; text-align: center;
+  /* 70ch, samma grans som .features-not och langdistanstexten fick i
+     kodpaket 4. 720px gav 98 tecken per rad. */
+  max-width: 70ch; margin: 2.5rem auto 0; text-align: center;
   font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.6;
 }
 
@@ -1494,8 +1532,24 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    ========================================================================== */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
 .reveal.in { opacity: 1; transform: none; }
+/* Forskjutning mellan reveal-block som star DIREKT efter varandra. Endast
+   transition-delay, aldrig animation-delay, och startlaget i .reveal rors
+   inte - annars slutar noscript-reserven fungera.
+   Grannvaljaren + i stallet for nth-child: blocken ar av olika elementtyp
+   (div, div, p), och nth-child hade kunnat hamna i samma specificitetsfalla
+   som .station:nth-child(even) en gang gjorde. Specificitet 0,2,0 - hogre an
+   .reveal (0,1,0), och regeln ror en egenskap ingen annan regel satter.
+   + och inte ~ med flit: sajtens tredje reveal-block (.price-note) skiljs
+   fran .calc av .prislista och ligger 1 466 px langre ned. Det kommer in i
+   bild helt for sig sjalvt, och en fordrojning dar hade bara kants trog.
+   Storsta grannparet ar tva block: 1 x 70 ms + 700 ms = 770 ms. */
+.reveal + .reveal { transition-delay: 70ms; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+  /* Specificitet 0,3,0, och regeln star senare i filen an forskjutningen
+     ovan - vinner alltsa bade pa specificitet och pa ordning. */
+  .reveal,
+  .reveal + .reveal { transition-delay: 0s; }
 }
 
 /* ==========================================================================

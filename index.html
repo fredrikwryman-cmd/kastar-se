@@ -380,7 +380,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=62" />
+  <link rel="stylesheet" href="styles.css?v=63" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -685,7 +685,13 @@
               <span class="calc-label" id="calcLabel">8 m³</span>
               <span class="calc-vol"   id="calcVol">Cirka en halv bil</span>
               <span class="calc-from">Från</span>
-              <span class="calc-price" id="calcPrice" aria-live="polite">3 495 kr</span>
+              <!-- Siffran räknas upp och får därför INTE själv bära aria-live:
+                   en uppräkning från 1 295 till 6 995 hade lästs upp siffra för
+                   siffra. Den synliga siffran döljs för hjälpmedel, och den
+                   dolda live-regionen skrivs en enda gång när uppräkningen
+                   har landat på slutvärdet. -->
+              <span class="calc-price" id="calcPrice"><span id="calcPriceDigits" aria-hidden="true">3 495 kr</span></span>
+              <span class="sr-only" id="calcPriceLive" aria-live="polite">3 495 kr</span>
               <a class="pris__badge pris__badge--fast" href="#villkor">Fast pris</a>
               <span class="calc-desc"  id="calcDesc">Halva bilen – perfekt för större tömningar.</span>
             </div>
@@ -1244,7 +1250,7 @@
     <p class="chatt-info">Det du skriver skickas till oss. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>
   </div>
 
-  <script src="script.js?v=29"></script>
+  <script src="script.js?v=30"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

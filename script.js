@@ -78,12 +78,59 @@ const range   = document.getElementById('calcRange');
 const loadEl  = document.getElementById('truckLoad');
 const labelEl = document.getElementById('calcLabel');
 const volEl   = document.getElementById('calcVol');
-const priceEl = document.getElementById('calcPrice');
+const priceDigits = document.getElementById('calcPriceDigits');
+const priceLive   = document.getElementById('calcPriceLive');
 const descEl  = document.getElementById('calcDesc');
 const stepsEl = document.getElementById('calcSteps');
 
 function formatPrice(n) {
   return n.toLocaleString('sv-SE').replace(/ /g, ' ') + ' kr';
+}
+
+/* ---------- Uppraknande pris i volymkalkylatorn ----------
+   Enda stallet pa sajten dar rorelse tillfors. Fyra saker att halla reda pa:
+
+   1. SLUTVARDET satts explicit i sista bildrutan, aldrig via interpolationen.
+      En avrundning far inte ge ett pris som skiljer en krona fran TIERS.
+   2. AVBROTT: ett pagaende varv sparas i rafId och avbryts med
+      cancelAnimationFrame. Nasta upprakning startar fran den siffra som
+      faktiskt star pa skarmen (visatPris), inte fran forra malvardet - drar
+      man reglaget snabbt koar alltsa ingenting.
+   3. REDUCERAD RORELSE: hoppa rakt till slutvardet.
+   4. HJALPMEDEL: den synliga siffran ar aria-hidden och skrivs varje bildruta.
+      Live-regionen skrivs EN gang, nar varvet har landat. */
+const UPPRAKNING_MS = 260;
+let rafId = null;
+let visatPris = TIERS[2].price;   // samma startvarde som markupen
+
+function satPris(varde, slutligt) {
+  visatPris = varde;
+  priceDigits.textContent = formatPrice(varde);
+  if (slutligt) priceLive.textContent = formatPrice(varde);
+}
+
+function raknaUppPris(mal) {
+  if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+
+  const tyst = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tyst || visatPris === mal) { satPris(mal, true); return; }
+
+  const fran = visatPris;
+  const start = performance.now();
+  /* Samma karaktar som sajtens ovriga rorelse: snabb start, mjuk landning. */
+  const kurva = (x) => 1 - Math.pow(1 - x, 3);
+
+  const steg = (nu) => {
+    const t = Math.min(1, (nu - start) / UPPRAKNING_MS);
+    if (t >= 1) {
+      rafId = null;
+      satPris(mal, true);          // exakt slutvarde, live-regionen en gang
+      return;
+    }
+    satPris(Math.round(fran + (mal - fran) * kurva(t)), false);
+    rafId = requestAnimationFrame(steg);
+  };
+  rafId = requestAnimationFrame(steg);
 }
 
 // Bygger stegknapparna ur TIERS så att etiketterna aldrig kan hamna i otakt
@@ -112,7 +159,7 @@ function renderTier(i) {
   labelEl.textContent = t.vol;   // primärt: volymen
   volEl.textContent   = t.part;  // sekundärt: motsvarande del av bilen
   descEl.textContent  = t.desc;
-  priceEl.textContent = formatPrice(t.price);
+  raknaUppPris(t.price);
 
   /* Utan aria-valuetext laser skarmlasaren bara reglagets rautal, 0-5, som
      inte betyder nagot for kunden. Nu lases volymen och priset i stallet. */
