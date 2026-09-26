@@ -74,6 +74,19 @@
   --muted:        #5B6A70;
   --on-dark:      #FFFFFF;
   --on-dark-body: #E7EEF0;
+  /* Dampade toner pa petrolbotten. Sidfoten anvande dem som rena hexkoder. */
+  --on-dark-soft:  #B9C9CE;
+  --on-dark-muted: #9FB3B9;
+  /* Varmare ytfarg an --bg. Anvands av faktarutan, och star med i
+     kontrastresonemanget for --muted (4,70:1) utan att ha varit en variabel. */
+  --bg-warm:       #F1EAE0;
+  /* Formularets tva statuslagen, tre toner vardera. */
+  --ok-bg:         #E7F3EC;
+  --ok-line:       #B7DCC6;
+  --ok-ink:        #1B5E38;
+  --error-bg:      #FCEDE6;
+  --error-line:    #F0C4AB;
+  --error-ink:     #8A3A12;
 
   --radius-btn:   4px;      /* nästan raka hörn som originalet */
   --radius-card:  10px;
@@ -179,7 +192,7 @@ body:not(.kort-sida) main p a:not(.btn) {
   z-index: 100;
   padding: .75rem 1.25rem;
   background: var(--petrol-deep);
-  color: #fff;
+  color: var(--on-dark);
   font-weight: 500;
   text-decoration: none;
   border-radius: var(--radius-btn);
@@ -228,7 +241,13 @@ body:not(.kort-sida) main p a:not(.btn) {
               transform 100ms ease;
   text-decoration: none;
 }
-.btn:hover { text-decoration: none; transform: translateY(-1px); }
+/* Hovringsrorelse bakom grind: pa en pekskarm fastnar :hover efter en
+   tryckning, och knappen blir liggande lyft tills man trycker nagon
+   annanstans. Fargbyten behover ingen grind - bara det som flyttar. */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-1px); }
+}
+.btn:hover { text-decoration: none; }
 /* Fysiskt nedtryck. Ligger efter :hover så den vinner medan musen är nere. */
 .btn:active { transform: translateY(1px); }
 /* Medan formuläret skickas: knappen dämpas och slutar reagera på hover */
@@ -241,21 +260,26 @@ body:not(.kort-sida) main p a:not(.btn) {
    Skuggan går i knappens egen orange – bara primärknappen bär tyngd.
    rgba(232,134,46) är samma färg som --orange, ingen ny kulör. */
 .btn-primary { background: var(--orange); color: var(--petrol-deep); box-shadow: 0 2px 10px rgba(232,134,46,.30); }
-.btn-primary:hover { background: var(--orange); color: var(--petrol-deep); box-shadow: 0 6px 18px rgba(232,134,46,.42); transform: translateY(-1px); }
+.btn-primary:hover { background: var(--orange); color: var(--petrol-deep); box-shadow: 0 6px 18px rgba(232,134,46,.42); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { transform: translateY(-1px); }
+}
 .btn-primary:active { box-shadow: 0 2px 10px rgba(232,134,46,.30); }
 .btn-light { background: var(--bg); color: var(--petrol-deep); }
-.btn-light:hover { background: #fff; }
+.btn-light:hover { background: var(--bg-card); }
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--petrol); }
-.btn-ghost:hover { background: var(--petrol); color: #fff; }
+.btn-ghost:hover { background: var(--petrol); color: var(--on-dark); }
 /* Kantad knapp: samma form, storlek och radie som de fyllda, men med
    genomskinlig botten och orange ram. Används för "Visa kort", som inte
    ska konkurrera med den fyllda skicka-knappen i samma sektion. */
 .btn-outline { background: transparent; color: var(--orange-ink); border-color: var(--orange); }
-.btn-outline:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+.btn-outline:hover { background: var(--orange); color: var(--on-dark); border-color: var(--orange); }
 /* Pilen glider fram vid hover, texten står stilla – samma grepp som på
    tjänstekorten. */
 .btn .btn-pil { display: inline-block; transition: transform 150ms ease; }
-.btn:hover .btn-pil { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-pil { transform: translateX(4px); }
+}
 .btn-sm { padding: .6rem 1.2rem; font-size: .82rem; }
 .btn-block { width: 100%; }
 
@@ -321,10 +345,17 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* Understrykning som växer ut från mitten vid hover. Länkarna är fullt synliga
    från start – linjen är det enda som animeras. */
 .nav a::after {
-  content: ''; position: absolute; left: 50%; right: 50%; bottom: -5px; height: 2px;
-  background: var(--orange); transition: left .2s ease, right .2s ease;
+  content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 2px;
+  background: var(--orange);
+  /* scaleX i stallet for left/right: transform malas av grafikkortet, medan
+     left och right tvingar om layouten varje bildruta. Ursprunget i mitten
+     ger exakt samma rorelse ut fran mitten som forut. */
+  transform: scaleX(0); transform-origin: center;
+  transition: transform .2s ease;
 }
-.nav a:hover::after { left: 0; right: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .nav a:hover::after { transform: scaleX(1); }
+}
 /* Högre specificitet än .btn-primary, så färgen måste sättas om även
    här – annars är menyknappen den enda som står kvar på vit text. */
 .nav .nav-cta { color: var(--petrol-deep); }
@@ -334,9 +365,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 
 .nav-toggle {
   display: none; flex-direction: column; gap: 5px;
-  background: none; border: 0; cursor: pointer; padding: 8px;
+  background: none; border: 0; cursor: pointer;
+  /* 8px 10px ger 44 x 44 i stallet for 40 x 44. Strecken ar 24 px breda,
+     sa 2 x 10 px vaggrat padding tar knappen till kravet utan att flytta
+     nagot - hojden var redan ratt. */
+  padding: 8px 10px;
 }
-.nav-toggle span { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: background-color .2s ease, transform .2s ease; }
+.nav-toggle span { width: 24px; height: 2px; background: var(--on-dark); border-radius: 2px; transition: background-color .2s ease, transform .2s ease; }
 
 /* ---------- Hero (foto + mörk petrol-overlay, vit versal rubrik) ---------- */
 .hero {
@@ -422,7 +457,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    när magasinering lades till: rad två är då 843 px bred vid 2.6rem men bara
    760 px står till buds, så raden bröts. 2.3rem ger 746 px och ryms med
    marginal, och är fortfarande långt över den undre gränsen på 34 px. */
-.hero h1 { color: #fff; font-size: clamp(1.65rem, 3.7vw, 2.3rem); }
+.hero h1 { color: var(--on-dark); font-size: clamp(1.65rem, 3.7vw, 2.3rem); }
 /* ---------- Sista orden i hero-rubriken ----------
    Orange gradient klippt i texten, plus en mjuk glöd. color sätts före
    gradientreglerna: klarar webbläsaren inte background-clip: text står
@@ -434,11 +469,11 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .hero-gradient {
   color: var(--bg);
   background: linear-gradient(115deg,
-              #FAF5EF 0%,
-              #FFFFFF 35%,
-              #E8862E 50%,
-              #FFFFFF 65%,
-              #FAF5EF 100%);
+              var(--bg) 0%,
+              var(--bg-card) 35%,
+              var(--orange) 50%,
+              var(--bg-card) 65%,
+              var(--bg) 100%);
   background-size: 250% 250%;
   background-position: 0% 50%;
   /* Genomskinlig textfyllning bara nar urklippet faktiskt stodjs. Utan
@@ -533,7 +568,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* h1 måste stå med: tack.html är enda sidan med en huvudrubrik på
    petrolbotten, och utan den här raden ärver den var(--ink) och ger
    1,54:1 mot kravet 3,0:1. Vitt mot petrol ger 12,30:1. */
-.section-alt h1, .section-alt h2, .section-alt h3 { color: #fff; }
+.section-alt h1, .section-alt h2, .section-alt h3 { color: var(--on-dark); }
 .section-alt p { color: var(--on-dark-body); }
 .section-alt .eyebrow { color: var(--orange); }
 .section-head { max-width: 700px; margin: 0 auto 2.75rem; text-align: center; }
@@ -548,7 +583,11 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    grid-auto-rows: 1fr gör alla rader lika höga, så korten blir lika höga även
    när texterna är olika långa – och även när situationsraden bryts till två
    rader på ett kort men inte på grannen. */
-.cards-services { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
+/* Tre spalter, inte fyra. Vid 1440 px gav fyra spalter 259 px breda kort,
+   och eftersom rutnatet stracker alla kort till samma hojd blev det upp till
+   124 px tom yta mellan sista textraden och knappen. Bredare kort later
+   texten ta fler rader och krymper hojdskillnaden. */
+.cards-services { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; }
 /* Surfplatta: två i bredd. Fyra kort blir för smala redan strax över 1000px. */
 @media (max-width: 1060px) {
   .cards-services { grid-template-columns: repeat(2, 1fr); }
@@ -664,15 +703,58 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* Ikonbilden fyller hela rutan innanför ramen. height:100% krävs – annars slår
    height-attributet igenom som presentationshint och bilden blir 240px hög. */
 .feature-icon img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 4px; }
-.feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: #fff; }
+.feature h3 { margin: 0 0 .3rem; font-size: 1.15rem; color: var(--on-dark); }
 .feature p { margin: 0; }
 /* Notrad under rutnätet. Sajtens övriga notrader (.price-note, .magkalk-not)
    dämpas med var(--muted), som är avsedd för ljus botten och blir för svag mot
    petrol. Här dämpas raden i stället med grad och vikt, och färgen lämnas åt
    .section-alt p som redan sätter var(--on-dark-body) för hela sektionen. */
 .features-not {
-  max-width: 940px; margin: 2.5rem auto 0; text-align: center;
+  /* 70ch i stallet for 940px: 128 tecken per rad ar nastan dubbla det
+     bekvama spannet. Samma monster som .price-note, men i ch sa att gransen
+     foljer graden. */
+  max-width: 70ch; margin: 2.5rem auto 0; text-align: center;
   font-size: .85rem; font-weight: 300; line-height: 1.6;
+}
+
+/* Knappen efter prisavsnittet pa tjanstesidorna. Marginalen ar samma 1rem
+   som redan galler mellan tva stycken i brodtexten - hardkodar inget nytt
+   avstand. Klass i stallet for style-attribut, sa att alla sju beter sig lika. */
+.pris-cta { margin-top: 1rem; }
+
+/* Langdistansavsnittets brodtext lag pa 129 tecken per rad vid 1440 px.
+   70ch ar samma grans som .features-not. */
+#langdistans > p { max-width: 70ch; }
+
+
+/* ==========================================================================
+   Traffytor (WCAG 2.5.8)
+   ==========================================================================
+   Vid 390 px lag 44 element under 44 x 44, tre av dem under aven 24 x 24.
+   Losningen ar ett osynligt pseudoelement som strecker traffytan till 44 px
+   hojd utan att rora typsnitt, farg eller layout - inget hoppar, och
+   sektionsrytmen ar oforandrad. Elementen far position: relative sa att
+   ytan ankras pa dem sjalva.
+   Obs: tva staplade prismarken pa samma rad far overlappande traffytor.
+   Bada lankar till samma adress (/#villkor), sa utfallet blir detsamma
+   oavsett vilken som traffas. */
+.pris__badge,
+.pris-avdragsnot a,
+.omdome-lankar a,
+.contact-list li > a {
+  position: relative;
+}
+.pris__badge::after,
+.pris-avdragsnot a::after,
+.omdome-lankar a::after,
+.contact-list li > a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%; transform: translateY(-50%);
+  min-height: 44px;
+  /* Ytan ar bara till for pekaren och far aldrig mala nagot. */
+  pointer-events: auto;
 }
 
 /* ---------- FAQ (dragspel på <details>, ingen JavaScript) ---------- */
@@ -895,7 +977,6 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   max-width: 780px;
   margin: 3rem auto 0;
   color: var(--body-c);
-  line-height: 1.8;
 }
 .villkor h3 { margin-bottom: .6rem; }
 /* Villkoren rymmer flera underrubriker – nästa rubrik behöver luft mot
@@ -984,7 +1065,9 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .omdome blockquote { margin: 0; }
 .omdome blockquote p {
   margin: 0; color: var(--body-c);
-  font-size: 1.02rem; line-height: 1.7;
+  /* 1rem, inte 1.02rem: skillnaden pa 0,3 px var rem och px som blandats,
+     inte ett designval. Radhojden foljer brodtextens 1.75. */
+  font-size: 1rem; line-height: 1.75;
 }
 /* Citattecknen sätts här och inte i markupen: omdömestexten är ordagrant vad
    kunden skrev och ska inte kompletteras med tecken hon inte skrivit. */
@@ -1026,7 +1109,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* .contact-list a sätter färgen på alla länkar – kortknappen ska behålla
    sin orange text och bli vit först när den fylls vid hover. */
 .contact-list .btn-outline { color: var(--orange-ink); }
-.contact-list .btn-outline:hover { color: #fff; }
+.contact-list .btn-outline:hover { color: var(--on-dark); }
 .contact-list .btn + a { margin-top: 1rem; }
 
 .contact-form {
@@ -1037,7 +1120,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .field label { display: block; font-weight: 500; font-size: .88rem; margin-bottom: .35rem; color: var(--ink); }
 .field input, .field textarea {
   width: 100%; padding: .8rem .95rem; border: 1px solid var(--line); border-radius: var(--radius-btn);
-  font: inherit; color: var(--ink); background: #fff; transition: border-color .15s;
+  font: inherit; color: var(--ink); background: var(--bg-card); transition: border-color .15s;
 }
 .field input:focus, .field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,134,46,.18); }
 .form-alt { text-align: center; font-size: .9rem; font-weight: 300; color: var(--muted); margin: 1rem 0 0; }
@@ -1048,18 +1131,18 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   border-radius: var(--radius-btn);
   font-size: .93rem; font-weight: 600; line-height: 1.45;
 }
-.form-status.is-ok    { background: #E7F3EC; border: 1px solid #B7DCC6; color: #1B5E38; }
-.form-status.is-error { background: #FCEDE6; border: 1px solid #F0C4AB; color: #8A3A12; }
+.form-status.is-ok    { background: var(--ok-bg); border: 1px solid var(--ok-line); color: var(--ok-ink); }
+.form-status.is-error { background: var(--error-bg); border: 1px solid var(--error-line); color: var(--error-ink); }
 
 /* ---------- Footer (mörk petrol som originalet) ---------- */
 .site-footer { background: var(--petrol); color: var(--on-dark-body); padding: 3.5rem 0 1.5rem; }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
-.footer-brand p { margin-top: .75rem; max-width: 32ch; color: #B9C9CE; }
-.footer-col h3 { color: #fff; margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
+.footer-brand p { margin-top: .75rem; max-width: 32ch; color: var(--on-dark-soft); }
+.footer-col h3 { color: var(--on-dark); margin-bottom: .75rem; font-size: .95rem; font-weight: 500; text-transform: uppercase; letter-spacing: .063em; }
 .footer-col a, .footer-col span { display: block; color: var(--on-dark-body); margin-bottom: .4rem; }
 .footer-col a:hover { color: var(--orange); }
 /* Små textlänkar till de digitala visitkorten, under kontaktuppgifterna */
-.footer-col .footer-kort { font-size: .85rem; font-weight: 300; color: #9FB3B9; }
+.footer-col .footer-kort { font-size: .85rem; font-weight: 300; color: var(--on-dark-muted); }
 .footer-col a + .footer-kort { margin-top: .7rem; }
 .footer-col .footer-kort + .footer-kort { margin-top: .2rem; }
 /* Länkar till företagsprofilerna. Samma storlek som visitkortslänkarna, men
@@ -1080,11 +1163,14 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   color: var(--orange); opacity: 0; transform: translateX(-6px);
   transition: opacity .2s ease, transform .2s ease;
 }
-.footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); color: var(--orange); }
-.footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; font-weight: 300; color: #9FB3B9; }
-.footer-bottom a { color: #9FB3B9; text-decoration: underline; }
-.footer-bottom a:hover { color: #fff; }
+.footer-inner .footer-col:nth-child(2) a:hover { color: var(--orange); }
+@media (hover: hover) and (pointer: fine) {
+  .footer-inner .footer-col:nth-child(2) a:hover { transform: translateX(18px); }
+  .footer-inner .footer-col:nth-child(2) a:hover::before { opacity: 1; transform: translateX(0); }
+}
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 2.25rem; padding-top: 1.25rem; font-size: .85rem; font-weight: 300; color: var(--on-dark-muted); }
+.footer-bottom a { color: var(--on-dark-muted); text-decoration: underline; }
+.footer-bottom a:hover { color: var(--on-dark); }
 
 /* Företagsinformation längst ned i sidfoten */
 .footer-legal {
@@ -1099,7 +1185,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .footer-legal p { margin: 0 0 .25rem; }
 .footer-legal .orter { white-space: nowrap; }
 .footer-legal a { color: inherit; text-decoration: underline; }
-.footer-legal a:hover { color: #fff; }
+.footer-legal a:hover { color: var(--on-dark); }
 .footer-credit { margin-top: .75rem; }
 
 /* Textsidor (integritetspolicy) */
@@ -1117,7 +1203,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .legal-note {
   margin: 2.5rem 0 0;
   padding: 1.1rem 1.35rem;
-  background: #F1EAE0;
+  background: var(--bg-warm);
   border-left: 3px solid var(--orange);
   border-radius: var(--radius-btn);
 }
@@ -1272,10 +1358,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .truck-load::after{
   content:'';
   position:absolute; left:0; right:0; bottom:0;
-  height: var(--fill, 0%);
+  /* Full hojd som skalas ned i stallet for animerad height: transform gar
+     pa grafikkortet, height tvingar om layouten. Ursprunget i nederkant ger
+     samma fyllnad nedifran. 300 ms ar riktvardet for granssnittsrorelse. */
+  height: 100%; transform: scaleY(var(--fill-skala, 0)); transform-origin: bottom;
   background: rgba(232,134,46,.55);
   border-top: 3px solid rgba(var(--orange-rgb), .95);
-  transition: height .45s cubic-bezier(.4,0,.2,1);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
 @media (prefers-reduced-motion: reduce){
   .truck-load::after{ transition:none; }
@@ -1284,7 +1373,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .calc-readout { display: grid; gap: .15rem; }
 .calc-label {
   justify-self: start;
-  background: var(--petrol); color: #fff;
+  background: var(--petrol); color: var(--on-dark);
   font-weight: 500; font-size: .82rem; letter-spacing: .06em;
   text-transform: uppercase; padding: .35rem .85rem; border-radius: 4px;
   margin-bottom: .4rem;
@@ -1329,13 +1418,13 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .calc-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 28px; height: 28px; border-radius: 50%;
-  background: var(--orange); border: 4px solid #fff;
+  background: var(--orange); border: 4px solid var(--bg-card);
   box-shadow: 0 2px 8px rgba(0,36,46,.28); cursor: grab;
   /* Sparet ar 8px, knappen 28px: halva skillnaden lyfter den pa mitten. */
   margin-top: -10px;
 }
 .calc-range::-moz-range-thumb {
-  width: 28px; height: 28px; border-radius: 50%; border: 4px solid #fff;
+  width: 28px; height: 28px; border-radius: 50%; border: 4px solid var(--bg-card);
   background: var(--orange); box-shadow: 0 2px 8px rgba(0,36,46,.28); cursor: grab;
 }
 
@@ -1353,7 +1442,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 }
 .calc-steps button:hover { border-color: var(--orange); color: var(--orange-ink); }
 .calc-steps button:active { transform: translateY(1px); }
-.calc-steps button.active { background: var(--petrol); border-color: var(--petrol); color: #fff; }
+.calc-steps button.active { background: var(--petrol); border-color: var(--petrol); color: var(--on-dark); }
 
 .btn-calc { width: 100%; margin-top: 1.5rem; }
 
@@ -1370,9 +1459,14 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .trust-icon svg { width: 30px; height: 30px; }
 .trust-item h3 {
   margin: 0 0 .3rem;
-  font-size: .82rem; font-weight: 700; letter-spacing: -.02em;
+  /* 1.1rem, inte .82rem: en underrubrik far inte vara mindre an brodtexten
+     den rubricerar - da laser den som bildtext. 1.1rem ar ett steg som redan
+     finns i skalan, sa ingen ny grad tillkommer. */
+  font-size: 1.1rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .05em;
-  line-height: 1.35; color: var(--ink);
+  /* 1.4, samma radhojd som sajtens ovriga h3 pa 1.1rem - annars star tva
+     kombinationer i skalan som skiljer sig med fem hundradelar. */
+  line-height: 1.4; color: var(--ink);
 }
 .trust-item p { margin: 0; font-size: .88rem; font-weight: 300; line-height: 1.55; color: var(--muted); }
 
@@ -1398,7 +1492,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* ==========================================================================
    Scroll-animationer
    ========================================================================== */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
@@ -1434,7 +1528,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
     display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
     padding: .7rem .8rem calc(.7rem + env(safe-area-inset-bottom));
-    background: rgba(14,58,68,.97); backdrop-filter: blur(8px);
+    background: rgba(var(--petrol-rgb), .97); backdrop-filter: blur(8px);
     box-shadow: 0 -4px 20px rgba(0,36,46,.25);
   }
   .mobile-bar a {
@@ -1449,7 +1543,7 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
   /* Samma resonemang som .btn-primary: vit på orange ger 2,66:1,
      petroltext 5,34:1. */
   .mb-call  { background: var(--orange); color: var(--petrol-deep); }
-  .mb-quote { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.5); }
+  .mb-quote { background: transparent; color: var(--on-dark); border: 2px solid rgba(255,255,255,.5); }
 }
 
 /* Tumme, inte muspekare: varje knapp är minst 44px hög på smal skärm. */

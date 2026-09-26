@@ -106,7 +106,9 @@ function renderTier(i) {
   const t = TIERS[i];
   if (!t) return;
 
-  loadEl.style.setProperty('--fill', (t.fill * 100) + '%');
+  /* Skalvarde 0-1, inte procent: fyllnaden ritas numera med transform: scaleY()
+     i stallet for animerad height, och scaleY() tar ett enhetslost tal. */
+  loadEl.style.setProperty('--fill-skala', t.fill);
   labelEl.textContent = t.vol;   // primärt: volymen
   volEl.textContent   = t.part;  // sekundärt: motsvarande del av bilen
   descEl.textContent  = t.desc;
