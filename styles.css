@@ -309,6 +309,22 @@ body:not(.kort-sida) main p a:not(.btn) {
 html { scroll-padding-top: calc(var(--header-h) + 8px); }
 
 /* ---------- Header (mörk petrol med vit text, som över hero:n) ---------- */
+/* Sidhuvudets hojd och logotypens andel ar MATTA mot fyra andra
+   Stockholmsflyttfirmor den 26 september 2026, vid 1440 px:
+     bohagsbolaget.se          69 px hog header, logotypen 75,4 % av hojden
+     pipers.se                 88 px, 100 %
+     flyttfabriken.se         164 px, 21,3 %
+     grabbarnaflytt.se         80 px, 68,8 %
+     flyttbolagetstockholm.se 165 px, 72,7 %
+   Median for logotypens hojdandel 72,7 %, spann 21,3 till 100. Var header ar
+   alltsa den nast lagsta av fem, och logotypens andel ligger pa medianen.
+   Pastaendet att sidhuvudet skulle vara for stort och omodernt haller darfor
+   inte mot mataren, och ingenting ar andrat.
+   Glaseffekt via backdrop-filter, sticky position och en overgang pa 0,25 s
+   finns redan, se .site-header.scrolled nedan. Auto-hide vid scroll ar
+   medvetet bortvalt: en header som forsvinner ar svarare att na med
+   tangentbord och skarmlasare, och sidhuvudet ar genvagen till
+   telefonnumret. Riv inte upp det utan att mata om. */
 .site-header {
   position: sticky; top: 0; z-index: 50;
   background: var(--petrol);
@@ -605,6 +621,26 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
    124 px tom yta mellan sista textraden och knappen. Bredare kort later
    texten ta fler rader och krymper hojdskillnaden. */
 .cards-services { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; }
+
+/* Sista raden centreras. Atta kort i tre spalter ger tre, tre och tva, och
+   det sista fältet stod tomt till hoger i stallet for att korten lag mitt
+   under raden ovanfor.
+   Rutnatet ar darfor sexspaltigt och varje kort spanner tva spalter. Det ger
+   samma tre kort per rad och EXAKT samma kortbredd: (W-5G)/6 x 2 + G blir
+   (W-2G)/3, alltsa samma tal som tre spalter gav. Mellanrummen ar ocksa
+   oforandrade, eftersom sprangningen slukar en av dem.
+   Reglerna raknar ut sig sjalva och ar INTE bundna till atta kort:
+   :nth-child(3n+1) traffar det forsta kortet pa en rad, och :nth-last-child
+   talar om hur manga som aterstar. Tva kvar borjar pa spalt 2, ett kvar pa
+   spalt 3. Laggs ett nionde eller tionde kort till senare sitter raderna
+   ratt anda, utan att nagon behover rora den har filen.
+   Bara over 1060 px - darunder galler tva spalter och sedan en, oforandrat. */
+@media (min-width: 1061px) {
+  .cards-services { grid-template-columns: repeat(6, 1fr); }
+  .cards-services .card { grid-column: span 2; }
+  .cards-services .card:nth-child(3n+1):nth-last-child(2) { grid-column: 2 / span 2; }
+  .cards-services .card:nth-child(3n+1):nth-last-child(1) { grid-column: 3 / span 2; }
+}
 /* Surfplatta: två i bredd. Fyra kort blir för smala redan strax över 1000px. */
 @media (max-width: 1060px) {
   .cards-services { grid-template-columns: repeat(2, 1fr); }
