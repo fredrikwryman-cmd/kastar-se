@@ -1270,7 +1270,21 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* Textsidor (integritetspolicy) */
 .legal { max-width: 760px; margin: 0 auto; }
 .legal h1 { margin-bottom: 1.5rem; overflow-wrap: break-word; }
-.legal h2 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
+/* .legal anvands av TVA sorters sidor: policytexterna (integritetspolicyn
+   och rot-rut) och de sju tjanstesidornas villkorsavsnitt. Den tata
+   h2-graden byggdes for policytexten, dar rubrikerna kommer tatt och
+   brodtexten ar lang. Pa tjanstesidorna gav den samma grad som h3, sa
+   sektionsrubriker som "Vad det kostar" vagde lika tungt som
+   underrubrikerna under dem.
+   Marginalen galler darfor alla .legal h2 - den ar i rem och ska inte
+   rora sig - medan den tata graden hanger pa .policysida, satt pa <body>
+   i samma anda som .kort-sida pa visitkorten. En ny policysida far
+   klassen; en ny tjanstesida behover inte roras, och CSS:en innehaller
+   ingen lista over filnamn.
+   Specificitet: .legal h2 = 0,1,1  |  .policysida .legal h2 = 0,2,1,
+   alltsa hogre an bade h2 (0,0,1) och .legal h2. */
+.legal h2 { margin: 2rem 0 .5rem; }
+.policysida .legal h2 { font-size: 1.2rem; }
 /* Samma skydd som .legal h1 ovan. Policyn namnger vardvamn och adresser -
    static.cloudflareinsights.com ar 29 tecken utan brytpunkt och stack ut ur
    textspalten vid 320 px. */
