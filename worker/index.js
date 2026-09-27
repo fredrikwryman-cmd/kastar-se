@@ -137,7 +137,28 @@ async function anropaAnthropic(messages, apiKey, toolChoice) {
     throw new Error('Anthropic svarade ' + svar.status + ': ' + String(text).slice(0, 300));
   }
 
-  return svar.json();
+  const data = await svar.json();
+
+  /* Cacheutfallet syns ingen annanstans: till klienten gar bara faltet reply,
+     sa API-svarets usage-uppgifter forsvinner. Raden nedan loggar ENBART
+     siffror - fyra raknare som passerar Number() - och kan darfor aldrig
+     innehalla besokarens meddelande, assistentens svar eller nagot annat
+     textfalt. Saknas ett falt blir det 0, och hela raden ligger i try/catch
+     sa att ett fel i loggningen aldrig kan hindra besokaren fran att fa svar. */
+  try {
+    const bruk = (data && data.usage) || {};
+    console.log(
+      'CACHE' +
+        ' input_tokens=' + Number(bruk.input_tokens || 0) +
+        ' output_tokens=' + Number(bruk.output_tokens || 0) +
+        ' cache_creation_input_tokens=' + Number(bruk.cache_creation_input_tokens || 0) +
+        ' cache_read_input_tokens=' + Number(bruk.cache_read_input_tokens || 0)
+    );
+  } catch (fel) {
+    console.log('CACHE usage kunde inte lasas');
+  }
+
+  return data;
 }
 
 /* Workern skickar inte langre sjalv. Cloudflare Workers gar ut fran delade
