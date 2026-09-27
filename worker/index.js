@@ -1,11 +1,84 @@
 import { SYSTEM_PROMPT } from './system-prompt.js';
 
-/* Ursprung som far anropa workern. Allt annat far 403 och inget svar. */
+/* Ursprung som far anropa workern. Allt annat far 403 och inget svar.
+   localhost star INTE har: listan ar produktionens. For lokal testning satts
+   ett extra ursprung som variabel bara nar workern kors med wrangler dev:
+     npx wrangler dev --var DEV_ORIGIN:http://localhost:8000
+   Variabeln finns varken i wrangler.toml eller i Cloudflare, sa den skarpa
+   workern kan aldrig fa den. */
 const ALLOWED_ORIGINS = [
   'https://bohagsbolaget.se',
   'https://www.bohagsbolaget.se',
-  'http://localhost:8000',
 ];
+
+function tillatetUrsprung(origin, env) {
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  return Boolean(env && env.DEV_ORIGIN && origin === env.DEV_ORIGIN);
+}
+
+/* ---------- hastighetsbegransning ----------
+   Ursprungsspärren ovan stoppar bara webblasare: vilket program som helst kan
+   satta rubriken Origin fritt, och varje anrop kan bli upp till fyra
+   modellanrop pa agarens rakning. Darfor en grans per besokare och timme.
+   INTEGRITET: IP-adressen lagras aldrig. Nyckeln ar en HMAC-SHA-256 av
+   adressen och den aktuella timmen, med hemligheten RATE_SALT som nyckel.
+   Hemligheten finns bara i Cloudflare, inte i KV, sa ur lagret gar det inte
+   att rakna fram en adress. Timmen ingar i hashen, sa samma besokare far en
+   ny, olankad nyckel varje timme. Varje nyckel forfaller efter 3 600 s.
+   FAIL-OPEN: gar KV inte att na, eller kastar den, far besokaren sitt svar.
+   En trasig raknare far aldrig hindra en kund fran att fa hjalp. */
+const GRANS_PER_TIMME = 20;
+const TIMME_MS = 60 * 60 * 1000;
+const GRANS_TEXT =
+  'Du har ställt många frågor på kort tid. Vänta en stund, eller ring 070-561 48 45 så svarar vi direkt.';
+
+/* Andra lagret: en raknare i minnet i samma isolat. KV ar eventuellt
+   konsistent och tillater en skrivning per nyckel och sekund, sa en snabb
+   serie anrop kan hinna forbi innan KV visar ratt tal. Minnet ser dem direkt.
+   Det ar en extra spärr, inte huvudlosningen: ett nytt isolat borjar pa noll. */
+const minne = new Map();
+const MINNE_MAX = 5000;
+
+async function besokarNyckel(ip, timme, salt) {
+  const kod = new TextEncoder();
+  const nyckel = await crypto.subtle.importKey(
+    'raw', kod.encode(salt), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', nyckel, kod.encode(ip + '|' + timme));
+  return 'rl:' + [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* Returnerar true om anropet ska stoppas. Kastar aldrig. */
+async function overGransen(request, env) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || '';
+    const salt = env && env.RATE_SALT;
+    if (!ip || !salt) return false;
+    const timme = Math.floor(Date.now() / TIMME_MS);
+    const nyckel = await besokarNyckel(ip, timme, salt);
+
+    const iMinnet = minne.get(nyckel) || 0;
+    if (iMinnet >= GRANS_PER_TIMME) return true;
+    if (minne.size >= MINNE_MAX) minne.clear();
+    minne.set(nyckel, iMinnet + 1);
+
+    let iKv = 0;
+    try {
+      if (env.RATE_KV) {
+        iKv = parseInt(await env.RATE_KV.get(nyckel), 10) || 0;
+        if (iKv >= GRANS_PER_TIMME) return true;
+        /* Bara ett tal lagras - antalet anrop den har timmen. */
+        await env.RATE_KV.put(nyckel, String(Math.max(iKv, iMinnet) + 1),
+          { expirationTtl: 3600 });
+      }
+    } catch (fel) {
+      console.error('RATE kv-fel, slapper igenom');
+    }
+    return false;
+  } catch (fel) {
+    console.error('RATE raknaren kastade, slapper igenom');
+    return false;
+  }
+}
 
 /* Snabbaste och billigaste modellen, verifierad mot platform.claude.com. */
 const MODEL = 'claude-haiku-4-5';
@@ -133,8 +206,11 @@ async function anropaAnthropic(messages, apiKey, toolChoice) {
   if (!svar.ok) {
     /* Status och body loggas server-side via console.error, men gar aldrig
        vidare till klienten. */
-    const text = await svar.text();
-    throw new Error('Anthropic svarade ' + svar.status + ': ' + String(text).slice(0, 300));
+    /* Bara status och feltyp. Felkroppens fritext kan i princip citera
+       indata, sa den loggas inte. */
+    let typ = '';
+    try { typ = String(((await svar.json()).error || {}).type || '').slice(0, 60); } catch (e) {}
+    throw new Error('Anthropic svarade ' + svar.status + (typ ? ' ' + typ : ''));
   }
 
   const data = await svar.json();
@@ -165,13 +241,24 @@ async function anropaAnthropic(messages, apiKey, toolChoice) {
    IP-adresser och Web3Forms begransar per IP, sa varje sandning harifran gav
    429. Forfragan returneras i stallet till widgeten, som postar den fran
    besokarens egen webblasare - samma vag som sajtens vanliga formular.
-   Loggningen ligger kvar som skyddsnat: gar klientens sandning fel finns
-   uppgifterna anda kvar i wrangler tail. */
+   Loggen far bara veta ATT en forfragan kom: ett slumpat arende-id, antal
+   ifyllda falt och deras namn. Aldrig ett varde. Faltnamnen tas ur
+   verktygets schema, inte ur modellens indata, sa inte ens en pahittad
+   nyckel kan bara text in i loggen. */
+const FALTNAMN = Object.keys(TOOL.input_schema.properties);
+
+function arendeId() {
+  return crypto.randomUUID();
+}
+
 function loggaForfragan(input) {
   try {
-    console.error('OFFERTFORFRAGAN fran chatten:', JSON.stringify(input));
+    const ifyllda = FALTNAMN.filter((f) =>
+      input && typeof input[f] === 'string' && input[f].trim() !== '');
+    console.log('OFFERTFORFRAGAN arende=' + arendeId() +
+      ' falt=' + ifyllda.length + ' ifyllda=' + ifyllda.join(','));
   } catch (fel) {
-    console.error('OFFERTFORFRAGAN kunde inte serialiseras');
+    console.log('OFFERTFORFRAGAN kunde inte sammanfattas');
   }
 }
 
@@ -188,7 +275,7 @@ function textUr(data) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const tillaten = ALLOWED_ORIGINS.includes(origin);
+    const tillaten = tillatetUrsprung(origin, env);
 
     /* Ursprunget avgors fore allt annat. Utan tillatet ursprung lamnar
        workern varken data eller CORS-headers ifran sig. */
@@ -213,6 +300,12 @@ export default {
       messages = validera(body);
     } catch (fel) {
       return json({ fel: fel.message || 'Ogiltig förfrågan' }, 400, origin);
+    }
+
+    /* Samma JSON-form som ett vanligt svar - faltet reply - sa att widgeten
+       kan visa texten utan att formen andras. */
+    if (await overGransen(request, env)) {
+      return json({ reply: GRANS_TEXT }, 429, origin);
     }
 
     let forfragan = null;
@@ -265,8 +358,8 @@ export default {
          leadet atminstone far struktur. Leadet i sig ar redan sakrat av
          widgetens egen detektering - detta ar ett komplement, inte skyddet. */
       if (!forfragan && PASTAR_SKICKAT.test(textUr(data))) {
-        console.error('Modellen pastod att den skickat utan verktygsanrop. Hela konversationen:',
-          JSON.stringify(messages));
+        console.error('Modellen pastod att den skickat utan verktygsanrop. arende=' +
+          arendeId() + ' meddelanden=' + messages.length);
         try {
           const tvingat = await anropaAnthropic(messages, apiKey,
             { type: 'tool', name: TOOL.name });

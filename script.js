@@ -1126,6 +1126,22 @@ if (chattKnapp) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: historik.slice(-MAX_HISTORIK) })
       });
+      /* 429 = servern har satt stopp for den har besokaren en stund. Texten
+         kommer i faltet reply och visas som en vanlig assistentbubbla - en
+         kund som mots av tystnad tror att sajten ar trasig. Svaret skickas
+         aldrig om automatiskt och hamnar aldrig i utskickskon: kon ror bara
+         Web3Forms-poster. Den obesvarade fragan tas ur historiken, sa att
+         nasta anrop inte bar med sig en fraga utan svar. */
+      if (svar.status === 429) {
+        const stopp = await svar.json().catch(() => null);
+        const stoppText = stopp && stopp.reply ? String(stopp.reply) : FELTEXT;
+        skriver.remove();
+        historik.pop();
+        spara();
+        bubbla('assistant', stoppText);
+        annonsera(stoppText);
+        return;
+      }
       if (!svar.ok) throw new Error('Status ' + svar.status);
       const data = await svar.json();
       const rasvar = data && data.reply ? String(data.reply) : FELTEXT;

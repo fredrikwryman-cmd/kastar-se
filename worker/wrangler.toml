@@ -1,3 +1,10 @@
 name = "bohagsbolaget-assistent"
 main = "index.js"
 compatibility_date = "2026-09-04"
+
+# Hastighetsbegransning (kodpaket 12). Lagrar bara HMAC-hashar av besokarens
+# adress och timme, med ett tal som varde och 3 600 s forfallotid. Saltet ar
+# hemligheten RATE_SALT i Cloudflare och star inte har.
+[[kv_namespaces]]
+binding = "RATE_KV"
+id = "5f4c01c3b727477ba52adad34e91e90c"
