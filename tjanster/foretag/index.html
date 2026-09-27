@@ -191,7 +191,7 @@
        alls när JavaScript är på, så animationerna är oförändrade. -->
   <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
-<body>
+<body data-chatt>
   <a class="skip" href="#main">Hoppa till innehållet</a>
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="top">
@@ -406,33 +406,7 @@
     </div>
   </footer>
 
-  <!-- Chattwidget – svarsassistenten. All JS ligger i script.js. -->
-  <button type="button" class="chatt-knapp" id="chattKnapp" aria-label="Öppna chatten och ställ en fråga">
-    <img src="/assets/maskot-transp.png" width="229" height="220" alt="" loading="eager" decoding="async" />
-  </button>
-
-  <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
-    <div class="chatt-huvud">
-      <h2 id="chattRubrik">Fråga oss</h2>
-      <div class="chatt-verktyg">
-        <button type="button" class="chatt-omstart" id="chattOmstart" aria-label="Börja om samtalet">Börja om</button>
-        <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
-      </div>
-    </div>
-    <div class="chatt-flode" id="chattFlode"></div>
-    <!-- Bara det senaste svaret annonseras. Lag aria-live pa hela flodet
-         forut, och eftersom rita() bygger om flodet fran grunden lastes hela
-         konversationen om vid varje omritning. -->
-    <p class="sr-only" id="chattAvisering" aria-live="polite"></p>
-    <div class="chatt-rad">
-      <label class="sr-only" for="chattFalt">Skriv din fråga</label>
-      <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
-                placeholder="Skriv din fråga …" autocomplete="off"></textarea>
-      <button type="button" class="chatt-skicka" id="chattSkicka">Skicka</button>
-    </div>
-  </div>
-
-  <script src="/script.js?v=30"></script>
+  <script src="/script.js?v=31"></script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

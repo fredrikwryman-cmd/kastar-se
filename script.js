@@ -667,7 +667,53 @@ narDetArLugnt(() => {
    Historiken lever i minnet och speglas i sessionStorage, så att den
    överlever att kunden byter sida men försvinner när fliken stängs.
    Öppningshälsningen är bara visuell och skickas aldrig till servern. */
-const chattKnapp = document.getElementById('chattKnapp');
+/* Markupen for knappen och panelen lag forut inkopierad i nio HTML-filer.
+   Kopiorna gled isar: atta av dem saknade AI-rubriken, informationsraden med
+   policylanken och aria-expanded, sa rattelserna i kodpaket 2 slog igenom pa
+   en sida av nio. Nu byggs bade knappen och panelen har, pa ett enda stalle,
+   och nasta andring nar alla sidor samtidigt.
+   Sidor som ska ha chatten bar data-chatt pa <body>. Utan JavaScript byggs
+   ingenting alls - en knapp som syns men inte gor nagot ar samre an ingen
+   knapp. Strangen nedan ar ordagrant startsidans tidigare markup, sa att den
+   byggda DOM:en blir identisk; enda skillnaden ar att bildens sokvag ar
+   absolut, vilket kravs for att den ska hittas fran en tjanstesida. */
+const CHATT_MARKUP = `
+  <!-- Chattwidget – svarsassistenten. All JS ligger i script.js. -->
+  <button type="button" class="chatt-knapp" id="chattKnapp" aria-label="Öppna chatten och ställ en fråga" aria-expanded="false" aria-controls="chattPanel">
+    <img src="/assets/maskot-transp.png" width="229" height="220" alt="" loading="eager" decoding="async" />
+  </button>
+
+  <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
+    <div class="chatt-huvud">
+      <h2 id="chattRubrik">Fråga vår AI-assistent</h2>
+      <div class="chatt-verktyg">
+        <button type="button" class="chatt-omstart" id="chattOmstart" aria-label="Börja om samtalet">Börja om</button>
+        <button type="button" class="chatt-stang" id="chattStang" aria-label="Stäng chatten">&times;</button>
+      </div>
+    </div>
+    <div class="chatt-flode" id="chattFlode"></div>
+    <!-- Bara det senaste svaret annonseras. Lag aria-live pa hela flodet
+         forut, och eftersom rita() bygger om flodet fran grunden lastes hela
+         konversationen om vid varje omritning. -->
+    <p class="sr-only" id="chattAvisering" aria-live="polite"></p>
+    <div class="chatt-rad">
+      <label class="sr-only" for="chattFalt">Skriv din fråga</label>
+      <textarea class="chatt-falt" id="chattFalt" rows="1" maxlength="2000"
+                placeholder="Skriv din fråga …" autocomplete="off"></textarea>
+      <button type="button" class="chatt-skicka" id="chattSkicka">Skicka</button>
+    </div>
+    <p class="chatt-info">Det du skriver skickas till oss. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>
+  </div>
+`;
+
+function byggChatt() {
+  if (!document.body || !document.body.hasAttribute('data-chatt')) return null;
+  if (document.getElementById('chattKnapp')) return document.getElementById('chattKnapp');
+  document.body.insertAdjacentHTML('beforeend', CHATT_MARKUP.trim());
+  return document.getElementById('chattKnapp');
+}
+
+const chattKnapp = byggChatt();
 
 if (chattKnapp) {
   const ENDPOINT = 'https://bohagsbolaget-assistent.bohagsbolaget-se.workers.dev';
@@ -722,11 +768,33 @@ if (chattKnapp) {
      Kunden avgor om samtalet ar ett lead, inte modellen. Lamnar hon ett
      telefonnummer eller en mejladress ar det ett lead, oavsett vad
      assistenten sedan sager eller later bli att gora. */
+  /* Svenskt nummerformat. Den gamla regeln godtog VILKEN foljd som helst med
+     minst sju siffror, sa "Vi flyttar 2026-10-15" och "Budget 10 000 - 15 000"
+     lastes bada som telefonnummer - och da gick hela samtalet till inkorgen
+     innan besokaren lamnat nagot alls. Nu kravs inledande 0 eller +46, atta
+     till tio siffror nationellt, och ett enda skiljetecken mellan siffrorna.
+     Ett intervall med mellanslag runt bindestrecket kan darfor inte langre
+     bli ett nummer. */
+  const TELEFON = /(?:\+46[ -]?|0)(?:\d[ -]?){6,8}\d/g;
+
   function hittaTelefon(text) {
-    const kandidater = String(text).match(/(?:\+?\d[\d\s\-()]{5,}\d)/g) || [];
-    for (const rad of kandidater) {
-      const siffror = rad.replace(/[^\d]/g, '');
-      if (siffror.length >= 7) return rad.replace(/\s+/g, ' ').trim();
+    const s = String(text);
+    TELEFON.lastIndex = 0;
+    let traff;
+    while ((traff = TELEFON.exec(s)) !== null) {
+      const rad = traff[0];
+      /* Star det en siffra precis fore traffen befinner vi oss mitt i ett
+         langre tal - ett datum eller ett personnummer - inte i borjan av ett
+         nummer. Kontrollen gors pa index i stallet for med bakatblick, som
+         aldre Safari inte forstar. */
+      if (traff.index > 0 && /\d/.test(s.charAt(traff.index - 1))) continue;
+      /* Personnummer skrivs YYMMDD-NNNN eller YYYYMMDD-NNNN. Ett
+         telefonnummer skrivs aldrig sa. */
+      if (/^\d{6}-\d{4}$/.test(rad) || /^\d{8}-\d{4}$/.test(rad)) continue;
+      const siffror = rad.replace(/[^\d+]/g, '');
+      const nationellt = siffror.indexOf('+46') === 0 ? '0' + siffror.slice(3) : siffror;
+      if (!/^0[1-9]\d{6,8}$/.test(nationellt)) continue;
+      return rad.replace(/\s+/g, ' ').trim();
     }
     return '';
   }
@@ -917,7 +985,18 @@ if (chattKnapp) {
     if (bekraftat) return text;
     const stycken = String(text).split(/\n{2,}/);
     const rensade = stycken.map((stycke) => {
-      const meningar = stycke.split(/(?<=[.!?])\s+/);
+      /* Delar pa mening UTAN bakatblick. Bakatblick i reguljara uttryck
+         forstas av Safari forst fran 16.4, och en iPhone 7 kan inte
+         uppdateras forbi iOS 15. Ett ogiltigt reguljart uttryck gor att HELA
+         filen avvisas innan en rad kors: menyn, kalkylatorn, chatten och de
+         fem inrullningsblocken dog tyst. Skiljetecknet fangas i stallet med
+         en grupp och satts tillbaka pa sin mening, vilket ger exakt samma
+         delning. */
+      const delar = stycke.split(/([.!?])\s+/);
+      const meningar = [];
+      for (let i = 0; i < delar.length; i += 2) {
+        meningar.push(delar[i] + (delar[i + 1] === undefined ? '' : delar[i + 1]));
+      }
       const kvar = meningar.filter((m) => !SKICKAT_MONSTER.test(m));
       if (kvar.length === meningar.length) return stycke;
       const bevarat = kvar.join(' ').trim();
