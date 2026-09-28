@@ -35,6 +35,19 @@ body.kort-sida {
    ut som när foten låg inuti kroppen. */
 .kort-kropp { padding: clamp(1.4rem, 5vw, 1.9rem) clamp(1.4rem, 5vw, 1.9rem) 0; }
 
+/* ---------- Bildbandet överst ----------
+   Full bredd i kortets topp. Kortet har overflow:hidden, så de övre
+   hörnen följer kortets radie utan egen border-radius här.
+   object-position håller ansiktet kvar i bild när kortet blir smalare. */
+.kort-bild {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
 /* ---------- Namn och roll ---------- */
 .kort-namn {
   margin: 0;

@@ -49,7 +49,7 @@
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
   <link rel="stylesheet" href="/styles.css?v=66" />
-  <link rel="stylesheet" href="/kort.css?v=9" />
+  <link rel="stylesheet" href="/kort.css?v=10" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -60,6 +60,13 @@
   <a class="skip" href="#main">Hoppa till innehållet</a>
 
   <div class="kort">
+    <img class="kort-bild"
+         src="/assets/thom-portratt-840.webp"
+         srcset="/assets/thom-portratt-840.webp 840w, /assets/thom-portratt-1260.webp 1260w"
+         sizes="(max-width: 460px) 100vw, 420px"
+         width="840" height="560" loading="eager" decoding="async"
+         alt="Thom bar flyttkartonger vid lastbilen" />
+
     <main class="kort-kropp" id="main">
       <h1 class="kort-namn">Thom</h1>
       <p class="kort-roll">Transport och utförande</p>
