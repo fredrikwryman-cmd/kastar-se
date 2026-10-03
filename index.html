@@ -380,7 +380,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=69" />
+  <link rel="stylesheet" href="styles.css?v=70" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -716,7 +716,7 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Priser</p>
-          <h2>Hur mycket vill du bli av med?</h2>
+          <h2 id="hur-mycket-vill-du-bli-av-med">Hur mycket vill du bli av med?</h2>
           <p class="lead">Du betalar efter <strong>hur mycket plats</strong> dina saker tar i bilen.</p>
           <p class="pris-avdragsnot">Varje rad visar vad som gäller för just den posten: fast pris, pris exklusive moms, eller pris efter rot- eller rutavdrag med ordinarie pris under. <a href="#villkor">Villkoren</a> står under ROT och RUT.</p>
         </div>
@@ -835,7 +835,7 @@
         <div id="langdistans">
         <div class="section-head">
           <p class="eyebrow">Långdistansflytt</p>
-          <h2>Hela vägen, med priset utskrivet</h2>
+          <h2 id="hela-vagen-med-priset-utskrivet">Hela vägen, med priset utskrivet</h2>
           <p class="lead">Arbete på ordinarie timpris plus 15 kr per kilometer enkel väg utanför Stockholms och Uppsala län. Samma bil och samma personal hela vägen.</p>
         </div>
 
@@ -1054,91 +1054,91 @@
         </div>
 
         <div class="faq">
-          <details class="faq-post" open>
+          <details id="faq-vad-kostar-det" class="faq-post" open>
             <summary class="faq-fraga">Vad kostar det?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Vi räknar på tre sätt beroende på jobbet. Bortforsling och tömning går på volym, från 1 295 kr för ett par kubik till 6 995 kr för en fullastad bil. Flytt, bärhjälp och praktisk hjälp går på tid – 995 kr i timmen för två personer med bil, 495 kr för en person. Nedmontering och rivning går på fast pris per objekt, 3 295 kr för ett enkelkök längs en vägg. Du får alltid ett fast pris innan vi börjar, och vi delar upp offerten i arbete och transport så att du ser vilken del som är avdragsgill.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hur-far-jag-ett-pris" class="faq-post">
             <summary class="faq-fraga">Hur får jag ett pris?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Skicka bilder på det som ska göras via formuläret, sms eller mejl. Bilder räcker nästan alltid. Vid större tömningar kommer vi gärna ut och tittar kostnadsfritt först.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hur-snabbt-kan-ni-komma" class="faq-post">
             <summary class="faq-fraga">Hur snabbt kan ni komma?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ofta inom några dagar, ibland samma vecka. Har du bråttom, ring så säger vi direkt vad som går. Kvällar och helger fungerar bra.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-ni-tomma-ett-helt-dodsbo" class="faq-post">
             <summary class="faq-fraga">Kan ni tömma ett helt dödsbo?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja, det är en av våra vanligaste uppgifter. En normalstor tvåa landar oftast på 12–16 kubik, alltså 5 195 till 6 995 kr. Tömning och bortforsling är avfallshantering och ger därför inget RUT-avdrag. <a href="/tjanster/dodsbo/">Så går en dödsbotömning till, steg för steg</a>.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-vad-kostar-en-flytt-och-galler-rut" class="faq-post">
             <summary class="faq-fraga">Vad kostar en flytt, och gäller RUT?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Flytthjälp kostar 995 kr i timmen för två personer med bil, minst tre timmar. Flytt mellan två bostäder är RUT-grundande, så halva arbetskostnaden dras direkt på fakturan. En tvårumslägenhet tar normalt fyra till sex timmar – 3 980 till 5 970 kr, alltså 2 192 till 3 288 kr efter RUT.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-far-jag-packa-sjalv" class="faq-post">
             <summary class="faq-fraga">Får jag packa själv?<span class="faq-tecken" aria-hidden="true"></span></summary>
-            <div class="faq-svar"><p>Ja. Väljer du att packa själv bistår vi med kartonger och makulaturpapper utan kostnad. Kartongerna körs ut före flytten och hämtas när flytten är klar. Eftersom flytten debiteras per timme påverkar det du hinner göra i förväg vad jobbet landar på. <a href="/tjanster/flytthjalp/">Så fungerar flytthjälpen</a>.</p></div>
+            <div class="faq-svar"><p id="foremal-far-jag-packa-sjalv">Ja. Väljer du att packa själv bistår vi med kartonger och makulaturpapper utan kostnad. Kartongerna körs ut före flytten och hämtas när flytten är klar. Eftersom flytten debiteras per timme påverkar det du hinner göra i förväg vad jobbet landar på. <a href="/tjanster/flytthjalp/">Så fungerar flytthjälpen</a>.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kor-ni-langdistansflytt-och-galler-rut-aven-da" class="faq-post">
             <summary class="faq-fraga">Kör ni långdistansflytt, och gäller RUT även då?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja, i hela Sverige, och ja, RUT gäller. Vi kör hela vägen med samma bil och samma personal – inga omlastningar och ingen väntan på en terminal. En tvårumslägenhet Stockholm–Göteborg kostar 12 025 kr vid fem timmars lastning och lossning. Varje timme utöver det lägger till 995 kr, medan kilometerersättningen ligger fast — det är timmarna som varierar, inte sträckan. Arbetskostnaden är RUT-grundande, kilometerersättningen inte, och hur stort avdraget blir står sträcka för sträcka i tabellen under Priser. Vi specificerar alltid delarna var för sig i offerten.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-ni-flytta-ett-piano-eller-ett-kassaskap" class="faq-post">
             <summary class="faq-fraga">Kan ni flytta ett piano eller ett kassaskåp?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja. Vi har pianovagn, remmar och skydd, och vi skyddar trapphus och dörrfoder. Från 2 495 kr inom samma ort, entréplan till entréplan, plus 495 kr per våning utan hiss. Ingår flytten i en flytt mellan två bostäder är arbetet RUT-grundande. Föremål över 300 kg eller trånga bärvägar offererar vi separat efter bilder.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-ni-hamta-nagot-jag-kopt" class="faq-post">
             <summary class="faq-fraga">Kan ni hämta något jag köpt?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja. Vi hämtar hos säljaren och levererar hem till dörren – möbler, vitvaror, byggmaterial eller enstaka paket. Skicka länken till annonsen så får du ett fast pris. Hämtning inom Stockholm eller Uppsala börjar på 995 kr. Ren transport ger inget RUT-avdrag, men ska möbeln också bäras in och monteras är den delen avdragsgill.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-ni-montera-ned-kok-golv-eller-vaggar" class="faq-post">
             <summary class="faq-fraga">Kan ni montera ned kök, golv eller väggar?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja. Vi monterar ned kök, parkett, kakel och icke-bärande väggar och kör bort materialet direkt, så du slipper container och flera leverantörer. Fast pris på arbetet, 3 295 kr för ett enkelkök längs en vägg, utan vinkel och utan kakel. Materialet räknas på vikt, 295 kr per påbörjat 100 kg, minst 995 kr, eftersom rivningsavfall väger fem till tio gånger mer än vanligt bohag.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-jag-forvara-mina-saker-hos-er" class="faq-post">
             <summary class="faq-fraga">Kan jag förvara mina saker hos er?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja, och i vårt eget lager – inte i en inhyrd box hos ett självförvaringsföretag som de flesta i branschen. Det betyder att du kommer åt dina saker med ett telefonsamtal i stället för att vara bunden till någon annans öppettider. Magasinering kostar 139 kr per kubikmeter och månad, minst åtta kubik och en månad. Vi hämtar, förvarar torrt och låst, och levererar tillbaka när du är redo. Sker hämtningen eller utkörningen i samband med en flytt mellan två bostäder är den transporten RUT-grundande – själva förvaringen är den inte.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-kan-jag-kombinera-flytt-och-magasinering" class="faq-post">
             <summary class="faq-fraga">Kan jag kombinera flytt och magasinering?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja, och det är ett vanligt upplägg när den nya bostaden inte står klar i tid. Vi hämtar bohaget, ställer in det i vårt eget magasin och kör ut det till den nya adressen när du säger till. Magasinet kostar 139 kr per kubikmeter och månad, och minsta uttag är åtta kubikmeter och en månad. Transporten till och från magasinet är rutgrundande när den sker i samband med en flytt mellan två bostäder, medan förvaringen aldrig ger avdrag. <a href="/tjanster/magasinering/">Så fungerar magasineringen</a>.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hur-lange-binder-jag-upp-mig-vid-magasinering" class="faq-post">
             <summary class="faq-fraga">Hur länge binder jag upp mig vid magasinering?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Bindningstiden är en månad. Därefter förnyas magasineringen automatiskt en kalendermånad i taget, räknat från den dag godset ställs in. Vill du avsluta lämnar du en skriftlig uppsägning senast sju dagar före nästa periods början. Magasineringen upphör först när godset har hämtats ut eller körts ut till dig, så en uppsägning utan avhämtning räcker inte. <a href="/tjanster/magasinering/">Så fungerar magasineringen</a>.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-vad-ingar-i-praktisk-hjalp-hemma" class="faq-post">
             <summary class="faq-fraga">Vad ingår i praktisk hjälp hemma?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Bärhjälp, rensning, sortering och montering eller nedmontering av möbler – inför flytt, försäljning eller visning. 495 kr i timmen för en person, minst två timmar. Behövs två personer gäller flyttpriset. Bärhjälp och möbelmontering i hemmet är RUT-grundande, så halva arbetskostnaden dras på fakturan.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-vad-hander-med-sakerna-ni-hamtar" class="faq-post">
             <summary class="faq-fraga">Vad händer med sakerna ni hämtar?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Det som går att skänka eller återvinna sorteras ut och lämnas vidare. Resten körs till återvinningscentral. Du får veta vart sakerna tar vägen.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-tar-ni-emot-farligt-avfall" class="faq-post">
             <summary class="faq-fraga">Tar ni emot farligt avfall?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Nej. Asbest, tryckimpregnerat virke, färgburkar, kemikalier och lysrör hanterar vi inte. Vitvaror och elektronik går bra.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hur-fungerar-rut-avdraget-hos-er" class="faq-post">
             <summary class="faq-fraga">Hur fungerar RUT-avdraget hos er?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>RUT ger femtio procent av arbetskostnaden. Rot och rut har ett gemensamt tak på sammanlagt 75 000 kronor per person och år, varav högst 50 000 kronor får vara rotavdrag. Det gäller flytt mellan två bostäder, transport till och från magasinering i samband med flytt, samt bärhjälp och möbelmontering i hemmet. Det gäller inte bortforsling, tömning, budtransport eller annan ren transport. Vi drar av beloppet direkt på fakturan – du lämnar bara personnummer och besked om hur mycket av ditt utrymme du använt i år.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-maste-jag-vara-hemma-nar-ni-kommer" class="faq-post">
             <summary class="faq-fraga">Måste jag vara hemma när ni kommer?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Nej. Många lämnar en nyckel eller en portkod, och vi hör av oss när vi är klara. Bor du i en annan stad sköter vi hela jobbet på distans – du får bilder före och efter, och vi stämmer av på telefon.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-vad-galler-om-nagot-gar-sonder" class="faq-post">
             <summary class="faq-fraga">Vad gäller om något går sönder?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Vi har ansvarsförsäkring och ansvarar för skador som vi orsakar genom vårdslöshet. Dina saker omfattas däremot inte automatiskt av vår försäkring — den gäller vårt arbete, inte allt som kan hända med sakerna. Hör med ditt försäkringsbolag om din hemförsäkring gäller för egendom i magasin, och säg till oss innan vi börjar om något enskilt föremål har högt värde.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hjalper-ni-foretag-maklare-och-foreningar" class="faq-post">
             <summary class="faq-fraga">Hjälper ni företag, mäklare och föreningar?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Ja. Vi tömmer kontor, lokaler, förråd och gemensamhetsutrymmen, och kan hämta utanför kontorstid om verksamheten inte ska störas. RUT gäller bara privatpersoner, så för företagskunder tillkommer inget avdrag.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-hur-betalar-jag" class="faq-post">
             <summary class="faq-fraga">Hur betalar jag?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Med faktura efter utfört arbete, eller med Swish direkt på plats.</p></div>
           </details>
-          <details class="faq-post">
+          <details id="faq-vad-hander-om-jag-behover-boka-om" class="faq-post">
             <summary class="faq-fraga">Vad händer om jag behöver boka om?<span class="faq-tecken" aria-hidden="true"></span></summary>
             <div class="faq-svar"><p>Hör av dig så tidigt du kan, så flyttar vi tiden. Avbokar du mindre än 24 timmar innan den avtalade tiden, eller om vi inte kommer in vid avtalad tid, debiteras en bomkörning på 1 500 kr. Avbokning minst 24 timmar innan är kostnadsfri.</p></div>
           </details>
@@ -1275,8 +1275,9 @@
     <a href="#kontakt" class="mb-quote">Få pris</a>
   </div>
 
+  <script src="/assets/js/markera.js?v=1" defer></script>
   <script src="/assets/js/meny.js?v=1"></script>
-  <script src="/assets/js/sok.js?v=2" defer></script>
+  <script src="/assets/js/sok.js?v=3" defer></script>
 
   <script src="script.js?v=33"></script>
 

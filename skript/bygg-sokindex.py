@@ -139,6 +139,29 @@ def utdrag(text, max_tecken=170):
     return kort + " …"
 
 
+# Poster vars element saknar id samlas här och stoppar bygget i main().
+SAKNAR_ID = []
+
+
+def eget_ankare(nod, beskrivning):
+    """Ankare till exakt det här elementet. Saknas id stoppas bygget, så att
+    ingen träff kan hamna på fel ställe utan att det märks."""
+    if nod is not None and nod.attr.get("id"):
+        return "#" + nod.attr["id"]
+    SAKNAR_ID.append(beskrivning)
+    return ""
+
+
+def inne_i(nod, id_):
+    """Sant om noden ligger inuti elementet med det id:t."""
+    nod = nod.foralder
+    while nod is not None:
+        if nod.attr.get("id") == id_:
+            return True
+        nod = nod.foralder
+    return False
+
+
 def ankare(nod):
     """Närmaste id på noden själv eller en förälder, för länk till avsnittet."""
     while nod is not None:
@@ -194,7 +217,8 @@ def poster_for_sida(url, rot):
     titel = re.sub(r"\s+[–|-]\s+Bohagsbolaget\.se$", "", titel)
     poster = [{
         "typ": "sida",
-        "url": url,
+        # Hela sidan: main har id på alla sidor. markera.js markerar då i h1.
+        "url": url + eget_ankare(main, f"{url}: main saknar id"),
         "sida": namn,
         "namn": namn,
         "titel": titel,
@@ -209,7 +233,7 @@ def poster_for_sida(url, rot):
         svar = forsta(d, lambda n: "faq-svar" in n.klasser())
         if fraga and svar:
             poster.append({
-                "typ": "faq", "url": url + ankare(d), "sida": namn,
+                "typ": "faq", "url": url + eget_ankare(d, f"{url}: FAQ {fraga.text()!r}"), "sida": namn,
                 "titel": fraga.text(), "utdrag": utdrag(svar.text()), "text": svar.text(),
             })
 
@@ -219,15 +243,16 @@ def poster_for_sida(url, rot):
     aktuell_h2 = None
     i_faq = False
     fraga = None
+    fraga_ankare = ""
     svarsdelar = []
     pris = None
 
     def avsluta_fraga():
-        nonlocal fraga, svarsdelar
+        nonlocal fraga, svarsdelar, fraga_ankare
         if fraga is not None and svarsdelar:
             svar = " ".join(svarsdelar)
             poster.append({
-                "typ": "faq", "url": url, "sida": namn,
+                "typ": "faq", "url": url + fraga_ankare, "sida": namn,
                 "titel": fraga, "utdrag": utdrag(svar), "text": svar,
             })
         fraga, svarsdelar = None, []
@@ -248,12 +273,14 @@ def poster_for_sida(url, rot):
             avsluta_pris()
             aktuell_h2 = nod.text()
             i_faq = aktuell_h2.lower().startswith("vanliga frågor")
-            i_prissektion = ankare(nod) == "#priser"
+            i_prissektion = inne_i(nod, "priser")
             if re.search(r"kostar|pris", aktuell_h2, re.I) or i_prissektion:
-                pris = {"titel": aktuell_h2, "ankare": ankare(nod), "delar": []}
+                pris = {"titel": aktuell_h2, "delar": [],
+                        "ankare": eget_ankare(nod, f"{url}: prisrubrik {aktuell_h2!r}")}
         elif tagg == "h3" and i_faq:
             avsluta_fraga()
             fraga = nod.text()
+            fraga_ankare = eget_ankare(nod, f"{url}: FAQ {fraga!r}")
         elif tagg == "details":
             continue
         else:
@@ -277,11 +304,13 @@ def synlig_text(rot):
 def main():
     poster = []
     sidtexter = {}
+    sidrotter = {}
     for url in sidor_ur_sitemap():
         if url not in SIDNAMN:
             sys.exit(f"FEL: {url} står i sitemap.xml men saknar namn i SIDNAMN.")
         rot = las_sida(fil_for(url))
         sidtexter[url] = synlig_text(rot)
+        sidrotter[url] = rot
         poster.extend(poster_for_sida(url, rot))
 
     foremal = json.loads((ROT / "sok" / "foremal.json").read_text(encoding="utf-8"))
@@ -293,12 +322,24 @@ def main():
             fel.append(f"{f['namn']}: källsidan {kalla['sida']} finns inte i indexet")
         elif " ".join(kalla["mening"].split()) not in sidtext:
             fel.append(f"{f['namn']}: meningen står inte ordagrant på {kalla['sida']}:\n    {kalla['mening']}")
+        # Länken går till exakt det stycke som håller källmeningen.
+        mening = " ".join(kalla["mening"].split())
+        rot = sidrotter.get(kalla["sida"])
+        traffar = rot.hitta_alla(lambda n: n.tagg in ("p", "li") and mening in n.text()) if rot else []
+        if len(traffar) != 1:
+            fel.append(f"{f['namn']}: källmeningen ska stå i exakt ett stycke på {kalla['sida']}, hittade {len(traffar)}")
+            lank = kalla["sida"]
+        else:
+            lank = kalla["sida"] + eget_ankare(traffar[0], f"{kalla['sida']}: föremålet {f['namn']!r}")
         poster.append({
-            "typ": "föremål", "url": f["lank"], "sida": SIDNAMN.get(f["lank"].split("#")[0], ""),
+            "typ": "föremål", "url": lank, "sida": SIDNAMN.get(kalla["sida"], ""),
             "titel": f["namn"], "ord": f["sokord"], "utdrag": f["svar"], "text": f["svar"],
         })
     if fel:
         sys.exit("FEL i sok/foremal.json:\n  " + "\n  ".join(fel))
+    if SAKNAR_ID:
+        sys.exit("FEL: elementen nedan saknar id. Ge dem ett id i HTML:en först:\n  "
+                 + "\n  ".join(SAKNAR_ID))
 
     for i, p in enumerate(poster):
         p["id"] = i

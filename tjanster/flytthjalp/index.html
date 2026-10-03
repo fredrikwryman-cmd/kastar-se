@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=69" />
+  <link rel="stylesheet" href="/styles.css?v=70" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -255,7 +255,7 @@
         <p>Ska en del av bohaget stå någonstans mellan de två adresserna går det att lägga in <a href="/tjanster/magasinering/">magasinering</a> mellan hämtningen och leveransen.</p>
         <p>Ska ett utrymme dessutom lämnas helt tomt, till exempel ett källarförråd som inte följer med, hör den delen till <a href="/tjanster/tomning/">tömning</a> och prissätts för sig.</p>
 
-        <h2>Vad det kostar</h2>
+        <h2 id="vad-det-kostar">Vad det kostar</h2>
 
         <div class="prislista">
           <div class="prisrad">
@@ -314,7 +314,7 @@
           </div>
         </div>
 
-        <p>Enskilda tunga föremål prissätts per objekt i stället för per timme. Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.</p>
+        <p id="foremal-piano-kassaskap-och-annat-tungt">Enskilda tunga föremål prissätts per objekt i stället för per timme. Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.</p>
         <p>Här, och bara här, kostar trapporna extra. Tillägget är 495 kr per våning utan hiss, 248 kr efter rutavdrag, och det gäller uteslutande tungflytt och pianoflytt. Det räknas per trappa från entréplan, så tre trappor upp ger tre tillägg. Vid vanlig flytthjälp på timpris tillkommer ingenting för våningsplan, och vid bortforsling och tömning på volympris bär vi från våningsplan utan tillägg.</p>
         <p>Ett piano från entréplan till entréplan kostar alltså 2 495 kr, och samma piano två trappor upp utan hiss kostar 3 485 kr.</p>
         <p>Vi kommer med pianovagn, remmar och skydd och två vana bärare, och trapphus och dörrfoder skyddas på vägen. Föremål över 300 kg och trånga bärvägar offererar vi separat efter bilder.</p>
@@ -383,19 +383,19 @@
 
         <h2>Vanliga frågor om flytthjälp</h2>
 
-        <h3>Vad kostar flytthjälp efter rutavdrag?</h3>
+        <h3 id="faq-vad-kostar-flytthjalp-efter-rutavdrag">Vad kostar flytthjälp efter rutavdrag?</h3>
         <p>548 kr i timmen för två personer med bil. Ordinarie pris är 995 kr i timmen, och minsta debitering är tre timmar.</p>
 
-        <h3>Kostar det extra att bära i trappor?</h3>
+        <h3 id="faq-kostar-det-extra-att-bara-i-trappor">Kostar det extra att bära i trappor?</h3>
         <p>Inte vid vanlig flytthjälp, eftersom arbetet går på tid. Ett tillägg per våning utan hiss finns bara för piano, kassaskåp och andra tunga enskilda föremål, och det är 495 kr per våning räknat från entréplan.</p>
 
-        <h3>Gäller rutavdraget hela fakturan?</h3>
+        <h3 id="faq-galler-rutavdraget-hela-fakturan">Gäller rutavdraget hela fakturan?</h3>
         <p>Nej, bara arbetskostnaden. Bilen och drivmedlet räknas bort först, och därför är underlaget 895 kr i timmen och inte 995.</p>
 
-        <h3>Kör ni till andra städer?</h3>
+        <h3 id="faq-kor-ni-till-andra-stader">Kör ni till andra städer?</h3>
         <p>Ja, uppdrag tar vi i hela landet. Arbetet går på ordinarie timpris, och till det kommer 15 kr per kilometer enkel väg utanför Stockholms och Uppsala län.</p>
 
-        <h3>Kan ni montera ihop möblerna på den nya adressen?</h3>
+        <h3 id="faq-kan-ni-montera-ihop-moblerna-pa-den-nya-adressen">Kan ni montera ihop möblerna på den nya adressen?</h3>
         <p>Ja. Montering och demontering av möbler ingår i det vi gör, och möbelmontering i hemmet är rutgrundande.</p>
 
         <h2>Hör av dig</h2>
@@ -456,8 +456,9 @@
     </div>
   </footer>
 
+  <script src="/assets/js/markera.js?v=1" defer></script>
   <script src="/assets/js/meny.js?v=1"></script>
-  <script src="/assets/js/sok.js?v=2" defer></script>
+  <script src="/assets/js/sok.js?v=3" defer></script>
 
   <script src="/script.js?v=33"></script>
 

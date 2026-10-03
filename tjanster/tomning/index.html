@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=69" />
+  <link rel="stylesheet" href="/styles.css?v=70" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -248,7 +248,7 @@
         <p>På utsatt dag bär och lastar vi, sorterar och kör bort.</p>
         <p>Vi sopar ytan innan vi låser om oss, och du får bilder på det tomma utrymmet.</p>
 
-        <h2>Vad det kostar</h2>
+        <h2 id="vad-det-kostar">Vad det kostar</h2>
 
         <div class="prislista">
           <div class="prisrad">
@@ -283,7 +283,7 @@
 
         <p>Vi räknar på volym, alltså hur stor del av bilen lasset upptar. Varje nivå rymmer upp till 100 kilo per kubikmeter.</p>
         <p>Ett normalstort källarförråd brukar hamna på 4–8 m³, vilket blir 2 195 till 3 495 kr. En tvåa som ska tömmas helt ligger i regel mellan 12 och 16 m³, alltså 5 195 till 6 995 kr.</p>
-        <p>Är innehållet ovanligt tungt, som verktyg, metall eller byggrester, räknar vi på vikt i stället: 295 kr per påbörjat 100 kilo. Vilken av modellerna som gäller får du veta i förväg.</p>
+        <p id="foremal-vad-det-kostar">Är innehållet ovanligt tungt, som verktyg, metall eller byggrester, räknar vi på vikt i stället: 295 kr per påbörjat 100 kilo. Vilken av modellerna som gäller får du veta i förväg.</p>
         <p>Framkörningen är 395 kr och faller bort när uppdraget överstiger 6 000 kr. Bomkörning kostar 1 500 kr och gäller om vi inte kommer in vid avtalad tid, eller vid avbokning mindre än 24 timmar innan den avtalade tiden. Avbokar du minst 24 timmar innan kostar det ingenting.</p>
         <p>Utöver det kan mycket tungt material, långa bäravstånd och särskilda deponiavgifter påverka priset. Det tar vi upp innan uppdraget bokas.</p>
 
@@ -305,19 +305,19 @@
 
         <h2>Vanliga frågor om tömning</h2>
 
-        <h3>Kan ni tömma utan att jag är där?</h3>
+        <h3 id="faq-kan-ni-tomma-utan-att-jag-ar-dar">Kan ni tömma utan att jag är där?</h3>
         <p>Ja, och så ser de flesta uppdrag ut. Vi behöver en nyckel eller en kod och en överenskommen tid. När utrymmet är tomt får du bilder på det.</p>
 
-        <h3>Vad kostar det att tömma ett källarförråd?</h3>
+        <h3 id="faq-vad-kostar-det-att-tomma-ett-kallarforrad">Vad kostar det att tömma ett källarförråd?</h3>
         <p>Ett normalstort förråd ligger på 4–8 kubik, alltså 2 195 till 3 495 kr. Siffran sätts innan vi börjar, efter bilder eller ett besök på plats.</p>
 
-        <h3>Hur lång tid tar det innan ni kan komma?</h3>
+        <h3 id="faq-hur-lang-tid-tar-det-innan-ni-kan-komma">Hur lång tid tar det innan ni kan komma?</h3>
         <p>Oftast några dagar. Är det bråttom är det bäst att ringa, så säger vi vad som är möjligt just den veckan.</p>
 
-        <h3>Kan ni tömma en lokal utanför kontorstid?</h3>
+        <h3 id="faq-kan-ni-tomma-en-lokal-utanfor-kontorstid">Kan ni tömma en lokal utanför kontorstid?</h3>
         <p>Ja. Vi lägger tiden när verksamheten inte störs, och det fungerar lika bra på kvällar och helger.</p>
 
-        <h3>Får jag avdrag på kostnaden?</h3>
+        <h3 id="faq-far-jag-avdrag-pa-kostnaden">Får jag avdrag på kostnaden?</h3>
         <p>Nej. Tömning räknas som transport och avfallshantering, inte som arbete inne i en bostad, och ger därför varken rot eller rut.</p>
 
         <h2>Hör av dig</h2>
@@ -378,8 +378,9 @@
     </div>
   </footer>
 
+  <script src="/assets/js/markera.js?v=1" defer></script>
   <script src="/assets/js/meny.js?v=1"></script>
-  <script src="/assets/js/sok.js?v=2" defer></script>
+  <script src="/assets/js/sok.js?v=3" defer></script>
 
   <script src="/script.js?v=33"></script>
 

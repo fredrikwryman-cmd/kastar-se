@@ -498,6 +498,15 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 .sok-noll-tjanster { margin: 0 0 1rem; padding-left: 1.2rem; }
 .sok-noll-tjanster a { display: inline-flex; align-items: center; min-height: 44px; }
 
+/* Sökordet markerat på målsidan (markera.js). Petroltext på orange ger
+   5,34:1, samma par som primärknappen. Markeringen tas bort vid första
+   klick eller tangenttryck. */
+mark.sok-markering {
+  background: var(--orange); color: var(--petrol-deep);
+  border-radius: 2px; padding: 0 .12em;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+
 /* ---------- Hero (foto + mörk petrol-overlay, vit versal rubrik) ---------- */
 .hero {
   position: relative;

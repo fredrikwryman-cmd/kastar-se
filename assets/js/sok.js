@@ -45,8 +45,8 @@
     });
     motorLofte = Promise.all([
       import('/assets/js/fuse.basic.min.js?v=1'),
-      hamta('/sok/index.json?v=2'),
-      hamta('/sok/synonymer.json?v=2'),
+      hamta('/sok/index.json?v=3'),
+      hamta('/sok/synonymer.json?v=3'),
     ]).then(([modul, index, synonymer]) => {
       const Fuse = modul.default;
       const poster = index.poster;
@@ -96,7 +96,7 @@
       if (!g.ord.some((o) => innehaller(fraga, o))) return;
       const t = g.till;
       motor.poster.forEach((p) => {
-        if (t.url && p.typ === 'sida' && p.url === t.url) lagg(p);
+        if (t.url && p.typ === 'sida' && p.url.split('#')[0] === t.url) lagg(p);
         else if (t.typ && p.typ === t.typ) lagg(p);
         else if (t.titel && p.titel === t.titel) lagg(p);
       });
@@ -107,6 +107,16 @@
       .forEach((r) => lagg(r.item));
 
     return ut;
+  }
+
+  /* Träffens adress med sökordet som parameter: <sida>?markera=<ord>#<id>.
+     markera.js på målsidan läser parametern och markerar. Utan JavaScript
+     där räcker ankaret ensamt. */
+  function traffUrl(p, text) {
+    const ord = String(text || '').trim().slice(0, 40);
+    const [sida, ankare] = p.url.split('#');
+    if (!ankare || !ord) return p.url;
+    return sida + '?markera=' + encodeURIComponent(ord) + '#' + ankare;
   }
 
   function radText(p) {
@@ -184,7 +194,19 @@
     }
 
     function gaTill(p) {
-      window.location.href = p.url;
+      const url = traffUrl(p, falt.value);
+      const mal = new URL(url, window.location.href);
+      // Målet ligger på sidan man står på: ingen omladdning, bara ankare och
+      // markering. Saknas markera.js på sidan laddas adressen som vanligt.
+      if (mal.pathname === window.location.pathname && mal.hash.length > 1 && window.bbMarkera) {
+        const ord = mal.searchParams.get('markera') || '';
+        stangLista();
+        ruta.open = false;
+        history.pushState(null, '', mal.pathname + mal.hash);
+        window.bbMarkera(decodeURIComponent(mal.hash.slice(1)), ord);
+        return;
+      }
+      window.location.href = url;
     }
 
     function kor() {
@@ -350,7 +372,7 @@
       traffar.forEach((p) => {
         const li = el('li', 'sok-traff');
         const h = el('h2', 'sok-traff-titel');
-        h.appendChild(lank(p.url, p.titel));
+        h.appendChild(lank(traffUrl(p, fraga), p.titel));
         const typ = el('p', 'sok-traff-typ', TYPNAMN[p.typ] + (p.sida ? ' · ' + p.sida : ''));
         const text = el('p', 'sok-traff-text', p.utdrag);
         li.append(h, typ, text);

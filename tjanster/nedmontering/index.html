@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=69" />
+  <link rel="stylesheet" href="/styles.css?v=70" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -254,7 +254,7 @@
         <p>Kök med skåp och bänkskiva, kakel ovanför bänken, parkettgolv, klinker på golv, garderober och inbyggda möbler, samt gipsväggar. Det vi river är fast inredning och icke-bärande väggar; bärande konstruktioner ligger utanför det vi gör.</p>
         <p>Farligt avfall hanterar vi inte. Är du osäker på något enskilt material, skicka en bild i förväg så säger vi till innan vi bokar.</p>
 
-        <h2>Vad det kostar</h2>
+        <h2 id="vad-det-kostar">Vad det kostar</h2>
 
         <div class="prislista">
           <div class="prisrad">
@@ -322,8 +322,8 @@
         </div>
         <p class="pris-cta"><a class="btn btn-primary" href="/#kontakt">Få fast pris</a></p>
 
-        <p>Arbetet har fast pris per objekt. Ett enkelkök kostar 3 295 kr, vilket blir 2 307 kr när rotavdraget är avräknat. Ett enkelkök är ett kök längs en vägg, utan vinkel och utan kakel, med underskåp, överskåp och bänkskiva. Vinkelkök, större kök och kök där kakel ingår offererar vi efter bilder. Ska kaklet ovanför bänken bort i samma vända ligger priset från 4 995 kr, alltså 3 497 kr efter avdrag.</p>
-        <p>Golv prissätts per rum: parkett upp till 20 m² från 2 795 kr, klinker upp till 10 m² från 5 495 kr. Gipsvägg räknas i löpmeter, 595 kr per meter. Garderober och inbyggda möbler från 1 895 kr.</p>
+        <p id="foremal-vad-det-kostar">Arbetet har fast pris per objekt. Ett enkelkök kostar 3 295 kr, vilket blir 2 307 kr när rotavdraget är avräknat. Ett enkelkök är ett kök längs en vägg, utan vinkel och utan kakel, med underskåp, överskåp och bänkskiva. Vinkelkök, större kök och kök där kakel ingår offererar vi efter bilder. Ska kaklet ovanför bänken bort i samma vända ligger priset från 4 995 kr, alltså 3 497 kr efter avdrag.</p>
+        <p id="foremal-vad-det-kostar-2">Golv prissätts per rum: parkett upp till 20 m² från 2 795 kr, klinker upp till 10 m² från 5 495 kr. Gipsvägg räknas i löpmeter, 595 kr per meter. Garderober och inbyggda möbler från 1 895 kr.</p>
         <p>Passar uppdraget inte tabellen går det på timpris i stället, 1 095 kr i timmen för två personer, 767 kr när avdraget är avräknat.</p>
 
         <p>Kommer vi inte in vid avtalad tid, eller avbokar du mindre än 24 timmar innan den avtalade tiden, debiteras 1 500 kr i bomkörning. Avbokar du minst 24 timmar innan kostar det ingenting.</p>
@@ -350,19 +350,19 @@
 
         <h2>Vanliga frågor om nedmontering och rivning</h2>
 
-        <h3>Vad kostar det att riva ett kök?</h3>
+        <h3 id="faq-vad-kostar-det-att-riva-ett-kok">Vad kostar det att riva ett kök?</h3>
         <p>3 295 kr för själva nedmonteringen, vilket blir 2 307 kr efter rotavdrag. Ett enkelkök är ett kök längs en vägg, utan vinkel och utan kakel, med underskåp, överskåp och bänkskiva. Ska kaklet ovanför bänken bort i samma vända är priset från 4 995 kr, alltså 3 497 kr efter avdrag. Vinkelkök och större kök offererar vi efter bilder. Bortforslingen av materialet tillkommer.</p>
 
-        <h3>Får jag rotavdrag på rivningen?</h3>
+        <h3 id="faq-far-jag-rotavdrag-pa-rivningen">Får jag rotavdrag på rivningen?</h3>
         <p>Ja, på arbetet. Rot ger 30 procent av arbetskostnaden. Rot och rut har ett gemensamt tak på sammanlagt 75 000 kronor per person och år, varav högst 50 000 kronor får vara rotavdrag. För om- eller tillbyggnad ges inget rotavdrag under de första fem åren efter det år huset stod färdigt.</p>
 
-        <h3>Vad händer med rivningsmaterialet?</h3>
+        <h3 id="faq-vad-hander-med-rivningsmaterialet">Vad händer med rivningsmaterialet?</h3>
         <p>Vi kör bort det direkt, som en del av samma uppdrag. Det räknas på vikt, 295 kr per påbörjat 100 kg, minst 995 kr, och den posten ger inget avdrag.</p>
 
-        <h3>Behöver jag hyra container?</h3>
+        <h3 id="faq-behover-jag-hyra-container">Behöver jag hyra container?</h3>
         <p>Nej. Materialet lastas och körs bort av oss i samma vända, så du slipper både container och en extra leverantör.</p>
 
-        <h3>Vad ingår i priset på arbetet?</h3>
+        <h3 id="faq-vad-ingar-i-priset-pa-arbetet">Vad ingår i priset på arbetet?</h3>
         <p>Nedmontering, skydd av golv och angränsande ytor, och att materialet samlas ihop och emballeras på plats. Bortforslingen står som egen rad i offerten.</p>
 
         <h2>Hör av dig</h2>
@@ -423,8 +423,9 @@
     </div>
   </footer>
 
+  <script src="/assets/js/markera.js?v=1" defer></script>
   <script src="/assets/js/meny.js?v=1"></script>
-  <script src="/assets/js/sok.js?v=2" defer></script>
+  <script src="/assets/js/sok.js?v=3" defer></script>
 
   <script src="/script.js?v=33"></script>
 
