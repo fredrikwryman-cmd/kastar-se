@@ -28,6 +28,12 @@
       .trim();
   }
 
+  // Som normalisera, men bindestreck tas bort i stället för att dela ordet,
+  // så att "rutavdrag" och "RUT-avdraget" jämförs som samma ord.
+  function hopskrivet(s) {
+    return normalisera(String(s == null ? '' : s).replace(/-/g, ''));
+  }
+
   // Helt ord eller hel fras, inte en bit av ett annat ord: "lager" ska inte
   // fånga "lagerflytt".
   function innehaller(fraga, ord) {
@@ -72,7 +78,11 @@
       const foremal = poster
         .filter((p) => p.typ === 'föremål')
         .map((p) => ({ post: p, ord: p.ord.map(normalisera) }));
-      return { fuse, poster, syn, foremal };
+      // Postens ord utan felstavningstolerans, för att skilja exakta träffar
+      // från suddiga. Byggs en gång per post.
+      const exaktText = new Map(poster.map((p) => [p.id, ' ' + hopskrivet(
+        [p.namn, p.titel, p.text, p.utdrag].concat(p.ord || [], p.rubriker || []).filter(Boolean).join(' ')) + ' ']));
+      return { fuse, poster, syn, foremal, exaktText };
     });
     motorLofte.catch(() => { motorLofte = null; });
     return motorLofte;
@@ -102,8 +112,18 @@
       });
     });
 
+    // Exakt träff går alltid före suddig: varje ord i frågan finns i posten
+    // som ett ord eller början av ett ord. Då hamnar "rutavdrag" före poster
+    // som bara nämner rotavdrag, som Fuse annars räknar som nästan lika.
+    const fragOrd = hopskrivet(text).split(' ').filter(Boolean);
+    const exakt = (p) => {
+      const hay = motor.exaktText.get(p.id) || '';
+      return fragOrd.every((o) => hay.indexOf(' ' + o) !== -1) ? 0 : 1;
+    };
     motor.fuse.search(fraga)
-      .sort((a, b) => (a.score - b.score) || (TYPORDNING[a.item.typ] - TYPORDNING[b.item.typ]))
+      .map((r) => ({ r, e: exakt(r.item) }))
+      .sort((a, b) => (a.e - b.e) || (a.r.score - b.r.score) || (TYPORDNING[a.r.item.typ] - TYPORDNING[b.r.item.typ]))
+      .map((x) => x.r)
       .forEach((r) => lagg(r.item));
 
     return ut;

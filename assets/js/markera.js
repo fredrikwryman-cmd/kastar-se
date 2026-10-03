@@ -36,14 +36,19 @@
     return rad[b.length];
   }
 
-  // Ett ord på sidan liknar ett sökord om det är samma ord, börjar med det,
-  // eller skiljer sig med en bokstav (två för längre ord). Så markerar
-  // "pianno" ordet piano och "rutavdrag" ordet RUT-avdraget.
-  function liknar(ord, sok) {
+  // Exakt träff: samma ord, eller ett ord som börjar med sökordet. Så
+  // markerar "rutavdrag" ordet RUT-avdraget men aldrig rotavdrag.
+  function exakt(ord, sok) {
     if (!ord || !sok) return false;
     if (ord === sok) return true;
-    if (sok.length < 3) return false;
-    if (ord.startsWith(sok)) return true;
+    return sok.length >= 3 && ord.startsWith(sok);
+  }
+
+  // Suddig träff, som bara används när sökordet inte finns exakt på sidan:
+  // en bokstav fel (två för längre ord). Så markerar "pianno" ordet piano.
+  function liknar(ord, sok) {
+    if (exakt(ord, sok)) return true;
+    if (!ord || !sok || sok.length < 3) return false;
     if (sok.length < 4 || ord.length < 3) return false;
     const tolerans = sok.length >= 8 ? 2 : 1;
     if (Math.abs(ord.length - sok.length) <= tolerans && avstand(ord, sok) <= tolerans) return true;
@@ -90,25 +95,45 @@
     return null;
   }
 
-  // Delar textnoder och lindar varje liknande ord i <mark>. Bara textnoder
-  // och createElement används, aldrig innerHTML.
+  const ORD = /[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*/gu;
+
+  function textnoder(rot) {
+    const gang = document.createTreeWalker(rot, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (n.parentElement.closest('script, style, mark, [aria-hidden="true"]')
+        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+    });
+    const noder = [];
+    while (gang.nextNode()) noder.push(gang.currentNode);
+    return noder;
+  }
+
+  // Finns sökordet exakt någonstans på sidan? Då används bara exakta träffar
+  // för det ordet, och felstavningstoleransen stängs av.
+  function finnsExakt(sok) {
+    const rot = document.querySelector('main') || document.body;
+    return textnoder(rot).some((nod) => {
+      let m;
+      ORD.lastIndex = 0;
+      while ((m = ORD.exec(nod.data))) {
+        if (exakt(normalisera(m[0]), sok)) return true;
+      }
+      return false;
+    });
+  }
+
+  // Delar textnoder och lindar varje träff i <mark>. Bara textnoder och
+  // createElement används, aldrig innerHTML.
   function markeraOrd(delar, sokord) {
-    const ORD = /[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*/gu;
+    const prov = sokord.map((s) => (finnsExakt(s) ? exakt : liknar));
     const marks = [];
     delar.forEach((del) => {
-      const gang = document.createTreeWalker(del, NodeFilter.SHOW_TEXT, {
-        acceptNode: (n) => (n.parentElement.closest('script, style, mark, [aria-hidden="true"]')
-          ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
-      });
-      const noder = [];
-      while (gang.nextNode()) noder.push(gang.currentNode);
-      noder.forEach((nod) => {
+      textnoder(del).forEach((nod) => {
         const traffar = [];
         let m;
         ORD.lastIndex = 0;
         while ((m = ORD.exec(nod.data))) {
           const ord = normalisera(m[0]);
-          if (sokord.some((s) => liknar(ord, s))) traffar.push([m.index, m[0].length]);
+          if (sokord.some((s, i) => prov[i](ord, s))) traffar.push([m.index, m[0].length]);
         }
         // Bakifrån, så att tidigare positioner inte flyttas av delningen.
         for (let i = traffar.length - 1; i >= 0; i--) {
