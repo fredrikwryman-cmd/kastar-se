@@ -187,6 +187,7 @@ body:not(.kort-sida) main p a:not(.btn) {
 .section-alt,
 .chatt-knapp,
 .chatt-panel,
+.mc-band,
 /* .skip ligger direkt under <body>, inte inuti .site-header, och arvde
    darfor standardringen trots att den bade har egen petrolbotten och
    ritas ovanpa sidhuvudet. Den maste sta med i egen rakning. */
@@ -1682,6 +1683,117 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 }
 .step h3 { margin-bottom: .4rem; font-size: var(--grad-h3); }
 .step p  { margin: 0; color: var(--body-c); }
+
+/* ==========================================================================
+   MC-förvaring: säsongsbandet på startsidan och sidan /tjanster/mc-forvaring/
+   ========================================================================== */
+/* Bandet står direkt under heron, som också är mörk. Den orange överkanten
+   skiljer de två åt. Bakgrunden är --petrol, samma ton som är inbakad i
+   maskot-transp.png, så maskoten smälter in utan synlig ruta. */
+.mc-band {
+  background: var(--petrol); border-top: 4px solid var(--orange);
+  padding: clamp(2.75rem, 5vw, 4rem) 0;
+}
+.mc-band-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2.5rem; align-items: center; }
+.mc-band h2 { color: var(--on-dark); margin: 0 0 .75rem; }
+.mc-band .eyebrow { color: var(--orange); }
+.mc-band p, .mc-bockar { color: var(--on-dark-body); }
+.mc-band .lead { max-width: 60ch; margin: 0 0 1.1rem; }
+.mc-bockar {
+  list-style: none; padding: 0; margin: 0 0 1.1rem;
+  display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-weight: 600;
+}
+.mc-bockar span { color: var(--orange); }
+.mc-band-pris { margin: 0; font-size: var(--grad-ingress); }
+.mc-band-pris strong { color: var(--on-dark); }
+.mc-band-knappar { margin: 1.25rem 0 .75rem; }
+.mc-band-lank { margin: 0 0 .35rem; }
+/* --orange-ink ger bara 2,34:1 mot petrol, --orange ger 4,62:1. */
+.mc-band-lank a { display: inline-flex; align-items: center; min-height: 44px; color: var(--orange); }
+.mc-band-fin { margin: 0; font-size: var(--grad-liten); color: var(--on-dark-soft); }
+.mc-band-maskot { display: block; width: 200px; height: auto; }
+/* Två lägen i samma markup. Ett attribut på sektionen avgör vilket som syns,
+   så bytet kräver inget JavaScript och syns även utan. */
+.mc-band[data-status="fullbokat"] .mc-oppet,
+.mc-band:not([data-status="fullbokat"]) .mc-fullbokat { display: none; }
+
+/* Sidan. Textytorna följer .legal som de andra tjänstesidorna. */
+.mc-topp-knappar { margin: 1.5rem 0 0; }
+/* .legal p har högre specificitet än en ensam klass, därav .legal-prefixet. */
+.legal .mc-framhavd {
+  margin: 2.25rem 0 1rem; padding: 1.35rem 1.6rem;
+  background: var(--bg-warm); border-left: 4px solid var(--orange);
+  border-radius: var(--radius-btn);
+  font-size: clamp(1.1rem, 2.2vw, 1.35rem); font-weight: 600; line-height: 1.5;
+  color: var(--petrol);
+}
+.legal .mc-steg,
+.legal .mc-ingar,
+.legal .mc-priser,
+.legal .mc-kort { list-style: none; padding: 0; margin: 1rem 0 0; }
+.mc-steg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 2rem; }
+.legal .mc-steg li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: .9rem; align-items: start; margin: 0; }
+.mc-steg p { margin: .55rem 0 0; }
+.mc-steg-num {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-radius: 50%; background: var(--petrol); color: var(--on-dark);
+  font-weight: 700; font-size: 1.15rem;
+}
+/* Sista steget i orange som i broschyren. Petroltext på orange ger 5,34:1. */
+.mc-steg li:last-child .mc-steg-num { background: var(--orange); color: var(--petrol-deep); }
+.legal .mc-ingar li { display: flex; gap: .65rem; align-items: baseline; margin-bottom: .5rem; }
+.mc-ingar span { color: var(--orange-ink); font-weight: 700; }
+.mc-priser { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.legal .mc-pris {
+  margin: 0; padding: 1.25rem 1.3rem;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
+}
+.mc-pris h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+.mc-pris-belopp { margin: 0 0 .5rem; font-size: 1.75rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+.legal .mc-pris p:last-child { margin: 0; }
+.legal .mc-pris--framhavd { background: var(--orange); border-color: var(--orange); }
+.legal .mc-pris--framhavd h3,
+.legal .mc-pris--framhavd p { color: var(--petrol-deep); }
+.legal .mc-fin { margin-top: .9rem; font-size: var(--grad-liten); color: var(--muted); }
+.mc-kort { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.legal .mc-kort li {
+  margin: 0; padding: 1.1rem 1.25rem;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-card);
+}
+.mc-kort strong { color: var(--ink); }
+.mc-pdf a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Bokningsformuläret: samma .contact-form och .field som startsidan. Bara
+   paketvalet är nytt. Radioknapparna står utanför .field, annars får de
+   textfältens bredd och padding. */
+.mc-form { margin-top: 1.25rem; }
+.mc-paket { border: 0; padding: 0; margin: 0 0 1rem; min-width: 0; }
+.mc-paket legend { padding: 0; margin-bottom: .35rem; font-weight: 500; font-size: .88rem; color: var(--ink); }
+.mc-paket label {
+  display: flex; align-items: center; gap: .65rem;
+  min-height: 44px; padding: .4rem .8rem; margin-bottom: .5rem;
+  border: 1px solid var(--line); border-radius: var(--radius-btn);
+  color: var(--ink);
+}
+/* Valt paket syns på både prick och ram, inte bara färg. */
+.mc-paket label:has(input:checked) { border-color: var(--orange-ink); background: var(--bg-warm); }
+.mc-paket input { flex: 0 0 auto; width: 1.2rem; height: 1.2rem; margin: 0; font-size: 1rem; accent-color: var(--orange-ink); }
+.mc-ring { text-align: center; }
+/* Hänvisningen på magasineringssidan. Egen ruta så att den inte läses som
+   en del av svaret på sista frågan ovanför. */
+.legal .mc-hanvisning {
+  margin: 2rem 0 0; padding: 1rem 1.25rem;
+  background: var(--bg-warm); border-left: 3px solid var(--orange);
+  border-radius: var(--radius-btn);
+}
+
+@media (max-width: 700px) {
+  .mc-band-inner { grid-template-columns: 1fr; }
+  .mc-band-maskot { display: none; }
+  .mc-steg,
+  .mc-priser,
+  .mc-kort { grid-template-columns: 1fr; }
+}
 
 .price-note {
   /* 70ch, samma grans som .features-not och langdistanstexten fick i

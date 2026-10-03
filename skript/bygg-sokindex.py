@@ -34,6 +34,7 @@ SIDNAMN = {
     "/tjanster/bortforsling/": "Bortforsling",
     "/tjanster/nedmontering/": "Nedmontering och rivning",
     "/tjanster/magasinering/": "Magasinering",
+    "/tjanster/mc-forvaring/": "MC-förvaring",
     "/tjanster/foretag/": "Företag och föreningar",
     "/rot-rut.html": "Rot och rut",
     "/integritetspolicy.html": "Integritetspolicy",
@@ -190,7 +191,7 @@ def poster_for_sida(url, rot):
     # Sidans <title> utan varumärkessuffixet läser bättre i en träfflista än
     # h1, som på startsidan är en uppräkning med punkter.
     titel = titel_nod.text() if titel_nod else h1_text
-    titel = re.sub(r"\s+[–-]\s+Bohagsbolaget\.se$", "", titel)
+    titel = re.sub(r"\s+[–|-]\s+Bohagsbolaget\.se$", "", titel)
     poster = [{
         "typ": "sida",
         "url": url,

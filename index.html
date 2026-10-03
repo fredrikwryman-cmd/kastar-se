@@ -380,7 +380,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=68" />
+  <link rel="stylesheet" href="styles.css?v=69" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -461,6 +461,40 @@
             <li>✔ Vi lämnar det tomt och sopat</li>
           </ul>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ MC-FÖRVARING (säsongsband) ============
+         Läget styrs av data-status: "oppet" eller "fullbokat". CSS:en visar
+         rätt block, så inget JavaScript behövs. Se PUBLICERA.md för hur
+         läget byts och hur bandet tas bort efter säsongen. -->
+    <section class="section mc-band" id="mc-forvaring" data-status="oppet">
+      <div class="container mc-band-inner">
+        <div class="mc-band-text mc-oppet">
+          <p class="eyebrow">NYTT I VINTER · PLATS FÖR 30 MOTORCYKLAR</p>
+          <h2>Vi tar hand om hojen i vinter</h2>
+          <p class="lead">Vi hämtar motorcykeln hemma, förvarar den varmt i vårt magasin i Arlandastad och ställer tillbaka den på uppfarten i april.</p>
+          <ul class="mc-bockar">
+            <li><span aria-hidden="true">✔</span> Varmt, torrt och låst</li>
+            <li><span aria-hidden="true">✔</span> Underhållsladdning hela vintern</li>
+            <li><span aria-hidden="true">✔</span> Transport inomhus i vår skåpbil</li>
+          </ul>
+          <p class="mc-band-pris">Allt i ett <strong>4 990 kr</strong> för hela säsongen. Bara förvaring <strong>3 495 kr</strong>.</p>
+          <div class="hero-actions mc-band-knappar">
+            <a href="/tjanster/mc-forvaring/#boka" class="btn btn-primary">Boka din plats</a>
+            <a href="tel:+46705614845" class="btn btn-light">Ring 070-561 48 45</a>
+          </div>
+          <p class="mc-band-lank"><a href="/tjanster/mc-forvaring/">Läs mer om vinterförvaringen</a></p>
+          <p class="mc-band-fin">Priser inklusive moms. Hämtning inom cirka 4 mil från Arlandastad.</p>
+        </div>
+        <div class="mc-band-text mc-fullbokat">
+          <h2>Fullbokat i vinter</h2>
+          <p class="lead">Alla 30 platser är tagna. Ställ dig i kö för nästa säsong så hör vi av oss i god tid.</p>
+          <div class="hero-actions mc-band-knappar">
+            <a href="/tjanster/mc-forvaring/#boka" class="btn btn-primary">Ställ dig i kö</a>
+          </div>
+        </div>
+        <img class="mc-band-maskot" src="assets/maskot-transp.png" width="229" height="220" alt="" loading="lazy" decoding="async" />
       </div>
     </section>
 
@@ -1241,7 +1275,7 @@
     <a href="#kontakt" class="mb-quote">Få pris</a>
   </div>
 
-  <script src="/assets/js/sok.js?v=1" defer></script>
+  <script src="/assets/js/sok.js?v=2" defer></script>
 
   <script src="script.js?v=32"></script>
 

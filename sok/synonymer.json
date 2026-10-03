@@ -1,4 +1,5 @@
 [
+  { "ord": ["mc", "motorcykel", "hoj", "vinterförvaring"], "till": { "url": "/tjanster/mc-forvaring/" } },
   { "ord": ["skräp", "sopor", "grovsopor", "skrot"], "till": { "url": "/tjanster/bortforsling/" } },
   { "ord": ["förråd", "lager", "förvaring", "lagring"], "till": { "url": "/tjanster/magasinering/" } },
   { "ord": ["flyttfirma", "bärhjälp", "flytta"], "till": { "url": "/tjanster/flytthjalp/" } },

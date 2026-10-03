@@ -131,3 +131,30 @@ python skript/bygg-sokindex.py
 - Ändras `sok/index.json`, `sok/synonymer.json` eller `assets/js/sok.js`:
   höj `?v=` för filen (index och synonymer i `sok.js`, `sok.js` på alla sidor).
 - `skript/` står i exclude i `_config.yml` och publiceras inte.
+
+---
+
+## MC-bandet på startsidan (vinterförvaring)
+
+Bandet ligger i `index.html` direkt efter heron:
+`<section class="section mc-band" id="mc-forvaring" data-status="oppet">`.
+
+**Byta läge.** Ändra bara attributet `data-status`, inget annat:
+
+- `data-status="oppet"`: bokningsläget med priser och knappen "Boka din plats".
+- `data-status="fullbokat"`: "Fullbokat i vinter" och knappen "Ställ dig i kö".
+
+Båda texterna står redan i markupen. CSS:en visar rätt block, så ingen annan
+fil behöver röras och ingen versionsparameter behöver höjas.
+
+**Ta bort bandet efter säsongen.**
+
+1. Radera hela blocket i `index.html`, från kommentaren
+   `<!-- ============ MC-FÖRVARING (säsongsband) ============` till och med
+   sektionens `</section>`. Allt däremellan hör till bandet.
+2. Kör `python skript/bygg-sokindex.py`, så att bandets rubriker försvinner
+   ur sökindexet, och höj `?v=` för `sok/index.json` i `assets/js/sok.js`
+   och `sok.js?v=` på alla sidor.
+3. CSS-reglerna under rubriken "MC-förvaring" i `styles.css` kan stå kvar,
+   de används också av sidan `/tjanster/mc-forvaring/`. Sidan och dess rad
+   i `sitemap.xml` ligger kvar så länge tjänsten erbjuds.
