@@ -1848,8 +1848,10 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 
 .chatt-panel {
   position: fixed; right: 18px; bottom: 18px; z-index: 121;
-  width: 380px; max-width: calc(100vw - 36px);
-  height: 560px; max-height: calc(100vh - 36px);
+  /* Aldrig bredare än skärmen, oavsett bredd. dvh följer den synliga ytan
+     när mobilens adressfält fälls in och ut; vh står kvar som reserv. */
+  width: min(380px, calc(100vw - 24px));
+  height: 560px; max-height: calc(100vh - 36px); max-height: calc(100dvh - 36px);
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--bg);
   border: 1px solid var(--line);
@@ -1965,7 +1967,10 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   min-height: 44px; max-height: 120px;
   padding: .6rem .7rem;
   border: 1px solid var(--line); border-radius: var(--radius-btn);
-  font-family: inherit; font-size: .95rem; line-height: 1.4; color: var(--ink);
+  /* Minst 16px: under det zoomar iPhone in sidan när fältet får fokus, och
+     fältet får fokus direkt när chatten öppnas. Zoomen lämnade panelens
+     högra del utanför skärmen. */
+  font-family: inherit; font-size: 1rem; line-height: 1.4; color: var(--ink);
   background: var(--bg-card);
 }
 .chatt-falt:focus { outline: 2px solid var(--orange-ink); outline-offset: 1px; }
@@ -1980,14 +1985,25 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 .chatt-skicka:disabled { opacity: .5; cursor: default; }
 
 /* Mobil: nästan hela skärmen med marginal, inte en liten ruta i hörnet.
-   Knappen lyfts ovanför den fasta ring-baren, som är 68 px hög. */
+   Knappen lyfts ovanför den fasta ring-baren, som är 68 px hög.
+   Panelen slutar ovanför ring-baren: samma 4.9rem plus hemindikator som
+   body får i padding-bottom, och 8px luft. Sidornas insets respekteras så
+   att panelen inte hamnar under skärmhacket i liggande läge. */
 @media (max-width: 860px) {
   .chatt-knapp { bottom: calc(80px + env(safe-area-inset-bottom)); right: 14px; }
+  .chatt-panel {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(4.9rem + 8px + env(safe-area-inset-bottom));
+    width: min(380px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+    max-height: calc(100vh - 4.9rem - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    max-height: calc(100dvh - 4.9rem - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+  }
 }
 @media (max-width: 640px) {
   .chatt-panel {
-    right: 10px; left: 10px; top: 10px;
-    bottom: calc(10px + env(safe-area-inset-bottom));
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    top: calc(12px + env(safe-area-inset-top));
     width: auto; height: auto; max-width: none; max-height: none;
   }
 }
