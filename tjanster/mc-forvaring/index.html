@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=70" />
+  <link rel="stylesheet" href="/styles.css?v=71" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. Erbjudandena
@@ -308,8 +308,9 @@
             <label><input type="radio" name="paket" value="Ställ mig i kö för nästa säsong" /> Ställ mig i kö för nästa säsong</label>
           </fieldset>
           <div class="field">
-            <label for="mcMeddelande">Meddelande (valfritt)</label>
-            <textarea id="mcMeddelande" name="message" rows="4"></textarea>
+            <label for="mcDatum">Önskat datum och tid för hämtning</label>
+            <p class="field-hint" id="mcDatumHint">Fyll i så skickar vi offert direkt. Väljer du bara förvaring skriver du när du vill lämna motorcykeln.</p>
+            <textarea id="mcDatum" name="onskat_datum_och_tid" rows="2" aria-describedby="mcDatumHint"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Skicka bokningen</button>
           <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>

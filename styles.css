@@ -1303,6 +1303,9 @@ mark.sok-markering {
   font: inherit; color: var(--ink); background: var(--bg-card); transition: border-color .15s;
 }
 .field input:focus, .field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,134,46,.18); }
+/* Hjälptext mellan etikett och fält. Samma dämpade ton som övrig hjälptext;
+   .field-prefixet slår .legal p, som annars ger brödtextens färg. */
+.field .field-hint { margin: 0 0 .35rem; font-size: .88rem; line-height: 1.4; color: var(--muted); }
 .form-alt { text-align: center; font-size: var(--grad-brod); font-weight: 300; color: var(--muted); margin: 1rem 0 0; }
 
 /* Bekräftelse/fel efter att formuläret skickats */
