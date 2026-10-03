@@ -1,61 +1,14 @@
-// Bohagsbolaget.se – mobilmeny, priskalkylator, kontaktformulär och scroll-animationer.
+// Bohagsbolaget.se – priskalkylator, kontaktformulär, offertruta, scroll-animationer och chatten.
 
-/* ---------- Mobilmeny (hamburgare) ---------- */
-const toggle = document.getElementById('navToggle');
-const nav = document.getElementById('nav');
+/* Mobilmenyn, sidhuvudets glaseffekt och årtalet i sidfoten ligger i
+   assets/js/meny.js, som laddas före den här filen. */
 
-if (toggle && nav) {
-  toggle.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-
-  nav.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-}
-
-/* ---------- Header: glaseffekt och scroll-indikator ----------
-   Båda delar en enda scroll-lyssnare, throttlad med requestAnimationFrame så
-   att layouten läses av högst en gång per bildruta. Saknas headern gör koden
-   ingenting – resten av filen ska fungera ändå. */
-const siteHeader = document.querySelector('.site-header');
-
-if (siteHeader) {
-  let ticking = false;
-
-  const updateHeader = () => {
-    const y = window.scrollY;
-    siteHeader.classList.toggle('scrolled', y > 50);
-
-    // Hur långt ned på sidan vi kommit, 0–1. Styr bredden på indikatorn.
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    siteHeader.style.setProperty('--scroll-progress', max > 0 ? Math.min(y / max, 1) : 0);
-
-    ticking = false;
-  };
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(updateHeader);
-    }
-  }, { passive: true });
-
-  updateHeader();
-}
 
 /* ---------- Klickbara tjänstekort ----------
    Kortytan är klickbar via CSS: .card-cta::after spänns ut över hela kortet.
    Ingen JS behövs, och kortet blir EN länk för mus, tangentbord och
    skärmläsare i stället för en div som bara möss kan använda. */
 
-/* ---------- Årtal i sidfoten ---------- */
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear();
 
 /* ---------- Priskalkylator ----------
    Enda sanningskällan för stegen: knapparna under reglaget byggs härifrån och
