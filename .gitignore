@@ -8,3 +8,6 @@ assets/portratt-*.jpg
 # Levererade filer från Claude-appen. Hamnar i repomappen för att den
 # är den anslutna mappen. Hör inte till sajten och ska aldrig in i repot.
 Claude outputs/
+
+# Lokala hemligheter för wrangler dev, får aldrig committas
+.dev.vars
