@@ -13,3 +13,4 @@ exclude:
   - CLAUDE.md
   - PUBLICERA.md
   - README.md
+  - skript/

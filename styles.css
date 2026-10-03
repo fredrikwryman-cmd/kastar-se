@@ -406,6 +406,97 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 }
 .nav-toggle span { width: 24px; height: 2px; background: var(--on-dark); border-radius: 2px; transition: background-color .2s ease, transform .2s ease; }
 
+/* ---------- Sök i sidhuvudet ----------
+   <details> med ett riktigt formulär till /sok/ inuti: rutan går att öppna
+   och skicka även utan JavaScript. sok.js lägger på förslagen. Ikonknappen
+   har ram som de övriga knapparna på petrol och står i sidhuvudet, så den
+   förväxlas inte med den orange chattbubblan nere i hörnet.
+   Panelen hänger under headern: .site-header är sticky och därmed
+   referensram för position: absolute. */
+.header-inner > .nav { margin-left: auto; }
+.sok { margin-left: 1.25rem; }
+.sok-knapp {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; list-style: none; cursor: pointer;
+  color: var(--on-dark);
+  border: 2px solid rgba(255,255,255,.5); border-radius: var(--radius-btn);
+  transition: border-color .15s ease, color .15s ease;
+}
+.sok-knapp::-webkit-details-marker { display: none; }
+.sok-knapp::marker { content: ''; }
+.sok-knapp:hover,
+.sok[open] > .sok-knapp { border-color: var(--orange); color: var(--orange); }
+.sok-panel {
+  position: absolute; left: 0; right: 0; top: 100%;
+  background: var(--petrol); border-top: 1px solid rgba(255,255,255,.1);
+  box-shadow: var(--shadow); padding: 1rem 0 1.15rem;
+}
+.sok-etikett { display: block; margin-bottom: .45rem; color: var(--on-dark); font-weight: 500; }
+.sok-rad { display: flex; gap: .6rem; }
+/* 16px eller mer, annars zoomar iPhone in när fältet får fokus. */
+.sok-falt,
+.sok-sida-falt {
+  flex: 1 1 auto; min-width: 0; min-height: 44px;
+  font: inherit; font-size: 1rem; color: var(--ink);
+  background: var(--bg-card); border: 1px solid var(--muted);
+  border-radius: var(--radius-btn); padding: .55rem .75rem;
+}
+.sok-skicka { flex: 0 0 auto; min-height: 44px; }
+.sok-lista {
+  list-style: none; margin: .6rem 0 0; padding: .3rem 0;
+  background: var(--bg-card); border-radius: var(--radius-btn);
+  max-height: min(60vh, 26rem); overflow-y: auto;
+}
+/* Valt förslag markeras med både bakgrund och en kantlinje, inte bara färg. */
+.sok-val {
+  display: flex; flex-direction: column; justify-content: center; gap: .1rem;
+  min-height: 44px; padding: .5rem .85rem;
+  border-left: 4px solid transparent;
+}
+.sok-val[aria-selected="true"] { background: var(--bg-warm); border-left-color: var(--orange-ink); }
+.sok-val-titel { color: var(--ink); font-weight: 600; line-height: 1.35; }
+.sok-val-text {
+  color: var(--muted); font-size: .88rem; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@media (max-width: 1000px) {
+  /* Menyn ligger utanför flödet här, så sökknappen skjuts ut till
+     hamburgaren i stället. */
+  .sok { margin-left: auto; margin-right: .35rem; }
+}
+
+/* ---------- Sidan /sok/ ---------- */
+.sok-sida-form { max-width: 40rem; margin-top: 1.25rem; }
+.sok-sida-etikett { display: block; margin-bottom: .45rem; font-weight: 500; color: var(--ink); }
+.sok-sida-status { margin: 1.25rem 0 0; color: var(--body-c); }
+.sok-traffar { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 1rem; max-width: 46rem; }
+.sok-traff {
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: var(--radius-card); padding: .9rem 1.2rem 1rem;
+}
+.sok-traff-titel {
+  font-size: var(--grad-h3); line-height: var(--radh-h3);
+  text-transform: none; margin: 0 0 .2rem;
+}
+.sok-traff-titel a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  text-decoration: underline; text-underline-offset: 2.5px;
+}
+.sok-traff-typ {
+  margin: 0 0 .35rem; font-size: var(--grad-liten); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.sok-traff-text { margin: 0; }
+.sok-noll,
+.sok-noscript {
+  max-width: 46rem; margin-top: 1.25rem; padding: 1.1rem 1.25rem;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-left: 3px solid var(--orange); border-radius: var(--radius-btn);
+}
+.sok-noll-rubrik { font-weight: 700; color: var(--ink); }
+.sok-noll-tjanster { margin: 0 0 1rem; padding-left: 1.2rem; }
+.sok-noll-tjanster a { display: inline-flex; align-items: center; min-height: 44px; }
+
 /* ---------- Hero (foto + mörk petrol-overlay, vit versal rubrik) ---------- */
 .hero {
   position: relative;

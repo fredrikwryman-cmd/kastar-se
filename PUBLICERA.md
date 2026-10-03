@@ -108,3 +108,26 @@ behövs.
   inom en minut.
 - **E-post påverkas inte** så länge du bara ändrar A-/CNAME-posterna för webben
   och lämnar MX-posterna orörda.
+
+---
+
+## Sökindexet (sajtsökningen)
+
+Sökningen i sidhuvudet och på /sok/ läser filen `sok/index.json`. Den byggs ur
+sajtens egna sidor och uppdateras INTE av sig själv. Kör skriptet varje gång
+text, rubriker, priser eller FAQ ändras på någon sida, och committa
+`sok/index.json` tillsammans med ändringen:
+
+```bash
+python skript/bygg-sokindex.py
+```
+
+- Föremålssvaren (piano, kyl, kemikalier och så vidare) står i
+  `sok/foremal.json`. Varje svar har en källa: sidans sökväg och den exakta
+  publicerade meningen svaret vilar på. Ändras den meningen på sidan stoppar
+  skriptet med ett felmeddelande, och svaret måste skrivas om först.
+- Synonymerna står i `sok/synonymer.json` och fylls på direkt i filen.
+- Ny sida i `sitemap.xml` behöver ett kort namn i `SIDNAMN` överst i skriptet.
+- Ändras `sok/index.json`, `sok/synonymer.json` eller `assets/js/sok.js`:
+  höj `?v=` för filen (index och synonymer i `sok.js`, `sok.js` på alla sidor).
+- `skript/` står i exclude i `_config.yml` och publiceras inte.

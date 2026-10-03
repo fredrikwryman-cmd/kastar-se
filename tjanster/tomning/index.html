@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=66" />
+  <link rel="stylesheet" href="/styles.css?v=67" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -198,6 +198,24 @@
         <a href="/#kontakt" class="btn btn-primary btn-sm nav-cta">Få offert</a>
       </nav>
 
+      <details class="sok">
+        <summary class="sok-knapp">
+          <svg class="sok-ikon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="sr-only">Sök</span>
+        </summary>
+        <form class="sok-panel" action="/sok/" method="get" role="search">
+          <div class="container">
+            <label class="sok-etikett" for="sokFalt">Sök på bohagsbolaget.se</label>
+            <div class="sok-rad">
+              <input class="sok-falt" id="sokFalt" type="search" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" />
+              <button class="btn btn-primary sok-skicka" type="submit">Sök</button>
+            </div>
+            <ul class="sok-lista" id="sokLista" role="listbox" aria-label="Förslag" hidden></ul>
+            <p class="sr-only sok-status" aria-live="polite"></p>
+          </div>
+        </form>
+      </details>
+
       <button class="nav-toggle" id="navToggle" aria-label="Öppna meny" aria-expanded="false" aria-controls="nav">
         <span></span><span></span><span></span>
       </button>
@@ -359,6 +377,8 @@
       <p class="footer-credit">Webbplats utvecklad av <a href="https://aimstudios.se">AiMstudios.se</a></p>
     </div>
   </footer>
+
+  <script src="/assets/js/sok.js?v=1" defer></script>
 
   <script src="/script.js?v=32"></script>
 

@@ -1,0 +1,102 @@
+[
+  {
+    "namn": "Piano",
+    "sokord": ["piano", "pianon", "pianoflytt"],
+    "svar": "Ja. Ett piano kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.",
+    "lank": "/tjanster/flytthjalp/",
+    "kalla": {
+      "sida": "/tjanster/flytthjalp/",
+      "mening": "Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget."
+    }
+  },
+  {
+    "namn": "Kassaskåp",
+    "sokord": ["kassaskåp", "kassaskap", "värdeskåp", "tungflytt"],
+    "svar": "Ja. Ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.",
+    "lank": "/tjanster/flytthjalp/",
+    "kalla": {
+      "sida": "/tjanster/flytthjalp/",
+      "mening": "Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget."
+    }
+  },
+  {
+    "namn": "Soffa",
+    "sokord": ["soffa", "soffor", "fåtölj"],
+    "svar": "Ja. En enstaka soffa med några lådor till ligger på den lägsta nivån, 1 295 kr.",
+    "lank": "/tjanster/bortforsling/",
+    "kalla": {
+      "sida": "/tjanster/bortforsling/",
+      "mening": "En enstaka soffa med några lådor till ligger på den lägsta nivån, 1 295 kr."
+    }
+  },
+  {
+    "namn": "Säng, garderob och andra möbler",
+    "sokord": ["säng", "sängar", "madrass", "madrasser", "garderob", "bord", "stol", "stolar", "bokhylla", "bokhyllor", "möbler"],
+    "svar": "Ja. Vi hämtar soffor, sängar, garderober, bord, stolar, bokhyllor och madrasser.",
+    "lank": "/tjanster/bortforsling/",
+    "kalla": {
+      "sida": "/tjanster/bortforsling/",
+      "mening": "Soffor, sängar, garderober, bord, stolar, bokhyllor och madrasser."
+    }
+  },
+  {
+    "namn": "Vitvaror, kyl och frys",
+    "sokord": ["vitvaror", "kyl", "kylskåp", "frys", "frysbox", "frysskåp", "tvättmaskin", "diskmaskin", "spis", "elektronik"],
+    "svar": "Ja. Vitvaror och elektronik följer med utan problem.",
+    "lank": "/tjanster/bortforsling/",
+    "kalla": {
+      "sida": "/tjanster/bortforsling/",
+      "mening": "Vitvaror och elektronik följer med utan problem, liksom inventarier från ett kontor och grovsopor som blivit stående."
+    }
+  },
+  {
+    "namn": "Kemikalier, färg och annat farligt avfall",
+    "sokord": ["kemikalier", "färg", "färgburkar", "färgburk", "asbest", "lysrör", "tryckimpregnerat", "impregnerat virke", "farligt avfall"],
+    "svar": "Nej, det tar vi inte. Asbest, tryckimpregnerat virke, färgburkar, kemikalier och lysrör får lämnas någon annanstans.",
+    "lank": "/tjanster/bortforsling/",
+    "kalla": {
+      "sida": "/tjanster/bortforsling/",
+      "mening": "Asbest, tryckimpregnerat virke, färgburkar, kemikalier och lysrör får alltså lämnas någon annanstans."
+    }
+  },
+  {
+    "namn": "Verktyg, metall och byggrester",
+    "sokord": ["verktyg", "metall", "metallskrot", "byggrester", "byggavfall"],
+    "svar": "Ja. Verktyg, metall och byggrester räknar vi på vikt: 295 kr per påbörjat 100 kilo.",
+    "lank": "/tjanster/tomning/",
+    "kalla": {
+      "sida": "/tjanster/tomning/",
+      "mening": "Är innehållet ovanligt tungt, som verktyg, metall eller byggrester, räknar vi på vikt i stället: 295 kr per påbörjat 100 kilo."
+    }
+  },
+  {
+    "namn": "Kök",
+    "sokord": ["kök", "köksinredning", "enkelkök", "riva kök", "köksskåp"],
+    "svar": "Ja. Ett enkelkök kostar 3 295 kr, vilket blir 2 307 kr när rotavdraget är avräknat.",
+    "lank": "/tjanster/nedmontering/",
+    "kalla": {
+      "sida": "/tjanster/nedmontering/",
+      "mening": "Ett enkelkök kostar 3 295 kr, vilket blir 2 307 kr när rotavdraget är avräknat."
+    }
+  },
+  {
+    "namn": "Golv, parkett och klinker",
+    "sokord": ["golv", "parkett", "klinker", "riva golv"],
+    "svar": "Ja. Golv prissätts per rum: parkett upp till 20 m² från 2 795 kr, klinker upp till 10 m² från 5 495 kr.",
+    "lank": "/tjanster/nedmontering/",
+    "kalla": {
+      "sida": "/tjanster/nedmontering/",
+      "mening": "Golv prissätts per rum: parkett upp till 20 m² från 2 795 kr, klinker upp till 10 m² från 5 495 kr."
+    }
+  },
+  {
+    "namn": "Flyttkartonger",
+    "sokord": ["kartonger", "kartong", "flyttkartonger", "flyttkartong", "packa själv"],
+    "svar": "Packar du själv bistår vi med kartonger och makulaturpapper utan kostnad.",
+    "lank": "/#faq",
+    "kalla": {
+      "sida": "/",
+      "mening": "Väljer du att packa själv bistår vi med kartonger och makulaturpapper utan kostnad."
+    }
+  }
+]
