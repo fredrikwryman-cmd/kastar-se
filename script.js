@@ -355,6 +355,22 @@ if ('IntersectionObserver' in window && revealEls.length) {
   revealEls.forEach((el) => el.classList.add('in'));
 }
 
+/* Nyhetsstjärnan i MC-bandet snurrar in en gång när den kommer in i bild.
+   Utan JavaScript, utan IntersectionObserver eller med reducerad rörelse
+   händer ingenting och stjärnan står i sitt slutläge. */
+const mcStjarna = document.querySelector('.mc-stjarna');
+if (mcStjarna && 'IntersectionObserver' in window &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  mcStjarna.classList.add('vantar');
+  const stjarnObs = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting)) return;
+    mcStjarna.classList.remove('vantar');
+    mcStjarna.classList.add('snurra');
+    stjarnObs.disconnect();
+  }, { threshold: 0.5 });
+  stjarnObs.observe(mcStjarna);
+}
+
 /* ---------- Parallax på hero ----------
    Bakgrundslagret förflyttas nedåt och skalas upp svagt medan hero-innehållet
    tonar ut. Allt är bundet direkt till scrollpositionen – ingen easing och

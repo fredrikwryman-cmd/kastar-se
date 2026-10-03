@@ -1729,7 +1729,36 @@ mark.sok-markering {
   padding: clamp(2.75rem, 5vw, 4rem) 0;
 }
 .mc-band-inner { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center; }
-.mc-band-text { max-width: 560px; }
+.mc-band-text { max-width: 560px; position: relative; }
+/* Nyhetsstjärnan. Dekorativ, eyebrow-raden säger redan NYTT I VINTER.
+   Grundläget är slutläget, så att den syns direkt utan JavaScript.
+   script.js sätter .vantar och sedan .snurra när bandet kommer in i bild. */
+.mc-stjarna {
+  position: absolute; width: 118px; height: 118px; right: -150px; top: -18px;
+  transform: rotate(-12deg); filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+  pointer-events: none; font-family: inherit;
+}
+.mc-stjarna.vantar { opacity: 0; }
+.mc-stjarna.snurra { animation: mc-snurr .7s ease-out both; }
+@keyframes mc-snurr {
+  from { transform: rotate(-200deg) scale(.4); opacity: 0; }
+  to   { transform: rotate(-12deg) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-stjarna.vantar { opacity: 1; }
+  .mc-stjarna.snurra { animation: none; }
+}
+/* Mellan 701 och 960 px är det smalt till höger om texten: vid 701 px finns
+   121 px. Mindre stjärna, fortfarande helt till höger om textblocket. */
+@media (min-width: 701px) and (max-width: 960px) {
+  .mc-stjarna { width: 96px; height: 96px; right: -108px; }
+}
+/* Platsräknaren. Siffran och --bokat ändras för hand i index.html. */
+.mc-platser { max-width: 420px; margin: 0 0 1rem; }
+.mc-platser-rad { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 .45rem; color: var(--on-dark-body); }
+.mc-platser-rad strong { color: var(--on-dark); font-size: 1.06rem; }
+.mc-platser-stapel { height: 10px; border-radius: 5px; background: rgba(255,255,255,.16); overflow: hidden; }
+.mc-platser-stapel span { display: block; height: 100%; width: var(--bokat); background: var(--orange); border-radius: 5px; }
 .mc-band h2 { color: var(--on-dark); margin: 0 0 .75rem; }
 .mc-band .eyebrow { color: var(--orange); }
 .mc-band p, .mc-bockar { color: var(--on-dark-body); }
@@ -1835,6 +1864,8 @@ mark.sok-markering {
     background-position: center top;
     padding-top: 90vw;
   }
+  /* I bildens nedre högra hörn, ovanför eyebrow-raden. */
+  .mc-stjarna { width: 96px; height: 96px; right: 4px; top: -108px; }
   .mc-steg,
   .mc-priser,
   .mc-kort { grid-template-columns: 1fr; }
