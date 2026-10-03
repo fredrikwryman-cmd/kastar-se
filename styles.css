@@ -1703,13 +1703,33 @@ mark.sok-markering {
    MC-förvaring: säsongsbandet på startsidan och sidan /tjanster/mc-forvaring/
    ========================================================================== */
 /* Bandet står direkt under heron, som också är mörk. Den orange överkanten
-   skiljer de två åt. Bakgrunden är --petrol, samma ton som är inbakad i
-   maskot-transp.png, så maskoten smälter in utan synlig ruta. */
+   skiljer de två åt. Bakgrunden är en bild från magasinet, med logotypen på
+   banderollen, som tonar över i --petrol bakom texten. Gradienten är helt
+   täckande där texten står, så kontrasten är densamma som mot ren petrol.
+   Den andra background-image använder image-set med webp; webbläsare som
+   inte klarar den ignorerar raden och behåller jpg-raden ovanför. */
 .mc-band {
-  background: var(--petrol); border-top: 4px solid var(--orange);
+  background-color: var(--petrol);
+  background-image:
+    linear-gradient(90deg,
+      rgb(var(--petrol-rgb)) 0, rgb(var(--petrol-rgb)) max(38%, 620px),
+      rgba(var(--petrol-rgb), .88) max(48%, 700px),
+      rgba(var(--petrol-rgb), .35) max(62%, 820px),
+      rgba(var(--petrol-rgb), 0) max(74%, 940px)),
+    url("/assets/mc-band-2000.jpg");
+  background-image:
+    linear-gradient(90deg,
+      rgb(var(--petrol-rgb)) 0, rgb(var(--petrol-rgb)) max(38%, 620px),
+      rgba(var(--petrol-rgb), .88) max(48%, 700px),
+      rgba(var(--petrol-rgb), .35) max(62%, 820px),
+      rgba(var(--petrol-rgb), 0) max(74%, 940px)),
+    image-set(url("/assets/mc-band-2000.webp") type("image/webp"), url("/assets/mc-band-2000.jpg") type("image/jpeg"));
+  background-size: cover; background-position: right center; background-repeat: no-repeat;
+  border-top: 4px solid var(--orange);
   padding: clamp(2.75rem, 5vw, 4rem) 0;
 }
-.mc-band-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2.5rem; align-items: center; }
+.mc-band-inner { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center; }
+.mc-band-text { max-width: 560px; }
 .mc-band h2 { color: var(--on-dark); margin: 0 0 .75rem; }
 .mc-band .eyebrow { color: var(--orange); }
 .mc-band p, .mc-bockar { color: var(--on-dark-body); }
@@ -1726,7 +1746,6 @@ mark.sok-markering {
 /* --orange-ink ger bara 2,34:1 mot petrol, --orange ger 4,62:1. */
 .mc-band-lank a { display: inline-flex; align-items: center; min-height: 44px; color: var(--orange); }
 .mc-band-fin { margin: 0; font-size: var(--grad-liten); color: var(--on-dark-soft); }
-.mc-band-maskot { display: block; width: 200px; height: auto; }
 /* Två lägen i samma markup. Ett attribut på sektionen avgör vilket som syns,
    så bytet kräver inget JavaScript och syns även utan. */
 .mc-band[data-status="fullbokat"] .mc-oppet,
@@ -1803,8 +1822,19 @@ mark.sok-markering {
 }
 
 @media (max-width: 700px) {
-  .mc-band-inner { grid-template-columns: 1fr; }
-  .mc-band-maskot { display: none; }
+  /* Egen beskärning, 800 x 750, med banderollen i mitten. Den fyller bredden
+     och blir 93,75vw hög; fadet går från 55vw till 88vw och texten börjar på 90vw. */
+  .mc-band {
+    background-image:
+      linear-gradient(180deg, rgba(var(--petrol-rgb), 0) 0, rgba(var(--petrol-rgb), 0) 55vw, rgb(var(--petrol-rgb)) 88vw),
+      url("/assets/mc-band-mobil-800.jpg");
+    background-image:
+      linear-gradient(180deg, rgba(var(--petrol-rgb), 0) 0, rgba(var(--petrol-rgb), 0) 55vw, rgb(var(--petrol-rgb)) 88vw),
+      image-set(url("/assets/mc-band-mobil-800.webp") type("image/webp"), url("/assets/mc-band-mobil-800.jpg") type("image/jpeg"));
+    background-size: 100% auto;
+    background-position: center top;
+    padding-top: 90vw;
+  }
   .mc-steg,
   .mc-priser,
   .mc-kort { grid-template-columns: 1fr; }
