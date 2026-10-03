@@ -380,7 +380,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=71" />
+  <link rel="stylesheet" href="styles.css?v=72" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -399,6 +399,10 @@
           <span class="brand-tagline"><span class="tag-full">Tömning · Flytt · Demontering · Magasinering</span><span class="tag-short">Tömning · Flytt · Demontering</span></span>
         </span>
       </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Öppna meny" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
 
       <nav class="nav" id="nav">
         <a href="#tjanster">Tjänster</a>
@@ -426,10 +430,6 @@
           </div>
         </form>
       </details>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Öppna meny" aria-expanded="false" aria-controls="nav">
-        <span></span><span></span><span></span>
-      </button>
     </div>
   </header>
 
@@ -1276,7 +1276,7 @@
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
-  <script src="/assets/js/meny.js?v=1"></script>
+  <script src="/assets/js/meny.js?v=2"></script>
   <script src="/assets/js/sok.js?v=4" defer></script>
 
   <script src="script.js?v=33"></script>

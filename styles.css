@@ -397,7 +397,10 @@ html { scroll-padding-top: calc(var(--header-h) + 8px); }
 /* Knappen i menyn ska inte ha understrykning */
 .nav .nav-cta::after { content: none; }
 
+/* Knappen står före menyn i DOM:en, så att Tab från knappen går rakt in i
+   den öppna menyn. order flyttar den ändå längst till höger, där den stod. */
 .nav-toggle {
+  order: 1;
   display: none; flex-direction: column; gap: 5px;
   background: none; border: 0; cursor: pointer;
   /* 8px 10px ger 44 x 44 i stallet for 40 x 44. Strecken ar 24 px breda,

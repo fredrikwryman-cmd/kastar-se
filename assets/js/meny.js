@@ -24,6 +24,14 @@
         toggle.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Escape stänger den öppna menyn och lämnar fokus på knappen.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !nav.classList.contains('open')) return;
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    });
   }
 
   /* ---------- Header: glaseffekt och scroll-indikator ----------
