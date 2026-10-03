@@ -690,6 +690,7 @@ mark.sok-markering {
   .hero-actions .btn { width: 100%; }
 }
 .hero-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 1.3rem; padding: 0; margin: 0; color: var(--on-dark-body); font-weight: 600; font-size: var(--grad-brod); }
+.hero-badges li { display: flex; align-items: center; gap: .5em; }
 
 /* ---------- Sektioner: ljus (kräm) och mörk (petrol) varvas ---------- */
 .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
@@ -1699,6 +1700,16 @@ mark.sok-markering {
 .step h3 { margin-bottom: .4rem; font-size: var(--grad-h3); }
 .step p  { margin: 0; color: var(--body-c); }
 
+/* Orange bock, samma bild överallt där en lista har bockar. Dekorativ:
+   markupen har aria-hidden, texten bredvid bär innehållet. */
+.bock {
+  display: inline-block; flex: none;
+  width: 1.05em; height: 1.05em;
+  background: url("/assets/orange-check.png") center / contain no-repeat;
+  background-image: image-set(url("/assets/orange-check.webp") type("image/webp"), url("/assets/orange-check.png") type("image/png"));
+  vertical-align: -0.15em;
+}
+
 /* ==========================================================================
    MC-förvaring: säsongsbandet på startsidan och sidan /tjanster/mc-forvaring/
    ========================================================================== */
@@ -1767,7 +1778,6 @@ mark.sok-markering {
   list-style: none; padding: 0; margin: 0 0 1.1rem;
   display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-weight: 600;
 }
-.mc-bockar span { color: var(--orange); }
 .mc-band-pris { margin: 0; font-size: var(--grad-ingress); }
 .mc-band-pris strong { color: var(--on-dark); }
 .mc-band-knappar { margin: 1.25rem 0 .75rem; }
@@ -1804,8 +1814,10 @@ mark.sok-markering {
 }
 /* Sista steget i orange som i broschyren. Petroltext på orange ger 5,34:1. */
 .mc-steg li:last-child .mc-steg-num { background: var(--orange); color: var(--petrol-deep); }
-.legal .mc-ingar li { display: flex; gap: .65rem; align-items: baseline; margin-bottom: .5rem; }
-.mc-ingar span { color: var(--orange-ink); font-weight: 700; }
+/* Bocken är en tom bild utan baslinje, så den läggs mot radens topp och
+   centreras mot första textraden med radhöjden (1lh). */
+.legal .mc-ingar li { display: flex; gap: .65rem; align-items: flex-start; margin-bottom: .5rem; }
+.mc-ingar .bock { margin-top: calc((1lh - 1.05em) / 2); }
 .mc-priser { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .legal .mc-pris {
   margin: 0; padding: 1.25rem 1.3rem;
