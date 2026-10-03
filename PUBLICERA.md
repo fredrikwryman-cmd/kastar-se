@@ -158,3 +158,23 @@ fil behöver röras och ingen versionsparameter behöver höjas.
 3. CSS-reglerna under rubriken "MC-förvaring" i `styles.css` kan stå kvar,
    de används också av sidan `/tjanster/mc-forvaring/`. Sidan och dess rad
    i `sitemap.xml` ligger kvar så länge tjänsten erbjuds.
+
+---
+
+## IndexNow-nyckeln (Bing, DuckDuckGo och Yandex)
+
+Filen `b38516a7d84bd9fec9199274b4ed5989.txt` i reporoten är sajtens IndexNow-nyckel. Den innehåller bara
+nyckeln själv och bevisar för sökmotorerna att förfrågningar om omindexering
+kommer från oss. **Filen får inte tas bort eller döpas om**, och innehållet
+får inte ändras. Utan den avvisas varje IndexNow-förfrågan.
+
+Efter en publicering med nya eller ändrade sidor kan sökmotorerna meddelas
+med en förfrågan till `https://api.indexnow.org/indexnow`:
+
+```json
+{"host":"bohagsbolaget.se","key":"b38516a7d84bd9fec9199274b4ed5989",
+ "keyLocation":"https://bohagsbolaget.se/b38516a7d84bd9fec9199274b4ed5989.txt",
+ "urlList":["https://bohagsbolaget.se/", "...alla adresser i sitemap.xml"]}
+```
+
+Svar 200 eller 202 betyder att förfrågan togs emot.
