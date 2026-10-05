@@ -1,4 +1,5 @@
 import { SYSTEM_PROMPT } from './system-prompt.js';
+import { hanteraBild } from './bild.js';
 
 /* Ursprung som far anropa workern. Allt annat far 403 och inget svar.
    localhost star INTE har: listan ar produktionens. For lokal testning satts
@@ -274,6 +275,13 @@ function textUr(data) {
 
 export default {
   async fetch(request, env) {
+    /* Kundbilder har egna vagar och egna ursprungsregler, se bild.js.
+       Allt annat gar chattens vag nedan, oforandrad. */
+    const sokvag = new URL(request.url).pathname;
+    if (sokvag === '/bild' || sokvag.startsWith('/bild/')) {
+      return hanteraBild(request, env, tillatetUrsprung);
+    }
+
     const origin = request.headers.get('Origin') || '';
     const tillaten = tillatetUrsprung(origin, env);
 

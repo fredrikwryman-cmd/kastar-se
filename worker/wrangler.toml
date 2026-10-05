@@ -8,3 +8,13 @@ compatibility_date = "2026-09-04"
 [[kv_namespaces]]
 binding = "RATE_KV"
 id = "5f4c01c3b727477ba52adad34e91e90c"
+
+# Kundbilder fran offertformularet. Hinken ligger i EU-jurisdiktionen och har
+# en livscykelregel som raderar varje objekt 60 dagar efter uppladdning.
+# Nyckeln ar <referens>/<plats>, sa en referens kan aldrig ha fler an tio
+# bilder. Lankarna signeras med hemligheten BILD_SIGN i Cloudflare, som inte
+# star har. Lokalt satts en egen testhemlighet med --var BILD_SIGN:<test>.
+[[r2_buckets]]
+binding = "BILDER"
+bucket_name = "bohagsbolaget-bilder"
+jurisdiction = "eu"
