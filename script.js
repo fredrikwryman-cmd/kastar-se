@@ -143,6 +143,21 @@ function initKalkylator() {
   });
 
   renderTier(Number(range.value));
+
+  /* Bryggan till offertformuläret. Länken går till #kontakt även utan
+     JavaScript; med JavaScript kryssas Tömning eller bortforsling i och den
+     valda volymen läggs i fältet "Kalkylatorns uppskattning". */
+  const calcCta = document.querySelector('.btn-calc');
+  if (calcCta) {
+    calcCta.addEventListener('click', () => {
+      const t = TIERS[Number(range.value)];
+      if (!t || !window.BBOffert) return;
+      window.BBOffert.forifyll({
+        tjanst: 'tomning',
+        uppskattning: t.vol + ', från ' + formatPrice(t.price) + ' (uppskattning)'
+      });
+    });
+  }
 }
 
 /* ---------- Kontaktformulär (Web3Forms) ----------
@@ -152,10 +167,10 @@ function initKalkylator() {
 const OK_TEXT    = 'Tack! Vi har fått din förfrågan och återkommer så snart vi kan.';
 const ERROR_TEXT = 'Något gick fel. Ring oss på 070-561 48 45 eller maila boka@bohagsbolaget.se så hjälper vi dig.';
 
-/* Samma kod driver bade sektionens formular och offertrutans. Darfor binds den
-   mot varje form.contact-form och letar upp sin egen statusrad i formularet i
-   stallet for via id - rutans kopia har suffixade id:n och skulle annars krava
-   en egen hanterare. */
+/* Driver numera bara MC-sidans formular; offertformularet (sektionen och
+   offertrutan) byggs och skickas av assets/js/offert.js. Binds mot varje
+   form.contact-form och letar upp sin egen statusrad i formularet. Laddas
+   offert.js inte binds aven startsidans reservformular har. */
 function bindKontaktformular(form) {
   if (!form || form.dataset.bunden === 'ja') return;
 
@@ -245,11 +260,25 @@ function harDialogStod() {
          typeof window.HTMLDialogElement.prototype.showModal === 'function';
 }
 
-/* Fälten är en kopia av #contactForm. name-attributen måste vara identiska –
-   Web3Forms läser name, inte id – medan varje id suffixas med -d, annars får
-   dokumentet två element med samma id när rutan ligger på startsidan.
-   Länken till integritetspolicyn är absolut: rutan visas även på
-   tjänstesidorna, där en relativ länk skulle peka fel. */
+/* Formuläret byggs av assets/js/offert.js (window.BBOffert), samma funktion
+   som bygger sektionens formulär på startsidan. Rutan och sektionen delar ett
+   enda utkast, så det kunden fyllt i följer med mellan dem. Id:n i rutan får
+   suffixet -d, annars får startsidan två element med samma id. */
+let offertInstans = null;
+
+/* Sidor som inte laddar offert.js själva (MC-sidan, där bara
+   versionsparametrar får ändras) får den hämtad här. Tills den är laddad
+   fångas inget klick, och länken leder till #kontakt som vanligt. */
+const OFFERT_JS = '/assets/js/offert.js?v=1';
+function sakerstallOffertJs() {
+  if (window.BBOffert || document.querySelector('script[data-offert-js]')) return;
+  const s = document.createElement('script');
+  s.src = OFFERT_JS;
+  s.async = true;
+  s.dataset.offertJs = '';
+  document.head.appendChild(s);
+}
+
 function byggOffertruta() {
   const ruta = document.createElement('dialog');
   ruta.className = 'offertruta';
@@ -257,31 +286,12 @@ function byggOffertruta() {
   ruta.innerHTML = [
     '<button type="button" class="offertruta-stang" aria-label="Stäng"><span aria-hidden="true">&times;</span></button>',
     '<h2 class="offertruta-titel" id="offertrutaTitel">Få offert</h2>',
-    '<p class="offertruta-ingress">Beskriv läget så återkommer vi med förslag och pris.</p>',
-    '<form class="contact-form" id="contactForm-d" action="https://api.web3forms.com/submit" method="POST">',
-    '  <input type="hidden" name="access_key" value="a5ea7bbf-870d-4db3-9a82-d8e5283fa26e" />',
-    '  <input type="hidden" name="subject" value="Ny offertförfrågan från bohagsbolaget.se" />',
-    '  <input type="hidden" name="from_name" value="Bohagsbolaget.se – webbformulär" />',
-    '  <input type="hidden" name="replyto" value="boka@bohagsbolaget.se" />',
-    '  <input type="hidden" name="redirect" value="https://bohagsbolaget.se/tack.html" />',
-    '  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" autocomplete="off" />',
-    '  <div class="field"><label for="name-d">Namn</label>',
-    '    <input id="name-d" name="name" type="text" required autocomplete="name" /></div>',
-    '  <div class="field"><label for="email-d">E-post</label>',
-    '    <input id="email-d" name="email" type="email" required autocomplete="email" /></div>',
-    '  <div class="field"><label for="phone-d">Telefon</label>',
-    '    <input id="phone-d" name="phone" type="tel" autocomplete="tel" /></div>',
-    '  <div class="field"><label for="message-d">Vad behöver du hjälp med?</label>',
-    '    <textarea id="message-d" name="message" rows="4" required></textarea></div>',
-    '  <button type="submit" class="btn btn-primary btn-block" id="contactSubmit-d">Skicka förfrågan</button>',
-    '  <p class="form-alt">Vi använder uppgifterna bara för att svara på din förfrågan. Läs mer i <a href="/integritetspolicy.html">integritetspolicyn</a>.</p>',
-    '  <p class="form-status" id="formStatus-d" role="status" aria-live="polite" hidden></p>',
-    '  <p class="form-alt">Eller <a href="mailto:boka@bohagsbolaget.se">maila oss direkt<span class="sr-only"> (öppnar ditt e-postprogram)</span></a> · ring <a href="tel:+46703433440">Thom 070-343 34 40</a> eller <a href="tel:+46705614845">Fredrik 070-561 48 45</a></p>',
-    '</form>'
+    '<p class="offertruta-ingress">Beskriv läget så återkommer vi med förslag och pris.</p>'
   ].join('\n');
 
+  offertInstans = window.BBOffert.bygg({ suffix: '-d', kalla: 'dialog' });
+  ruta.appendChild(offertInstans.rot);
   document.body.appendChild(ruta);
-  bindKontaktformular(ruta.querySelector('form.contact-form'));
 
   ruta.querySelector('.offertruta-stang').addEventListener('click', () => ruta.close());
 
@@ -291,8 +301,10 @@ function byggOffertruta() {
     if (e.target === ruta) ruta.close();
   });
 
-  // Galler bade stangknappen och Escape: fokus tillbaka dit besokaren var.
+  // Galler bade stangknappen och Escape: fokus tillbaka dit besokaren var,
+  // och sektionens formular uppdateras fran det gemensamma utkastet.
   ruta.addEventListener('close', () => {
+    window.BBOffert.stangd(offertInstans);
     if (offertAterfokus && document.contains(offertAterfokus) &&
         typeof offertAterfokus.focus === 'function') {
       offertAterfokus.focus();
@@ -302,29 +314,46 @@ function byggOffertruta() {
   return ruta;
 }
 
+/* BF-06: fokus in i en animerad dialog med en rAF-slinga som kontrollerar
+   document.activeElement, i hogst cirka 800 ms. */
+function fokuseraTills(el) {
+  if (!el) return;
+  const start = performance.now();
+  const steg = () => {
+    if (document.activeElement === el) return;
+    el.focus();
+    if (document.activeElement !== el && performance.now() - start < 800) {
+      requestAnimationFrame(steg);
+    }
+  };
+  steg();
+}
+
 function oppnaOffertruta(utlosare) {
   if (!offertruta) offertruta = byggOffertruta();
 
   // Kortet ar inget fokuserbart element - da far dess lank ta emot fokus igen.
   offertAterfokus = utlosare.matches('a') ? utlosare : (utlosare.querySelector('a') || utlosare);
 
-  // Samma brygga som sektionens formular: texten fran magasineringskalkylen.
-  fyllForifyllning(offertruta.querySelector('#message-d'));
+  // Rutan fylls fran det gemensamma utkastet varje gang den oppnas.
+  window.BBOffert.oppnad(offertInstans);
 
   offertruta.showModal();
-  const forsta = offertruta.querySelector('#name-d');
-  if (forsta) forsta.focus();
+  fokuseraTills(window.BBOffert.fokusForsta(offertInstans));
 }
 
 function initOffertruta() {
   if (!harDialogStod()) return;
   if (!document.querySelector(OFFERT_UTLOSARE)) return;
+  sakerstallOffertJs();
 
   // Capture-fasen racker och racker val: ingen annan lyssnare star mellan.
   document.addEventListener('click', (e) => {
     if (e.defaultPrevented || e.button !== 0) return;
     // Ctrl-, meta- och skiftklick ska fortsatta oppna lanken som vanligt.
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    // Formularet ar inte laddat an: lanken far ga till #kontakt.
+    if (!window.BBOffert) return;
 
     const utlosare = e.target.closest(OFFERT_UTLOSARE);
     if (!utlosare) return;
@@ -513,10 +542,10 @@ const MAG_NAMN    = { latt: 'lätt möblerad', normal: 'normal möblerad', mycke
 const MAG_MIN_YTA = 15;
 const MAG_MAX_YTA = 400;
 
-// Bryggan till offertformuläret på startsidan. sessionStorage i stället för
-// query-parameter: uppgifterna hamnar inte i adressfältet, i historiken eller
-// i någon logg, och de försvinner när fliken stängs.
-const MAG_FORIFYLL = 'bb_offert_forifyll';
+/* Bryggan till offertformuläret går via det gemensamma utkastet i
+   sessionStorage (assets/js/offert.js), aldrig via URL:en: uppgifterna hamnar
+   inte i adressfältet, i historiken eller i någon logg, och de försvinner när
+   fliken stängs. */
 
 function initMagasinKalkyl() {
   const ytaEl = document.getElementById('magYta');
@@ -589,43 +618,23 @@ function initMagasinKalkyl() {
     rita();
   });
 
+  /* Länken leder till /#kontakt även utan JavaScript. Med JavaScript kryssas
+     Magasinering i och volymen läggs i fältet "Kalkylatorns uppskattning"
+     innan sidbytet. */
   if (cta) {
     cta.addEventListener('click', () => {
+      if (!window.BBOffert) return;
       const r = rakna();
-      const text = 'Magasinering. Bostad ' + yta + ' m², ' + MAG_NAMN[grad] +
-                   '. Uppskattad volym ' + r.volym + ' m³.';
-      try { sessionStorage.setItem(MAG_FORIFYLL, text); } catch (err) { /* privat läge */ }
+      window.BBOffert.forifyll({
+        tjanst: 'magasinering',
+        uppskattning: 'Cirka ' + r.volym + ' m³ (bostad ' + yta + ' m², ' + MAG_NAMN[grad] +
+                      '), ' + tusental(r.pris) + ' kr/mån (uppskattning)'
+      });
     });
   }
 
   rita();
 }
-
-/* Andra halvan av bryggan: startsidan plockar upp texten och lägger den i
-   meddelandefältet. Bara om fältet är tomt – kunden ska aldrig få något
-   överskrivet – och nyckeln töms direkt så texten inte dyker upp igen. */
-function fyllForifyllning(falt) {
-  if (!falt) return;
-  let text = null;
-  // Privat lage kan kasta pa sessionStorage. Da finns det inget att fylla i.
-  try {
-    text = sessionStorage.getItem(MAG_FORIFYLL);
-  } catch (err) {
-    return;
-  }
-  if (!text) return;
-  try { sessionStorage.removeItem(MAG_FORIFYLL); } catch (err) { /* ignoreras */ }
-  if (!falt.value.trim()) falt.value = text;
-}
-
-/* Sektionens formular pa startsidan. Offertrutan anropar samma funktion med
-   sitt eget falt nar den oppnas - logiken finns bara pa ett stalle. */
-function initForifylltMeddelande() {
-  fyllForifyllning(document.getElementById('message'));
-}
-
-// Direkt, inte i vantelaget: kunden kan hinna borja skriva i faltet.
-initForifylltMeddelande();
 
 narDetArLugnt(() => {
   initKalkylator();
