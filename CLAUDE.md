@@ -52,9 +52,9 @@ Magasinering löper från det datum godset ställs in och förnyas automatiskt
 en kalendermånad i taget. Minst 8 m³, minst en månad. 139 kr per m³ och
 månad, faktureras i förskott, påbörjad månad debiteras helt. Skriftlig
 uppsägning senast sju dagar före ny period, och avtalet upphör först när
-godset hämtats ut. Hämtning och utkörning är rutberättigat arbete när
-transporten sker i samband med en flytt mellan två bostäder; förvaringen är
-det aldrig. Vid utebliven betalning: kvarhållning, därefter
+godset hämtats ut. Hämtning och utkörning är rutberättigat arbete, även
+utan flytt mellan två bostäder; förvaringen är det aldrig. Arbete som
+ersätts av ett försäkringsbolag ger inte rut. Vid utebliven betalning: kvarhållning, därefter
 anmaning i rekommenderat brev och försäljning tidigast tre månader senare
 enligt lagen (1985:982) om näringsidkares rätt att sälja saker som inte har
 hämtats.
