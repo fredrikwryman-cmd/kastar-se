@@ -76,9 +76,16 @@
                ['flexibel', 'Flexibel'], ['vetinte', 'Vet inte ännu']];
   const HAMTNING = [['ja', 'Ja'], ['nej', 'Nej']];
   const KUNDTYP = [['privat', 'Privatperson'], ['foretag', 'Företag eller förening']];
+  // Prisupplägg för flytten: ett önskemål, inget pris räknas ut här.
+  const PRISVAL = [
+    ['fast', 'Fast pris för flytten', 'Beskriv gärna bohaget och bifoga bilder. Vi bedömer underlaget och återkommer med ett prisförslag.'],
+    ['tim', 'Timpris', 'Du betalar för tiden arbetet tar, minst 3 timmar.'],
+    ['hjalp', 'Hjälp mig välja', 'Vi föreslår det upplägg som passar uppdraget bäst.']
+  ];
+  const PRISVAL_SKICKAS = { fast: 'Fast pris', tim: 'Timpris', hjalp: 'Hjälp mig välja' };
 
   const namnFor = (lista, v) => { const r = lista.find((x) => x[0] === v); return r ? r[1] : ''; };
-  const STANDARD = { kundtyp: 'privat' };
+  const STANDARD = { kundtyp: 'privat', prisval: 'hjalp' };
 
   /* ---------- Utkastet ---------- */
   function nyReferens() {
@@ -186,6 +193,7 @@
     g['hamt-plats'] = g.hamt && !samma('hamt_samma');
     g['mag-omf'] = mag && flytt;
     g['mag-tid'] = mag;
+    g.prisval = flytt;
     g['nar-datum'] = f.nar === 'datum';
     g['nar-period'] = f.nar === 'period';
     g.foretag = f.kundtyp === 'foretag';
@@ -226,6 +234,18 @@
       '<label class="chip chip-' + typ + '"><input type="' + typ + '" name="' + namn + '" value="' + v[0] +
       '" id="of-' + namn + '-' + v[0] + sx + '" data-falt="' + namn + '" />' +
       '<span class="chip-text">' + esc(v[1]) + '</span></label>').join('') + '</div>';
+  }
+
+  // Radvis variant av chipsen: samma kontroll och samma valda läge, med en
+  // alltid synlig beskrivning under varje alternativ.
+  function chipRader(namn, val, sx) {
+    return '<div class="offert-chips offert-chips-rader">' + val.map((v) => {
+      const id = 'of-' + namn + '-' + v[0] + sx;
+      return '<div class="chip-rad"><label class="chip chip-radio"><input type="radio" name="' + namn + '" value="' + v[0] +
+        '" id="' + id + '" data-falt="' + namn + '" aria-describedby="' + id + '-beskr" />' +
+        '<span class="chip-text">' + esc(v[1]) + '</span></label>' +
+        '<p class="chip-beskr" id="' + id + '-beskr">' + esc(v[2]) + '</p></div>';
+    }).join('') + '</div>';
   }
 
   function ensamChip(namn, text, sx) {
@@ -324,6 +344,12 @@
       '<fieldset class="offert-grupp" data-grupp="mag-tid" hidden disabled>',
       '<legend>Hur länge?</legend>',
       chips('mag_tid', MAG_TID, 'radio', sx),
+      '</fieldset>',
+
+      '<fieldset class="offert-grupp" data-grupp="prisval" hidden disabled aria-describedby="of-prisval-hint' + sx + '">',
+      '<legend>Vilket prisupplägg föredrar du för flytten?</legend>',
+      '<p class="field-hint offert-hint" id="of-prisval-hint' + sx + '">Ditt val är ett önskemål. Prisupplägget bekräftas i offerten.</p>',
+      chipRader('prisval', PRISVAL, sx),
       '</fieldset>',
 
       // C
@@ -1013,6 +1039,7 @@
     if (L.agare === 'hamt') plats('huvud', 'Hämtning, plats', 'Våning och hiss, hämtning', true);
     plats('hamt', 'Hämtning, plats', 'Våning och hiss, hämtning', L.g.hamt, 'hamt_samma');
     if (L.g['mag-tid']) lagg('Magasinering, tid', namnFor(MAG_TID, f.mag_tid));
+    if (L.g.prisval) lagg('Önskat prisupplägg för flytt', PRISVAL_SKICKAS[f.prisval] || PRISVAL_SKICKAS[STANDARD.prisval]);
 
     if (f.nar === 'datum') lagg('När', txt('nar_datum') ? 'Bestämt datum: ' + txt('nar_datum') : 'Bestämt datum');
     else if (f.nar === 'period') lagg('När', txt('nar_period') ? 'Vecka eller period: ' + txt('nar_period') : 'Vecka eller period');

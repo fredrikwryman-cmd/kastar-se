@@ -269,7 +269,7 @@ let offertInstans = null;
 /* Sidor som inte laddar offert.js själva (MC-sidan, där bara
    versionsparametrar får ändras) får den hämtad här. Tills den är laddad
    fångas inget klick, och länken leder till #kontakt som vanligt. */
-const OFFERT_JS = '/assets/js/offert.js?v=1';
+const OFFERT_JS = '/assets/js/offert.js?v=2';
 function sakerstallOffertJs() {
   if (window.BBOffert || document.querySelector('script[data-offert-js]')) return;
   const s = document.createElement('script');

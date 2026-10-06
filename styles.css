@@ -2352,6 +2352,13 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 .chip input:disabled + .chip-text { opacity: .55; }
 .chip input[aria-invalid="true"] + .chip-text { border-color: var(--error-ink); border-width: 2px; }
 
+/* Radvis variant (prisupplägg): samma chip, ett alternativ per rad och en
+   alltid synlig beskrivning under, på den vita kortytan. */
+.offert-chips-rader { flex-direction: column; flex-wrap: nowrap; gap: .8rem; }
+.chip-rad .chip { display: flex; }
+.chip-rad .chip-text { flex: 1 1 auto; }
+.chip-beskr { margin: .35rem 0 0 2.3rem; font-size: .88rem; line-height: 1.45; color: var(--muted); }
+
 .offert-kort .field input[type="date"] { min-height: 44px; }
 .offert-kort .field input[type="file"] { padding: .55rem; min-height: 44px; background: var(--bg-card); }
 .offert-kort .field input[aria-invalid="true"],
