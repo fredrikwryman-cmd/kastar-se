@@ -28,6 +28,7 @@ DOMAN = "https://bohagsbolaget.se"
 # utan rad här stoppar bygget, så att ingen sida får ett tomt namn.
 SIDNAMN = {
     "/": "Startsidan",
+    "/priser/": "Priser",
     "/tjanster/flytthjalp/": "Flytthjälp",
     "/tjanster/tomning/": "Tömning",
     "/tjanster/dodsbo/": "Dödsbo",

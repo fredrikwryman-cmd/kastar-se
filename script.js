@@ -21,10 +21,10 @@
 const TIERS = [
   { vol: '2 m³',  part: 'Några få saker',            price: 1295, fill: 0.12,  desc: 'För några få saker, mindre möbler eller lådor.' },
   { vol: '4 m³',  part: 'Cirka en kvarts bil',       price: 2195, fill: 0.25,  desc: 'Passar mindre bohag, förråd eller garage.' },
-  { vol: '8 m³',  part: 'Cirka en halv bil',         price: 3495, fill: 0.50,  desc: 'Halva bilen – perfekt för större tömningar.' },
+  { vol: '8 m³',  part: 'Cirka en halv bil',         price: 3495, fill: 0.50,  desc: 'Halva bilen, perfekt för större tömningar.' },
   { vol: '10 m³', part: 'Cirka fem åttondelars bil', price: 4395, fill: 0.625, desc: 'För dig som har mycket som ska bort.' },
-  { vol: '12 m³', part: 'Cirka tre kvarts bil',      price: 5195, fill: 0.75,  desc: 'Nästan full bil – för större boenden eller lokaler.' },
-  { vol: '16 m³', part: 'En fullastad bil',          price: 6995, fill: 1.00,  desc: 'Fullastad bil – för hela hem, dödsbon eller lokaler.' }
+  { vol: '12 m³', part: 'Cirka tre kvarts bil',      price: 5195, fill: 0.75,  desc: 'Nästan full bil, för större boenden eller lokaler.' },
+  { vol: '16 m³', part: 'En fullastad bil',          price: 6995, fill: 1.00,  desc: 'Fullastad bil. För hela hem, dödsbon eller lokaler.' }
 ];
 
 const range   = document.getElementById('calcRange');
@@ -128,8 +128,11 @@ function renderTier(i) {
   });
 }
 
+/* Räknaren finns bara på /priser/. Saknas något av elementen avstår vi helt,
+   så att sidor utan räknare aldrig kastar fel. */
 function initKalkylator() {
-  if (!range || !loadEl) return;
+  if (!range || !loadEl || !labelEl || !volEl || !priceDigits || !priceLive ||
+      !descEl || !stepsEl) return;
   range.max = TIERS.length - 1;
   buildSteps();
 
