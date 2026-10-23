@@ -2,21 +2,21 @@
   {
     "namn": "Piano",
     "sokord": ["piano", "pianon", "pianoflytt"],
-    "svar": "Ja. Ett piano kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.",
+    "svar": "Ja. Ett piano kostar från 2 750 kr inom samma ort, entréplan till entréplan, alltså från 1 375 kr efter avdraget.",
     "lank": "/tjanster/flytthjalp/",
     "kalla": {
       "sida": "/tjanster/flytthjalp/",
-      "mening": "Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget."
+      "mening": "Ett piano eller ett kassaskåp kostar från 2 750 kr inom samma ort, entréplan till entréplan, alltså från 1 375 kr efter avdraget."
     }
   },
   {
     "namn": "Kassaskåp",
     "sokord": ["kassaskåp", "kassaskap", "värdeskåp", "tungflytt"],
-    "svar": "Ja. Ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget.",
+    "svar": "Ja. Ett kassaskåp kostar från 2 750 kr inom samma ort, entréplan till entréplan, alltså från 1 375 kr efter avdraget.",
     "lank": "/tjanster/flytthjalp/",
     "kalla": {
       "sida": "/tjanster/flytthjalp/",
-      "mening": "Ett piano eller ett kassaskåp kostar från 2 495 kr inom samma ort, entréplan till entréplan, alltså från 1 248 kr efter avdraget."
+      "mening": "Ett piano eller ett kassaskåp kostar från 2 750 kr inom samma ort, entréplan till entréplan, alltså från 1 375 kr efter avdraget."
     }
   },
   {

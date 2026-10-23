@@ -218,7 +218,7 @@
   <details class="card">
     <summary>Tungflytt &amp; piano <span class="sum-amt" data-sum="tung"></span></summary>
     <div class="body">
-      <div class="row"><label>Antal föremål <span class="hint">2 495 kr per föremål, entréplan</span></label><input type="number" id="tungst" min="0" step="1" value="0"></div>
+      <div class="row"><label>Antal föremål <span class="hint">2 750 kr per föremål, entréplan</span></label><input type="number" id="tungst" min="0" step="1" value="0"></div>
       <div class="row"><label>Våningar utan hiss <span class="hint">495 kr per våning</span></label><input type="number" id="tungvan" min="0" step="1" value="0"></div>
       <p class="note">Över 300 kg eller trång bärväg – offerera separat efter bilder, räkna inte här.</p>
     </div>
@@ -439,7 +439,7 @@
     // Tungflytt
     var ts = num('tungst'), tv = num('tungvan'), sumTung = 0;
     if (ts > 0) {
-      sumTung += ts * 2495; lines.push(['Tungflytt, ' + ts + ' föremål', ts * 2495]);
+      sumTung += ts * 2750; lines.push(['Tungflytt, ' + ts + ' föremål', ts * 2750]);
       if (!forstaStyck) forstaStyck = { rad: lines.length - 1, potte: 'rut' };
     }
     if (tv > 0) {
