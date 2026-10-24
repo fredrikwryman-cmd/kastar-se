@@ -204,7 +204,7 @@ function bindKontaktformular(form) {
     delete data.redirect;
 
     // Svar på mejlet ska gå till kunden, inte till oss själva.
-    data.from_name = (data.name || '').trim() || 'Bohagsbolaget.se – webbformulär';
+    data.from_name = (data.name || '').trim() || 'Bohagsbolaget.se, webbformulär';
     data.replyto   = (data.email || '').trim() || 'boka@bohagsbolaget.se';
 
     const originalLabel = submitBtn.textContent;

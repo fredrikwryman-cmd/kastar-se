@@ -532,10 +532,11 @@
 
     // Fordonet betalas EN gång per uppdrag och får aldrig ändra vad kunden
     // betalar – uppdelningen flyttar bara pengar mellan raderna.
-    //   Finns debiterade timmar: bilen är redan uttagen ur timpriset ovan.
+    //   Finns debiterade timmar med bil (flytthjälp eller praktisk hjälp med
+    //   två personer): bilen är redan uttagen ur timpriset ovan.
     //   Finns framkörning: den ÄR uppdragets fordonskostnad, inget mer läggs på.
     //   Annars: bryt ut beloppet ur den första arbetsposten per styck.
-    if (fh === 0 && fram === 0 && forstaStyck) {
+    if (fh === 0 && hh2 === 0 && fram === 0 && forstaStyck) {
       var uttag = Math.min(FORDON_UPPDRAG, lines[forstaStyck.rad][1]);
       if (uttag > 0) {
         lines[forstaStyck.rad][1] -= uttag;
@@ -639,7 +640,7 @@
 
   function offerttext(r){
     var pad = function(s, n){ s = String(s); while (s.length < n) s += ' '; return s; };
-    var t = 'OFFERT – BOHAGSBOLAGET.SE\n';
+    var t = 'OFFERT FRÅN BOHAGSBOLAGET.SE\n';
     t += '------------------------------------------\n';
     r.lines.forEach(function(l){
       // null som belopp betyder att posten prissätts för hand: raden ska

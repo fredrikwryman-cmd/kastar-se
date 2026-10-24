@@ -51,7 +51,7 @@
     });
     motorLofte = Promise.all([
       import('/assets/js/fuse.basic.min.js?v=1'),
-      hamta('/sok/index.json?v=3'),
+      hamta('/sok/index.json?v=4'),
       hamta('/sok/synonymer.json?v=3'),
     ]).then(([modul, index, synonymer]) => {
       const Fuse = modul.default;
@@ -374,7 +374,7 @@
       status.textContent = 'Skriv vad du letar efter, till exempel dödsbo, piano eller magasinering.';
       return;
     }
-    document.title = 'Sök: ' + fraga + ' – Bohagsbolaget.se';
+    document.title = 'Sök: ' + fraga + ', Bohagsbolaget.se';
     status.textContent = 'Söker …';
 
     laddaMotor().then((motor) => {
