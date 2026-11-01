@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -287,6 +287,7 @@
         <p>Behöver utrustning stå någonstans mellan den gamla och den nya adressen kostar magasinering 139 kr inklusive moms per kubikmeter och månad, med åtta kubikmeter och en månad som minsta uttag.</p>
         <p>Ska verksamheten inte stanna lägger vi arbetet utanför kontorstid. Kvälls- och helgarbete tillkommer på priset, liksom magasinering och bortforsling av sådant som inte ska följa med. Avdrag för arbete i företagslokaler finns inte, oavsett hur uppdraget läggs upp.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Vet du inte vilken tjänst som passar verksamheten? Fråga här</button></p>
         <h2 id="brf">Röjning för bostadsrättsföreningar</h2>
 
         <div class="prislista">
@@ -366,6 +367,7 @@
         <h3 id="faq-vad-kostar-det-att-roja-foreningens-vind">Vad kostar det att röja föreningens vind?</h3>
         <p>En vindsröjning på 8 m³ kostar 3 495 kr och en källarröjning på 12 m³ kostar 5 195 kr, båda inklusive moms. Behöver ni timpris i stället är det 995 kr i timmen för två personer.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Har ni en fråga om upplägg eller faktura? Skriv den här</button></p>
         <h2>Hör av dig</h2>
         <p>Beskriv uppdraget och bifoga gärna bilder, så återkommer vi med ett fast pris. Ring <a href="tel:+46705614845">070-561 48 45</a> eller mejla <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se<span class="sr-only"> (öppnar ditt e-postprogram)</span></a>. Samtliga priser står samlade under <a href="/priser/">Priser</a>.</p>
         <p>Vi svarar mån–lör 07:00–19:00 och sön 09:00–17:00. Arbetet faktureras när det är utfört, med 10 dagars betalningstid för privatpersoner och 30 dagar för företag och föreningar.</p>
@@ -426,8 +428,9 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="/#kontakt" class="mb-quote">Få pris</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="/#kontakt" class="mb-quote">Pris</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
@@ -435,7 +438,7 @@
   <script src="/assets/js/sok.js?v=7" defer></script>
 
   <script src="/assets/js/offert.js?v=2"></script>
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->

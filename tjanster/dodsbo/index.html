@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -283,6 +283,7 @@
         <p>Extra kostnad kan tillkomma vid mycket tungt material, långa bäravstånd eller särskilda avfallsavgifter. Vi säger till om det innan vi börjar, aldrig efteråt.</p>
         <p>Och en sak som är lätt att missa: fakturan behöver inte ställas till dig personligen. Den kan <a href="#fakturering">ställas till dödsboet</a>.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Är du osäker på vad som behöver göras? Skriv det med egna ord</button></p>
         <h2 id="fakturering">Fakturan kan ställas till dödsboet</h2>
         <p>Många vet inte att det går, så vi säger det rakt ut: fakturan behöver inte ställas till dig personligen. Vi kan ställa den till dödsboet efter den avlidne, med den avlidnes personnummer och din adress som c/o.</p>
         <p>Ett dödsbo med flera delägare företräds av delägarna gemensamt. Därför ska samtliga dödsbodelägare godkänna att tömningen görs för dödsboets räkning. Godkännandet är formlöst, ett mejl eller sms från var och en räcker. Ingen blankett, ingen bevittning, ingen underskrift på papper. Alternativet är att de övriga delägarna lämnar fullmakt till dig som beställer. Är du ensam dödsbodelägare behövs ingenting utöver dödsfallsintyget.</p>
@@ -317,6 +318,7 @@
         <h3 id="faq-kan-fakturan-stallas-till-dodsboet">Kan fakturan ställas till dödsboet?</h3>
         <p>Ja, om du är dödsbodelägare. Vi behöver ett dödsfallsintyg med släktutredning från Skatteverket, och att samtliga dödsbodelägare godkänner beställningen, ett mejl eller sms från var och en räcker. Är du ensam delägare behövs bara intyget. Betalningsvillkoret blir 30 dagar i stället för 10.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Vill du veta något mer om dödsbotömning? Fråga här</button></p>
         <h2>Hör av dig</h2>
         <p>Skicka några bilder eller beskriv vad det gäller, så får du ett fast pris. Ring <a href="tel:+46705614845">070-561 48 45</a>, eller använd <a href="/#kontakt">formuläret</a> så hör vi av oss. Alla priser finns samlade på <a href="/priser/">startsidan</a>.</p>
         <p>Vi svarar mån–lör 07:00–19:00 och sön 09:00–17:00. Arbetet faktureras när det är utfört, med 10 dagars betalningstid för privatpersoner och 30 dagar för företag och föreningar.</p>
@@ -377,8 +379,9 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="/#kontakt" class="mb-quote">Få pris</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="/#kontakt" class="mb-quote">Pris</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
@@ -386,7 +389,7 @@
   <script src="/assets/js/sok.js?v=7" defer></script>
 
   <script src="/assets/js/offert.js?v=2"></script>
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->

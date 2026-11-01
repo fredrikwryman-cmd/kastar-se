@@ -660,8 +660,17 @@ narDetArLugnt(() => {
    absolut, vilket kravs for att den ska hittas fran en tjanstesida. */
 const CHATT_MARKUP = `
   <!-- Chattwidget – svarsassistenten. All JS ligger i script.js. -->
-  <button type="button" class="chatt-knapp" id="chattKnapp" aria-label="Öppna chatten och ställ en fråga" aria-expanded="false" aria-controls="chattPanel">
+  <button type="button" class="chatt-knapp" id="chattKnapp" aria-expanded="false" aria-controls="chattPanel">
     <img src="/assets/maskot-transp.png" width="229" height="220" alt="" loading="eager" decoding="async" />
+    <!-- Etiketten ligger INNE i knappen, så den hör till traffytan och inte
+         till en egen ruta bredvid. Tva texter, en lang och en kort: pa smal
+         skarm skulle den langa trycka knappen ut over skarmkanten, och CSS
+         kan inte byta ut text pa ett satt som skarmlasaren foljer. Den som
+         doljs med display:none ligger utanfor tillganglighetstradet, sa
+         knappens namn ar alltid exakt den text som syns. Darfor finns heller
+         inget aria-label: det hade gatt fore den synliga texten. -->
+    <span class="chatt-knapp__text chatt-knapp__text--lang">Undrar du något? Fråga här</span>
+    <span class="chatt-knapp__text chatt-knapp__text--kort">Fråga oss</span>
   </button>
 
   <div class="chatt-panel" id="chattPanel" role="dialog" aria-modal="true" aria-labelledby="chattRubrik" hidden>
@@ -691,6 +700,12 @@ function byggChatt() {
   if (!document.body || !document.body.hasAttribute('data-chatt')) return null;
   if (document.getElementById('chattKnapp')) return document.getElementById('chattKnapp');
   document.body.insertAdjacentHTML('beforeend', CHATT_MARKUP.trim());
+  /* Allt som bara fungerar med chatten pa plats hanger pa det har
+     attributet: chattknappen i mobilraden och ingangarna i loptexten.
+     Utan JavaScript byggs chatten inte, attributet satts inte, och da syns
+     ingen knapp som inte gor nagot. Mobilraden star kvar tvadelad i samma
+     lage, inte tredelad med ett tomt fack. */
+  document.body.setAttribute('data-chatt-klar', '');
   return document.getElementById('chattKnapp');
 }
 
@@ -706,7 +721,51 @@ if (chattKnapp) {
   /* AI-forordningen artikel 50 kraver att besokaren far veta att motparten ar
      ett AI-system nar det inte ar uppenbart. Maskoten och "jag" pekade at
      motsatt hall, sa upplysningen star forst och vagen till en manniska sist. */
-  const HALSNING = 'Hej! Jag är en automatisk AI-assistent och svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vill du prata med Fredrik eller Thom ringer du 070-561 48 45. Vad kan jag hjälpa dig med?';
+  /* Upplysningen och vagen till en manniska ar densamma pa varje sida och
+     star alltid forst. Det som byts ar fragan sist: den som laser en
+     tjanstesida har redan valt amne, och en hälsning som fragar om samma
+     sak som sidan handlar om ar bortkastad. */
+  const HALSNING_BAS =
+    'Jag är en automatisk AI-assistent och svarar på frågor om tömning, flytt, bortforsling, demontering och magasinering. Vill du prata med Fredrik eller Thom ringer du 070-561 48 45.';
+
+  /* Sidans sista fraga, per sokvag. Nyckeln jamfors mot pathname utan
+     index.html. Saknas sidan i listan star den allmanna fragan kvar. */
+  const SIDFRAGOR = {
+    '/': 'Vad kan jag hjälpa dig med?',
+    '/priser/':
+      'Vill du ha ett pris? Beskriv ungefär hur mycket det är, i kubikmeter eller i antal rum, så säger jag vad som gäller.',
+    '/tack.html': 'Din förfrågan är skickad. Vill du lägga till något, skriv det här.',
+    '/tjanster/bortforsling/': 'Vad är det som ska forslas bort, och var står det i dag?',
+    '/tjanster/flytthjalp/': 'Varifrån och vart ska flytten gå, och hur stor är bostaden?',
+    '/tjanster/foretag/':
+      'Gäller det kontorsflytt, lagerflytt eller röjning? Skriv gärna adress och ungefärlig omfattning.',
+    '/tjanster/magasinering/':
+      'Hur mycket ska förvaras, och från när? Minsta volym är 8 kubikmeter och minsta tid en månad.',
+    '/tjanster/mc-forvaring/':
+      'Gäller det vinterförvaring av motorcykel? Skriv gärna hur många och från när.',
+    '/tjanster/nedmontering/': 'Vad ska monteras ned, och är det i en bostad du äger?',
+    '/tjanster/tomning/': 'Vad är det som ska tömmas, och hur stort är utrymmet?',
+  };
+
+  /* Dodsbosidan har en egen hälsning i sin helhet, inte ett tillagg.
+     Den som laser den har ofta forlorat nagon i veckan: dar passar
+     varken ett "Hej!" med utropstecken eller en uppmaning att skynda.
+     Ingen inledande kondoleans heller, eftersom den kommer fran en
+     maskin och latt gor det varre. Bara vad assistenten ar, vagen till
+     en manniska, och en oppen fraga utan tidspress. */
+  const HALSNING_DODSBO =
+    HALSNING_BAS +
+    ' Skriv så kort eller så utförligt du vill om vad som behöver göras, och vad du vill veta om tömningen. Det är ingen brådska.';
+
+  function halsningenForSidan() {
+    let vag = window.location.pathname;
+    if (vag.endsWith('/index.html')) vag = vag.slice(0, -'index.html'.length);
+    if (vag === '/tjanster/dodsbo/') return HALSNING_DODSBO;
+    const fraga = SIDFRAGOR[vag];
+    return 'Hej! ' + HALSNING_BAS + ' ' + (fraga || SIDFRAGOR['/']);
+  }
+
+  const HALSNING = halsningenForSidan();
   const FELTEXT = 'Något gick fel. Mejla boka@bohagsbolaget.se eller ring 070-561 48 45 så hjälper vi dig.';
   /* Samma nyckel och samma faltnamn som kontaktformularet i index.html.
      Sandningen sker fran besokarens egen webblasare: workern gar ut fran
@@ -1034,7 +1093,14 @@ if (chattKnapp) {
     return el;
   }
 
-  function oppna() {
+  /* Den knapp som oppnade panelen. Fokus ska tillbaka just dit vid
+     stangning, inte alltid till den flytande knappen: oppnade man chatten
+     ur en ingang mitt i texten ska man hamna dar man var, inte i hornet
+     langst ner. */
+  let oppnadAv = null;
+
+  function oppna(fran) {
+    oppnadAv = fran || null;
     panel.hidden = false;
     chattKnapp.hidden = true;
     /* Tillstandet maste folja med aven nar knappen doljs: en skarmlasare som
@@ -1070,7 +1136,15 @@ if (chattKnapp) {
     panel.hidden = true;
     chattKnapp.hidden = false;
     chattKnapp.setAttribute('aria-expanded', 'false');
-    chattKnapp.focus();
+    /* Ingangen kan ha rullat utanfor skarmen eller tagits bort ur DOM:en.
+       offsetParent null betyder att den inte ritas, och da ar den inte
+       fokuserbar: fokus far ga till den flytande knappen i stallet. */
+    const tillbaka =
+      oppnadAv && oppnadAv.isConnected && oppnadAv.offsetParent !== null
+        ? oppnadAv
+        : chattKnapp;
+    oppnadAv = null;
+    tillbaka.focus();
   }
 
   async function skickaFraga() {
@@ -1163,7 +1237,24 @@ if (chattKnapp) {
     }
   }
 
-  chattKnapp.addEventListener('click', oppna);
+  chattKnapp.addEventListener('click', () => oppna());
+
+  /* Varje annan vag in oppnar samma panel: chattknappen i mobilraden och
+     ingangarna i loptexten, alla markta .chatt-oppna. Fokus aterlamnas
+     till den som oppnade, sa stangNed far veta vilken knapp det var.
+     Ingen egen rakning behovs: narvaro.js raknar pa panelens tillstand,
+     sa varje vag in blir matt av sig sjalv. */
+  for (const ingang of document.querySelectorAll('.chatt-oppna')) {
+    ingang.addEventListener('click', () => oppna(ingang));
+  }
+
+  /* Ingangarna i loptexten star med hidden i HTML:en och visas forst nu,
+     nar panelen finns och knapparna ar kopplade. Utan JavaScript star de
+     kvar dolda i stallet for att vara knappar som inte gor nagot. */
+  for (const rad of document.querySelectorAll('.chatt-ingang[hidden]')) {
+    rad.removeAttribute('hidden');
+  }
+
   stang.addEventListener('click', stangNed);
   omstart.addEventListener('click', borjaOm);
   skicka.addEventListener('click', skickaFraga);

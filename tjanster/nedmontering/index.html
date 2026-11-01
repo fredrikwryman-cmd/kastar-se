@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -328,6 +328,7 @@
 
         <p>Kommer vi inte in vid avtalad tid, eller avbokar du mindre än 24 timmar innan den avtalade tiden, debiteras 1 500 kr i bomkörning. Avbokar du minst 24 timmar innan kostar det ingenting.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Osäker på om ditt rum ger rotavdrag? Fråga assistenten</button></p>
         <h2>Rotavdrag på rivningen</h2>
         <p>Det här är den enda av våra tjänster där rotavdraget gäller. Allt annat vi gör är antingen rutgrundande eller ger inget avdrag alls, och skillnaden är värd att känna till innan du jämför offerter.</p>
         <p>Rot ger 30 procent av arbetskostnaden, upp till 50 000 kronor per person och år. Rot och rut delar ett tak på sammanlagt 75 000 kronor per person och år, varav högst 50 000 kronor får vara rotavdrag.</p>
@@ -365,6 +366,7 @@
         <h3 id="faq-vad-ingar-i-priset-pa-arbetet">Vad ingår i priset på arbetet?</h3>
         <p>Nedmontering, skydd av golv och angränsande ytor, och att materialet samlas ihop och emballeras på plats. Bortforslingen står som egen rad i offerten.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Fler frågor om rivning och nedmontering? Skriv dem här</button></p>
         <h2>Hör av dig</h2>
         <p>Skicka bilder på det som ska rivas, så får du ett fast pris på arbetet och en rad för bortforslingen. Enklast är att ringa <a href="tel:+46705614845">070-561 48 45</a>, eller att skriva till <a href="mailto:boka@bohagsbolaget.se">boka@bohagsbolaget.se<span class="sr-only"> (öppnar ditt e-postprogram)</span></a>. Prislistan i sin helhet ligger under <a href="/priser/">Priser</a>.</p>
         <p>Vi svarar mån–lör 07:00–19:00 och sön 09:00–17:00. Arbetet faktureras när det är utfört, med 10 dagars betalningstid för privatpersoner och 30 dagar för företag och föreningar.</p>
@@ -425,8 +427,9 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="/#kontakt" class="mb-quote">Få pris</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="/#kontakt" class="mb-quote">Pris</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
@@ -434,7 +437,7 @@
   <script src="/assets/js/sok.js?v=7" defer></script>
 
   <script src="/assets/js/offert.js?v=2"></script>
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->

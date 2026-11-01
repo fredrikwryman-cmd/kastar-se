@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Frågorna nedan är teckenidentiska med de synliga svaren längre ned.
        Ändras den ena måste den andra ändras i samma svep. -->
@@ -249,6 +249,7 @@
                script.js utkastet (sessionStorage) innan länken följs. -->
           <a href="/#kontakt" class="btn btn-primary btn-calc">Få fast pris, skicka bilder</a>
         </div>
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Stämmer inte volymen med det du har hemma? Beskriv det i stället</button></p>
 
         <div class="prislista">
           <div class="prisrad">
@@ -394,6 +395,7 @@
     <!-- ============ MC-FÖRVARING ============ -->
     <section class="section section-cream" id="mc-forvaring">
       <div class="container legal">
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Osäker på om ditt jobb ger avdrag? Fråga här</button></p>
         <h2>MC-förvaring i vinter</h2>
         <p>Introduktionspris: allt i ett <strong>4&nbsp;495&nbsp;kr</strong> för hela säsongen. Bara förvaring <strong>2&nbsp;995&nbsp;kr</strong>.</p>
         <p>Priser inklusive moms. Hämtning inom cirka 4 mil från Arlandastad.</p>
@@ -468,6 +470,7 @@
           </details>
         </div>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Har du en prisfråga som inte står här? Skriv den till assistenten</button></p>
         <p class="pris-cta" style="text-align:center"><a class="btn btn-primary" href="/#kontakt">Få offert på ditt jobb</a></p>
       </div>
     </section>
@@ -523,8 +526,9 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="/#kontakt" class="mb-quote">Få pris</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="/#kontakt" class="mb-quote">Pris</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
@@ -532,7 +536,7 @@
   <script src="/assets/js/sok.js?v=7" defer></script>
 
   <script src="/assets/js/offert.js?v=2"></script>
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->

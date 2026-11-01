@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. -->
@@ -327,6 +327,7 @@
         <p>Väger lasset mer än så, till exempel metallskrot, verktyg eller byggrester, går vi över till vikt i stället, 295 kr för varje påbörjat 100 kilo. Vilken av de två modellerna som gäller får du besked om innan vi åker, aldrig efteråt.</p>
         <p>Till detta kommer en framkörningsavgift på 395 kr, som stryks så snart uppdraget går över 6 000 kr. Kommer vi till en stängd dörr, eller avbokar du mindre än 24 timmar innan den avtalade tiden, debiteras 1 500 kr i bomkörning. Avbokar du minst 24 timmar innan kostar det ingenting.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Vet du inte om vi tar det du vill bli av med? Fråga assistenten</button></p>
         <h2>Så går det till</h2>
         <p>Först fotograferar du det som ska bort, gärna så att storleken framgår. Beskriver du sakerna i ord i stället går det också bra.</p>
         <p>Sedan får du ett fast pris tillbaka, skriftligt, och den siffran ändras inte i efterhand.</p>
@@ -363,6 +364,7 @@
         <h3 id="faq-far-jag-rutavdrag-pa-bortforslingen">Får jag rutavdrag på bortforslingen?</h3>
         <p>Nej. Att hämta och köra bort saker är transport och avfallshantering, och sådant arbete omfattas varken av rut eller rot.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Fler frågor om bortforsling? Skriv dem här</button></p>
         <h2>Hör av dig</h2>
         <p>Skicka en bild på det som ska bort, så får du en fast summa tillbaka. Ring <a href="tel:+46705614845">070-561 48 45</a> eller skriv i <a href="/#kontakt">formuläret</a>. Alla priser står samlade på <a href="/priser/">startsidan</a>.</p>
         <p>Vi svarar mån–lör 07:00–19:00 och sön 09:00–17:00. Arbetet faktureras när det är utfört, med 10 dagars betalningstid för privatpersoner och 30 dagar för företag och föreningar.</p>
@@ -423,8 +425,9 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="/#kontakt" class="mb-quote">Få pris</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="/#kontakt" class="mb-quote">Pris</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
@@ -432,7 +435,7 @@
   <script src="/assets/js/sok.js?v=7" defer></script>
 
   <script src="/assets/js/offert.js?v=2"></script>
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->

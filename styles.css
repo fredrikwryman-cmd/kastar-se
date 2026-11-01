@@ -112,15 +112,18 @@
   --maxw:    1160px;
 
   /* Höjden på den fasta mobilraden (.mobile-bar) under 861px, utan
-     hemindikatorn. Uppmätt till 76,96px vid både 360 och 390px bredd, så
-     4.9rem = 78.4px täcker raden med marginal. Står som variabel därför att
+     hemindikatorn. Uppmätt till 76,96px vid 320, 360 och 390px bredd med
+     radens tre knappar, så 4.81rem = 76.96px är radens exakta höjd. Talet
+     stod förut på 4.9rem, alltså 1,44px för mycket: ofarligt, men det var
+     inte radens mått. Måttet är nu exakt, och ändras radens text, vaddring
+     eller teckenstorlek måste höjden mätas om. Står som variabel därför att
      TRE regler räknar mot samma rad: body:s padding-bottom, chattknappens
      bottom och chattpanelens bottom plus max-height. Var och en hade ett
      eget tal förut, och chattknappens 80px kunde därför glida ifrån
      body:s 4.9rem utan att något gick sönder synligt. Ändras raden ändras
      talet här, på ett ställe. env(safe-area-inset-bottom) läggs alltid till
      ovanpå i den regel som använder variabeln, aldrig här. */
-  --mobilbar-h: 4.9rem;
+  --mobilbar-h: 4.81rem;
 }
 
 * { box-sizing: border-box; }
@@ -197,7 +200,10 @@ body:not(.kort-sida) main p a:not(.btn) {
 .hero,
 .site-footer,
 .section-alt,
-.chatt-knapp,
+/* Mobilradens tre knappar star pa petrolbotten. Raden saknades i listan,
+   så Ring och Pris fick standardringen och 2,34:1; med chattknappen i
+   mitten blev det tre knappar med samma brist. */
+.mobile-bar,
 .chatt-panel,
 .mc-band,
 /* .skip ligger direkt under <body>, inte inuti .site-header, och arvde
@@ -209,6 +215,16 @@ body:not(.kort-sida) main p a:not(.btn) {
   outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
+
+/* Chattknappen stod i listan ovan medan den var petrol. Nu är den orange
+   och hör inte hemma där: orange ring på orange knapp syns inte som en
+   ring. En ring UTANFÖR knappen vore inte heller lösningen, för den hade
+   mätts mot sidans bakgrund, och under en fast knapp växlar den mellan
+   krämvitt och petrol medan sidan rullar. Ringen ritas därför innanför
+   kanten, mot knappens egen yta: petrol mot orange ger 5,34:1 oavsett
+   vad som passerar under. */
+.chatt-knapp { --focus-ring: var(--petrol-deep); }
+.chatt-knapp:focus-visible { outline-offset: -4px; }
 
 /* Skip-link. Får INTE döljas med display:none eller visibility:hidden –
    då plockas den ur tabbordningen och går inte att nå med tangentbord.
@@ -1954,15 +1970,21 @@ mark.sok-markering {
   .trust { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1.25rem; }
   .steps { grid-template-columns: 1fr; gap: 2rem; }
 
-  /* Raden ar 77px hog och far dessutom env(safe-area-inset-bottom) i sin
+  /* Raden ar 76,96px hog och far dessutom env(safe-area-inset-bottom) i sin
      padding. 68px lamnade 9px underskott pa vanlig mobil och 43px pa iPhone
      med hemindikator, sa sista raden i sidfoten hamnade bakom baren.
-     4.9rem = 78.4px tacker sjalva raden, och env() laggs till ovanpa sa att
+     4.81rem = 76.96px ar radens matt, och env() laggs till ovanpa sa att
      hemindikatorn far sitt eget utrymme. Vald framfor att mata i JS: vardet
      ar i praktiken statiskt, och CSS haller redan innan skriptet laddat.
      Talet sjalvt star i --mobilbar-h i :root, sa att chattknappen och
      chattpanelen raknar mot exakt samma hojd som den har paddingen. */
-  body { padding-bottom: calc(var(--mobilbar-h) + env(safe-area-inset-bottom)); }
+  /* 80px ovanpa raden: chattknappen ar 64px hog och star 8px over raden,
+     plus 8px luft under sista textraden. Knappen ar fast och glider over
+     innehallet medan sidan rullar, men den far inte bli liggande over
+     sidfotens sista rader nar man har rullat hela vagen ner. Dar ar det
+     enda laget occlusionen ar permanent, och det ar ocksa det enda som
+     gar att bygga bort. */
+  body { padding-bottom: calc(var(--mobilbar-h) + 80px + env(safe-area-inset-bottom)); }
   .mobile-bar {
     display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
@@ -1970,19 +1992,36 @@ mark.sok-markering {
     background: rgba(var(--petrol-rgb), .97); backdrop-filter: blur(8px);
     box-shadow: 0 -4px 20px rgba(0,36,46,.25);
   }
-  .mobile-bar a {
+  /* Tre fack bara nar chatten faktiskt ar byggd. Utan JavaScript satts
+     inte data-chatt-klar, chattknappen ritas inte, och raden star kvar
+     tvadelad i stallet for att visa ett tomt tredje fack. */
+  body[data-chatt-klar] .mobile-bar { grid-template-columns: repeat(3, 1fr); }
+  .mobile-bar a,
+  .mobile-bar button {
     display: flex; align-items: center; justify-content: center;
-    padding: .8rem .5rem; border-radius: var(--radius-btn);
+    padding: .8rem .35rem; border-radius: var(--radius-btn);
+    font: inherit;
     font-weight: 500; font-size: .92rem; text-transform: uppercase; letter-spacing: .05em;
     text-decoration: none;
-    transition: background-color 150ms ease, transform 100ms ease;
+    transition: transform 100ms ease;
   }
   .mobile-bar a:hover { text-decoration: none; }
-  .mobile-bar a:active { transform: translateY(1px); }
+  .mobile-bar a:active,
+  .mobile-bar button:active { transform: translateY(1px); }
   /* Samma resonemang som .btn-primary: vit på orange ger 2,66:1,
      petroltext 5,34:1. */
   .mb-call  { background: var(--orange); color: var(--petrol-deep); }
   .mb-quote { background: transparent; color: var(--on-dark); border: 2px solid rgba(255,255,255,.5); }
+  /* Chatten star i mitten och oppnar panelen direkt, den lankar inte
+     vidare. Darfor en <button>, inte en <a>. Samma ram som Pris, sa att
+     Ring forblir radens enda fyllda knapp. */
+  .mb-chat {
+    display: none;
+    background: transparent; color: var(--on-dark);
+    border: 2px solid rgba(255,255,255,.5);
+    cursor: pointer;
+  }
+  body[data-chatt-klar] .mb-chat { display: flex; }
 }
 
 /* Tumme, inte muspekare: varje knapp är minst 44px hög på smal skärm. */
@@ -2052,19 +2091,80 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
    Ligger ovanpå allt annat. Knappen är petrol med maskoten direkt mot ytan:
    maskoten har en egen krämvit kontur och behöver ingen platta bakom sig.
    ========================================================================== */
+/* Knappen bar sin etikett. En ensam rund symbol sager inte vad som hander
+   om man trycker, och den som inte kanner igen maskoten lamnar den i fred.
+   Etiketten ligger inne i <button>, alltsa i samma traffyta.
+
+   Fargerna foljer primarknappen: petroltext mot orange ger 5,34:1, och vit
+   mot orange ar forbjudet eftersom det ger 2,66:1. Maskoten behaller sin
+   petrolplatta, dels for att den har en kramvit kontur gjord for petrol,
+   dels for att skivan skiljer symbolen fran texten.
+
+   Hovringen byter aldrig bakgrundsfarg, den lyfter knappen och fordjupar
+   skuggan, precis som .btn-primary. */
 .chatt-knapp {
   position: fixed; right: 18px; bottom: 18px; z-index: 120;
-  width: 64px; height: 64px; padding: 0;
-  border: 0; border-radius: 50%;
-  background: var(--petrol);
+  min-height: 64px; padding: 6px 18px 6px 6px;
+  max-width: calc(100vw - 36px);
+  border: 0; border-radius: 999px;
+  background: var(--orange);
   box-shadow: 0 8px 22px rgba(0, 36, 46, .32);
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background-color 150ms ease, box-shadow 150ms ease, transform 100ms ease;
+  display: flex; align-items: center; gap: .55rem;
+  transition: box-shadow 150ms ease, transform 100ms ease;
 }
-.chatt-knapp:hover { background: var(--petrol-deep); box-shadow: 0 10px 26px rgba(0, 36, 46, .4); }
-.chatt-knapp:active { transform: translateY(1px); }
-.chatt-knapp img { width: 46px; height: 46px; object-fit: contain; display: block; }
+.chatt-knapp:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 36, 46, .42); }
+.chatt-knapp:active { transform: translateY(1px); box-shadow: 0 8px 22px rgba(0, 36, 46, .32); }
+.chatt-knapp img {
+  width: 52px; height: 52px; padding: 3px;
+  object-fit: contain; display: block;
+  border-radius: 50%; background: var(--petrol);
+  flex: 0 0 auto;
+}
+.chatt-knapp__text {
+  color: var(--petrol-deep);
+  font-weight: 600; font-size: .95rem; line-height: 1.25;
+  text-align: left;
+}
+/* Den korta texten galler bara smal skarm, se mediafragan langre ner.
+   display:none, inte visibility: den dolda varianten ska ligga utanfor
+   tillganglighetstradet, sa att knappens namn ar exakt det som syns. */
+.chatt-knapp__text--kort { display: none; }
+
+/* Ingangar i loptexten. En egen rad, aldrig en klickbar div: det ar en
+   riktig <button>, sa tangentbord och skarmlasare far den gratis.
+   Orange-ink mot kramvit ger 4,84:1; var(--orange) som text hade gett
+   2,6:1 pa samma botten och far darfor bara vara ram och yta.
+
+   Raden star med hidden i HTML och attributet tas bort av script.js nar
+   chatten ar byggd. Tre skal: utan JavaScript syns ingen knapp som inte
+   gor nagot, attributet ljuger aldrig om elementets lage, och
+   sokindexet hoppar over hidden-noder, sa en knappetikett blir inte en
+   trafff i sajtsokningen. */
+.chatt-ingang { margin: 1.25rem 0; }
+/* Utseendet star pa .chatt-ingang .chatt-oppna, inte pa .chatt-oppna
+   ensam. Klassen .chatt-oppna ar bara kroken som script.js kopplar
+   oppningen till, och den sitter aven pa chattknappen i mobilraden.
+   Utan den har avgransningen arvde radens knapp bade orange ram, orange
+   text och pricken, och orange-ink mot petrolbotten haller inte 4,5:1. */
+.chatt-ingang .chatt-oppna {
+  display: inline-flex; align-items: center; gap: .5rem;
+  min-height: 44px; padding: .6rem 1.1rem;
+  border: 2px solid var(--orange); border-radius: 999px;
+  background: transparent;
+  color: var(--orange-ink);
+  font: inherit; font-weight: 600; text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 100ms ease;
+}
+.chatt-ingang .chatt-oppna::before {
+  /* Dekorativt, och darfor utanfor texten: ikonen ska inte lasas upp. */
+  content: ""; flex: 0 0 auto;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--orange);
+}
+.chatt-ingang .chatt-oppna:hover { background: rgba(var(--orange-rgb), .12); }
+.chatt-ingang .chatt-oppna:active { transform: translateY(1px); }
 /* Knappen göms medan fönstret är öppet, annars ligger den i vägen på mobil. */
 .chatt-knapp[hidden] { display: none; }
 
@@ -2227,6 +2327,28 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
     max-height: calc(100vh - var(--mobilbar-h) - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
     max-height: calc(100dvh - var(--mobilbar-h) - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
   }
+}
+
+/* Kort etikett pa telefon, lang fran liten tablett och uppat.
+   Uppmatt: den langa texten ar 201,00px bred och gor hela knappen
+   285,80px. Det RYMS pa en telefon, men det ar 88,8 procent av bredden
+   vid 320px, 79,4 vid 360 och 73,3 vid 390, alltsa en flytande platta
+   over nastan hela skarmen och over just den text den bjuder in till att
+   lasa. Vid 768px ar samma knapp 37,2 procent och ligger i hornet.
+   Den korta texten ar 71,81px och knappen 156,61px.
+   Uppmatt utfall: kort vid 320, 360 och 390, lang vid 430, 500, 768 och
+   1200. Knappen ar 64px hog i bada lagena, alltsa over kravet 44. */
+@media (max-width: 430px) {
+  .chatt-knapp__text--lang { display: none; }
+  .chatt-knapp__text--kort { display: block; }
+}
+
+/* Samma skal som pa mobil, se body:s padding-bottom under 861px: knappen
+   ar fast och far inte bli liggande over sidfotens sista rader nar man
+   rullat hela vagen ner. 64px knapp, 18px till underkanten och 8px luft.
+   Bara pa sidor som faktiskt har chatten, och bara nar den ar byggd. */
+@media (min-width: 861px) {
+  body[data-chatt-klar] { padding-bottom: 90px; }
 }
 @media (max-width: 640px) {
   .chatt-panel {

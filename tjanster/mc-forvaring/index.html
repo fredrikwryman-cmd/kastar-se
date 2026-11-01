@@ -32,7 +32,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="/assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="/styles.css?v=79" />
+  <link rel="stylesheet" href="/styles.css?v=80" />
 
   <!-- Tjänsten som strukturerad data. provider pekar på samma
        organisation som startsidans MovingCompany via @id. Erbjudandena
@@ -248,6 +248,7 @@
         </ul>
         <p class="mc-fin">Introduktionspris första säsongen. Priser inklusive moms. Hämtning inom cirka 4 mil från Arlandastad, längre bort enligt offert.</p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Osäker på om vinterförvaringen passar din motorcykel? Fråga här</button></p>
         <h2>Varför oss</h2>
         <ul class="mc-kort">
           <li><strong>Vana vid tunga lyft.</strong> Vi flyttar och bär varje dag. Din motorcykel hanteras med omsorg.</li>
@@ -265,6 +266,7 @@
         </ul>
         <p class="mc-pdf"><a href="/assets/vinterforvaring-mc.pdf">Ladda ner informationen som PDF (0,7 MB)</a></p>
 
+        <p class="chatt-ingang" hidden><button type="button" class="chatt-oppna">Vill du fråga något innan du bokar? Skriv det här</button></p>
         <h2 id="boka">Boka din plats</h2>
         <!-- Samma Web3Forms-nyckel och samma inskick som kontaktformuläret på
              startsidan: script.js binder varje form.contact-form, skickar i
@@ -372,15 +374,16 @@
 
   <!-- Sticky ring-bar på mobil -->
   <div class="mobile-bar">
-    <a href="tel:+46705614845" class="mb-call">📞 Ring nu</a>
-    <a href="#boka" class="mb-quote">Boka din plats</a>
+    <a href="tel:+46705614845" class="mb-call">📞 Ring</a>
+    <button type="button" class="mb-chat chatt-oppna">Chatt</button>
+    <a href="#boka" class="mb-quote">Boka</a>
   </div>
 
   <script src="/assets/js/markera.js?v=2" defer></script>
   <script src="/assets/js/meny.js?v=2"></script>
   <script src="/assets/js/sok.js?v=7" defer></script>
 
-  <script src="/script.js?v=37"></script>
+  <script src="/script.js?v=38"></script>
 
   <script src="/assets/js/narvaro.js?v=3" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
