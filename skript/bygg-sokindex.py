@@ -30,6 +30,7 @@ SIDNAMN = {
     "/": "Startsidan",
     "/priser/": "Priser",
     "/tjanster/flytthjalp/": "Flytthjälp",
+    "/tjanster/tungflytt/": "Pianoflytt och tungflytt",
     "/tjanster/tomning/": "Tömning",
     "/tjanster/dodsbo/": "Dödsbo",
     "/tjanster/bortforsling/": "Bortforsling",

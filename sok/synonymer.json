@@ -3,6 +3,7 @@
   { "ord": ["skräp", "sopor", "grovsopor", "skrot"], "till": { "url": "/tjanster/bortforsling/" } },
   { "ord": ["förråd", "lager", "förvaring", "lagring"], "till": { "url": "/tjanster/magasinering/" } },
   { "ord": ["flyttfirma", "bärhjälp", "flytta"], "till": { "url": "/tjanster/flytthjalp/" } },
+  { "ord": ["pianoflytt", "flygel", "tungflytt", "tungt lyft"], "till": { "url": "/tjanster/tungflytt/" } },
   { "ord": ["dödsfall", "dödsboet", "efterlevande"], "till": { "url": "/tjanster/dodsbo/" } },
   { "ord": ["rensa", "tömma", "städa ur"], "till": { "url": "/tjanster/tomning/" } },
   { "ord": ["montera ner", "plocka isär", "riva"], "till": { "url": "/tjanster/nedmontering/" } },

@@ -745,6 +745,8 @@ if (chattKnapp) {
       'Gäller det vinterförvaring av motorcykel? Skriv gärna hur många och från när.',
     '/tjanster/nedmontering/': 'Vad ska monteras ned, och är det i en bostad du äger?',
     '/tjanster/tomning/': 'Vad är det som ska tömmas, och hur stort är utrymmet?',
+    '/tjanster/tungflytt/':
+      'Vad är det som ska flyttas, och hur ser bärvägen ut?',
   };
 
   /* Dodsbosidan har en egen hälsning i sin helhet, inte ett tillagg.

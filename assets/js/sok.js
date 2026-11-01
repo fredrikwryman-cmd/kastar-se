@@ -51,8 +51,8 @@
     });
     motorLofte = Promise.all([
       import('/assets/js/fuse.basic.min.js?v=1'),
-      hamta('/sok/index.json?v=6'),
-      hamta('/sok/synonymer.json?v=3'),
+      hamta('/sok/index.json?v=7'),
+      hamta('/sok/synonymer.json?v=4'),
     ]).then(([modul, index, synonymer]) => {
       const Fuse = modul.default;
       const poster = index.poster;
