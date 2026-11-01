@@ -110,6 +110,17 @@
   --radius-card:  10px;
   --shadow:  0 8px 20px rgba(0, 36, 46, 0.08);
   --maxw:    1160px;
+
+  /* Höjden på den fasta mobilraden (.mobile-bar) under 861px, utan
+     hemindikatorn. Uppmätt till 76,96px vid både 360 och 390px bredd, så
+     4.9rem = 78.4px täcker raden med marginal. Står som variabel därför att
+     TRE regler räknar mot samma rad: body:s padding-bottom, chattknappens
+     bottom och chattpanelens bottom plus max-height. Var och en hade ett
+     eget tal förut, och chattknappens 80px kunde därför glida ifrån
+     body:s 4.9rem utan att något gick sönder synligt. Ändras raden ändras
+     talet här, på ett ställe. env(safe-area-inset-bottom) läggs alltid till
+     ovanpå i den regel som använder variabeln, aldrig här. */
+  --mobilbar-h: 4.9rem;
 }
 
 * { box-sizing: border-box; }
@@ -1948,8 +1959,10 @@ mark.sok-markering {
      med hemindikator, sa sista raden i sidfoten hamnade bakom baren.
      4.9rem = 78.4px tacker sjalva raden, och env() laggs till ovanpa sa att
      hemindikatorn far sitt eget utrymme. Vald framfor att mata i JS: vardet
-     ar i praktiken statiskt, och CSS haller redan innan skriptet laddat. */
-  body { padding-bottom: calc(4.9rem + env(safe-area-inset-bottom)); }
+     ar i praktiken statiskt, och CSS haller redan innan skriptet laddat.
+     Talet sjalvt star i --mobilbar-h i :root, sa att chattknappen och
+     chattpanelen raknar mot exakt samma hojd som den har paddingen. */
+  body { padding-bottom: calc(var(--mobilbar-h) + env(safe-area-inset-bottom)); }
   .mobile-bar {
     display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
@@ -2194,18 +2207,25 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 .chatt-skicka:disabled { opacity: .5; cursor: default; }
 
 /* Mobil: nästan hela skärmen med marginal, inte en liten ruta i hörnet.
-   Knappen lyfts ovanför den fasta ring-baren, som är 68 px hög.
-   Panelen slutar ovanför ring-baren: samma 4.9rem plus hemindikator som
-   body får i padding-bottom, och 8px luft. Sidornas insets respekteras så
-   att panelen inte hamnar under skärmhacket i liggande läge. */
+   Både knappen och panelen slutar ovanför den fasta ring-baren, och båda
+   räknar med --mobilbar-h plus hemindikator, alltså exakt det uttryck som
+   body har i sin padding-bottom, plus 8px luft. Knappen hade ett eget
+   hårdkodat 80px här förut: det råkade räcka, men talet kunde glida ifrån
+   body:s mått vid minsta ändring av raden och knappen hade då landat på
+   raden utan att något annat gick sönder. Nu finns höjden på ett ställe.
+   Sidornas insets respekteras så att panelen inte hamnar under skärmhacket
+   i liggande läge. */
 @media (max-width: 860px) {
-  .chatt-knapp { bottom: calc(80px + env(safe-area-inset-bottom)); right: 14px; }
+  .chatt-knapp {
+    bottom: calc(var(--mobilbar-h) + 8px + env(safe-area-inset-bottom));
+    right: 14px;
+  }
   .chatt-panel {
     right: max(12px, env(safe-area-inset-right));
-    bottom: calc(4.9rem + 8px + env(safe-area-inset-bottom));
+    bottom: calc(var(--mobilbar-h) + 8px + env(safe-area-inset-bottom));
     width: min(380px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
-    max-height: calc(100vh - 4.9rem - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
-    max-height: calc(100dvh - 4.9rem - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    max-height: calc(100vh - var(--mobilbar-h) - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    max-height: calc(100dvh - var(--mobilbar-h) - 20px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
   }
 }
 @media (max-width: 640px) {
