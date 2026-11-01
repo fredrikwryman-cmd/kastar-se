@@ -91,13 +91,35 @@ const MAX_TOKENS = 1024;
 const TOOL = {
   name: 'skicka_forfragan',
   description:
-    'Skickar en färdig offertförfrågan till Bohagsbolaget. Anropas när du har kundens namn, en kontaktuppgift och tillräcklig beskrivning av uppdraget.',
+    'Skickar en färdig offertförfrågan till Bohagsbolaget. KRAV: namn, tjänst, ' +
+    'beskrivning, och minst ett av fälten telefon och epost. Ett anrop utan både ' +
+    'telefon och epost avvisas av servern och skickar ingenting, eftersom Fredrik ' +
+    'då inte kan nå kunden. Fyll aldrig i en påhittad uppgift för att få ett fält ' +
+    'ifyllt: fråga kunden i stället.',
   input_schema: {
     type: 'object',
     properties: {
-      namn: { type: 'string', description: 'Kundens namn.' },
-      telefon: { type: 'string', description: 'Kundens telefonnummer.' },
-      epost: { type: 'string', description: 'Kundens e-postadress.' },
+      namn: {
+        type: 'string',
+        description:
+          'Kundens namn, som kunden själv har uppgett det. Aldrig en platshållare.',
+      },
+      /* required kan inte uttrycka "minst en av tva". Ett anyOf i
+         input_schema avvisas av Anthropics API och far varje anrop att
+         falla, uppmatt: forhandsversionen svarade 500 pa samtliga anrop
+         med anyOf och 200 utan. Kravet star darfor i beskrivningarna, som
+         modellen laser, och halls av kontrollen i verktygsloopen, som
+         modellen inte kan runda. */
+      telefon: {
+        type: 'string',
+        description:
+          'Kundens telefonnummer. MINST ETT av telefon och epost måste vara med, annars avvisas anropet.',
+      },
+      epost: {
+        type: 'string',
+        description:
+          'Kundens e-postadress. MINST ETT av telefon och epost måste vara med, annars avvisas anropet.',
+      },
       tjanst: {
         type: 'string',
         description: 'Tömning, flytt, bortforsling, demontering eller magasinering.',
@@ -117,6 +139,47 @@ const TOOL = {
     required: ['namn', 'tjanst', 'beskrivning'],
   },
 };
+
+/* Modellen kan anropa verktyget utan telefon och utan epost anda, antingen
+   for att den struntar i schemat eller for att den fyller i en platshallare.
+   Darfor avgor servern, inte schemat och inte modellen.
+
+   Och tomhetskontroll racker inte. Uppmatt mot forhandsversionen: nar
+   kravet stod i verktygets beskrivning fyllde modellen i telefon:
+   "<UNKNOWN>" for att mota det, alltsa en icke-tom strang som ingen kan
+   ringa. En kontaktuppgift raknas darfor bara nar den gar att anvanda:
+   tillrackligt med siffror for ett telefonnummer, eller nagot som ser ut
+   som en mejladress. */
+function dugligTelefon(varde) {
+  return String(varde == null ? '' : varde).replace(/\D/g, '').length >= 7;
+}
+
+function dugligEpost(varde) {
+  return /^[^\s@<>]+@[^\s@<>.]+\.[a-z]{2,}$/i.test(String(varde == null ? '' : varde).trim());
+}
+
+function harKontaktuppgift(indata) {
+  return dugligTelefon(indata && indata.telefon) || dugligEpost(indata && indata.epost);
+}
+
+/* Ett varde som inte duger far inte folja med vidare. Widgeten skulle
+   annars skriva ut <UNKNOWN> som telefonnummer i mejlet till Fredrik. */
+function rensaKontakt(indata) {
+  const ut = Object.assign({}, indata);
+  if (!dugligTelefon(ut.telefon)) delete ut.telefon;
+  if (!dugligEpost(ut.epost)) delete ut.epost;
+  return ut;
+}
+
+/* Svaret modellen far nar anropet avvisas. Sagt som ett resultat, inte som
+   en instruktion i systemprompten, sa att det kommer precis nar det behovs
+   och handlar om just det anropet. */
+const AVVISAD_UTAN_KONTAKT =
+  'Förfrågan avvisades och har INTE skickats. Det saknas sätt att nå kunden: ' +
+  'varken telefonnummer eller mejladress fanns med. Fråga kunden rakt ut i ditt ' +
+  'nästa svar efter namn och telefonnummer eller mejladress. Påstå inte att något ' +
+  'är skickat. Anropa inte verktyget igen förrän kunden har lämnat minst ett ' +
+  'telefonnummer eller en mejladress.';
 
 /* Formuleringar som pastar att nagot skickats. Tacker modellens vanligaste
    satt att saga det utan att ha anropat verktyget. */
@@ -341,8 +404,23 @@ export default {
           break;
         }
 
-        forfragan = verktyg.input || {};
-        loggaForfragan(forfragan);
+        /* Spärren. Utan telefon och utan epost returneras ingen forfragan:
+           widgeten skickar bara vidare det servern lamnar ut, sa ett lead
+           utan kontaktvag kan inte na inkorgen. Modellen far veta varfor i
+           ett tool_result och fragar kunden i samma svar. */
+        const indata = verktyg.input || {};
+        const harKontakt = harKontaktuppgift(indata);
+
+        if (harKontakt) {
+          forfragan = rensaKontakt(indata);
+          loggaForfragan(forfragan);
+        } else {
+          forfragan = null;
+          console.error(
+            'Verktygsanrop utan kontaktuppgift avvisat. arende=' + arendeId() +
+            ' falt=' + Object.keys(indata).join(',')
+          );
+        }
 
         messages = messages.concat([
           { role: 'assistant', content: data.content },
@@ -352,7 +430,10 @@ export default {
               {
                 type: 'tool_result',
                 tool_use_id: verktyg.id,
-                content: 'Förfrågan mottagen och vidarebefordrad',
+                is_error: !harKontakt,
+                content: harKontakt
+                  ? 'Förfrågan mottagen och vidarebefordrad'
+                  : AVVISAD_UTAN_KONTAKT,
               },
             ],
           },
@@ -374,9 +455,15 @@ export default {
           const block = (tvingat.content || []).find(
             (b) => b && b.type === 'tool_use' && b.name === TOOL.name
           );
-          if (block) {
-            forfragan = block.input || {};
+          /* Samma sparr galler har. Det tvingade anropet ar till for att ge
+             ett lead struktur nar modellen pastatt att den skickat, inte
+             for att runda kravet pa en kontaktvag. */
+          if (block && harKontaktuppgift(block.input)) {
+            forfragan = rensaKontakt(block.input || {});
             loggaForfragan(forfragan);
+          } else if (block) {
+            console.error('Tvingat verktygsanrop saknade kontaktuppgift, avvisat. arende=' +
+              arendeId());
           }
         } catch (fel) {
           console.error('Tvingat verktygsanrop misslyckades:', fel && fel.message ? fel.message : fel);

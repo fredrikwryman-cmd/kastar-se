@@ -930,31 +930,70 @@ if (chattKnapp) {
     return rader.join('\n\n');
   }
 
+  /* Ett falt kan vara tomt pa fler satt an tomt. Modellen har fyllt i
+     <UNKNOWN> for att mata schemats krav pa namn, och den sortens
+     platshallare ar en lucka, inte ett varde. Listan ar medvetet kort och
+     forankrad: bara hela strangen raknas, sa ett riktigt efternamn som
+     rakar innehalla ett av orden gar fram. */
+  const PLATSHALLARE = /^(<[^>]*>|[-_.]+|n\/?a|okänd|okand|saknas|ingen|inget|unknown|ej angivet|anonym)$/i;
+
+  /* Forsta kandidaten som ar ett riktigt varde. Tom strang om ingen ar det. */
+  function forstaVardet(kandidater) {
+    for (const kandidat of kandidater) {
+      const text = String(kandidat == null ? '' : kandidat).trim();
+      if (text && !PLATSHALLARE.test(text)) return text;
+    }
+    return '';
+  }
+
+  /* SAKNAS, aldrig en tom rad. En tom rad gar inte att skilja fran ett
+     tekniskt fel, och Fredrik ska se skillnad pa "kunden sa det aldrig" och
+     "mejlet kom fram trasigt". */
+  function faltrad(etikett, varde) {
+    return etikett + ': ' + (varde || 'SAKNAS') + '\n';
+  }
+
   function byggKropp(amne, forfragan) {
+    /* Telefon och e-post plockas ocksa deterministiskt ur samtalet, se
+       hittaTelefon och hittaEpost. Modellens sammanfattning utelamnar dem
+       ibland fast kunden har skrivit dem, sa lage gar fore en lucka. */
+    const telefon = forstaVardet([forfragan && forfragan.telefon, lage.telefon]);
+    const epost = forstaVardet([forfragan && forfragan.epost, lage.epost]);
+    const namn = forstaVardet([forfragan && forfragan.namn, lage.namn]);
+    const utanKontakt = !telefon && !epost;
+
     let message = '';
     if (forfragan) {
       message += 'SAMMANFATTNING FRÅN ASSISTENTEN\n';
-      message += 'Namn: ' + (forfragan.namn || '') + '\n';
-      message += 'Telefon: ' + (forfragan.telefon || '') + '\n';
-      message += 'E-post: ' + (forfragan.epost || '') + '\n';
-      message += 'Tjänst: ' + (forfragan.tjanst || '') + '\n';
-      message += 'Ort: ' + (forfragan.ort || '') + '\n';
-      message += 'Kundtyp: ' + (forfragan.kundtyp || '') + '\n';
-      message += 'Beskrivning: ' + (forfragan.beskrivning || '') + '\n\n';
+      message += faltrad('Namn', namn);
+      message += faltrad('Telefon', telefon);
+      message += faltrad('E-post', epost);
+      message += faltrad('Tjänst', forstaVardet([forfragan.tjanst]));
+      message += faltrad('Ort', forstaVardet([forfragan.ort]));
+      message += faltrad('Kundtyp', forstaVardet([forfragan.kundtyp]));
+      message += faltrad('Beskrivning', forstaVardet([forfragan.beskrivning]));
+      message += '\n';
     }
     /* Hela samtalet foljer alltid med, aven nar verktyget fungerat. Fredrik
-       ska kunna lasa vad kunden faktiskt skrev, inte bara modellens referat. */
-    message += 'HELA SAMTALET\n' + samtalsText();
+       ska kunna lasa vad kunden faktiskt skrev, inte bara modellens referat.
+       Ar historiken tom star det rakt ut, sa att rubriken aldrig blir ensam
+       och ser ut som ett avhugget mejl. */
+    const samtalet = samtalsText();
+    message += 'HELA SAMTALET\n' +
+      (samtalet || 'Tomt. Inga meddelanden fanns i samtalet när det här skickades.');
 
-    const namn = String((forfragan && forfragan.namn) || lage.namn || '');
+    /* Markningen star forst i amnesraden. En inkorgslista klipper slutet,
+       sa sist hade den inte synts utan att mejlet oppnades. */
+    const amnesrad = utanKontakt ? 'KONTAKTUPPGIFT SAKNAS, ' + amne : amne;
+
     return {
       access_key: W3_NYCKEL,
-      subject: amne + ' [' + lage.id + ']',
+      subject: amnesrad + ' [' + lage.id + ']',
       from_name: namn || 'Chatten på bohagsbolaget.se',
-      replyto: lage.epost || 'boka@bohagsbolaget.se',
+      replyto: epost || 'boka@bohagsbolaget.se',
       name: namn,
-      email: lage.epost || '',
-      phone: lage.telefon || '',
+      email: epost,
+      phone: telefon,
       message: message
     };
   }
