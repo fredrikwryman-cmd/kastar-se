@@ -546,7 +546,24 @@
       }
     }
 
-    var total = rot + rut + trans + ovr - rab;
+    // Rabatten sänker potterna i samma förhållande som de bidrar till summan
+    // före rabatt. Annars räknas avdraget på pengar kunden aldrig betalar, och
+    // offerten utlovar ett avdrag vi inte kan begära.
+    //   Varje pott avrundas NEDÅT, som avdraget självt: underlaget mot
+    //   Skatteverket får hellre bli en krona för lågt än en krona för högt.
+    //   Summan till kund räknas på de oavrundade talen och är oförändrad, så
+    //   rabattraden i offerten stämmer fortfarande.
+    //   Finns ingen pott att fördela över kan rabatten inte ge något avdrag.
+    var summaForeRabatt = rot + rut + trans + ovr;
+    if (rab > 0 && summaForeRabatt > 0) {
+      var kvar = Math.max(0, (summaForeRabatt - rab) / summaForeRabatt);
+      rot = Math.floor(rot * kvar);
+      rut = Math.floor(rut * kvar);
+      trans = Math.floor(trans * kvar);
+      ovr = Math.floor(ovr * kvar);
+    }
+
+    var total = summaForeRabatt - rab;
     if (total < 0) total = 0;
 
     // Avdrag med tak: ROT högst 50 000 kr per person och år, RUT högst 75 000,
