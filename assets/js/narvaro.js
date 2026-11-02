@@ -9,6 +9,11 @@
 // sessions-id och sidans sökväg. Ingen ny uppgift om besökaren samlas in,
 // och mottagaren räknar händelserna i egna fält utan att röra besökstalet.
 //
+// Chatten och ringklicket ser filen själv. Formuläret kan den inte se: båda
+// formulären stoppar sin egen submit och skickar med fetch, så ingen besökare
+// navigerar någonstans när ett formulär går igenom. Därför ropar de in hit,
+// genom window.BBNarvaro.handelse, först när Web3Forms har svarat success.
+//
 // Ingen kaka, ingen IP-adress, ingen referer, ingen sökparameter och ingen
 // personuppgift. Id:t slumpas med crypto, lever i sessionStorage och
 // försvinner när fliken stängs; det går inte att följa någon mellan besök,
@@ -35,9 +40,6 @@
 
   // De tre händelsenamn mottagaren känner igen. Allt annat skickas aldrig.
   const HANDELSER = ['chatt-oppnad', 'ring-klick', 'formular-skickat'];
-
-  // Sidan formuläret landar på när Web3Forms har tagit emot det.
-  const TACKSIDA = '/tack.html';
 
   if (window.location.pathname.indexOf('/verktyg/') === 0) return;
 
@@ -157,6 +159,17 @@
     posta({ sid: sid, path: window.location.pathname, handelse: namn });
   }
 
+  /* Enda vägen in utifrån. Namnet prövas mot HANDELSER ovan, så en
+     felstavning i en annan fil kan aldrig skicka något mottagaren inte
+     känner igen.
+
+     Globalen ligger efter varje tidig return i filen: på /verktyg/ och
+     när id:t inte gick att slumpa finns den inte alls, och då ska
+     ingenting räknas därifrån heller. Anroparen får därför alltid
+     kontrollera att den finns, eftersom filen laddas med defer och kan
+     ha blockerats. */
+  window.BBNarvaro = { handelse: handelse };
+
   /* Chatten räknas på panelens tillstånd, inte på klicket i knappen.
      Klicket kan komma utan att panelen öppnas, och panelen kan öppnas
      på annat sätt än med knappen; det som ska räknas är att chatten
@@ -195,20 +208,18 @@
     true,
   );
 
-  /* Formuläret räknas när tacksidan öppnas, alltså när Web3Forms har
-     tagit emot det. En omladdning eller ett steg bakåt är inte ett nytt
-     skickat formulär och räknas därför inte; kan webbläsaren inte svara
-     på vilken sorts navigering det var räknas sidvisningen. */
-  function tacksidanRaknas() {
-    if (window.location.pathname !== TACKSIDA) return false;
-    try {
-      const poster = window.performance.getEntriesByType('navigation');
-      if (poster && poster.length && poster[0].type) return poster[0].type === 'navigate';
-    } catch (e) {
-      /* Saknas stödet räknas sidvisningen, se kommentaren ovan. */
-    }
-    return true;
-  }
+  /* HÄR LÅG EN UTLÖSARE PÅ /tack.html. Den är borttagen, och det är
+     avsiktligt.
 
-  if (tacksidanRaknas()) handelse('formular-skickat');
+     Tacksidan nås på ett enda sätt: Web3Forms redirect-fält, som båda
+     formulären raderar ur sin egen postning och som alltså bara används
+     när JavaScript är AV. Är JavaScript av körs den här filen inte alls,
+     så utlösaren kunde aldrig träffa den besökare den var byggd för.
+
+     Kvar fanns bara ett fall: någon med JavaScript på som kommer till
+     /tack.html på annat sätt, genom ett bokmärke eller en klistrad
+     adress. Var och en av dem hade räknats som ett skickat formulär utan
+     att något skickats. En utlösare som bara kan ge falska tal är sämre
+     än ingen alls. Räkningen sker nu där inskicket faktiskt lyckas, i
+     offert.js och script.js. */
 })();

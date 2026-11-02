@@ -221,6 +221,10 @@ function bindKontaktformular(form) {
       const result = await res.json().catch(() => ({}));
 
       if (res.ok && result.success) {
+        /* Statistiken räknas HÄR, inte vid klicket: ett misslyckat inskick
+           är ingen förfrågan. Formuläret stoppar sin egen submit och
+           navigerar aldrig, så narvaro.js kan inte se det på egen hand. */
+        if (window.BBNarvaro) window.BBNarvaro.handelse('formular-skickat');
         form.reset();
         showStatus(OK_TEXT, true);
       } else {
@@ -272,7 +276,7 @@ let offertInstans = null;
 /* Sidor som inte laddar offert.js själva (MC-sidan, där bara
    versionsparametrar får ändras) får den hämtad här. Tills den är laddad
    fångas inget klick, och länken leder till #kontakt som vanligt. */
-const OFFERT_JS = '/assets/js/offert.js?v=2';
+const OFFERT_JS = '/assets/js/offert.js?v=3';
 function sakerstallOffertJs() {
   if (window.BBOffert || document.querySelector('script[data-offert-js]')) return;
   const s = document.createElement('script');

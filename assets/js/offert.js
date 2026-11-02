@@ -1114,6 +1114,13 @@
   }
 
   function lyckat(inst, ref, antalBilder) {
+    /* Statistiken räknas HÄR, inte vid klicket på knappen: ett försök som
+       misslyckades är ingen förfrågan. Anropet sker en gång per lyckat
+       inskick, så "Gör en ny förfrågan" följt av ett nytt inskick blir två,
+       vilket är rätt. Räknaren får aldrig stoppa tacket: narvaro.js kan ha
+       blockerats, och dess egen posta() sväljer alla fel tyst. */
+    if (window.BBNarvaro) window.BBNarvaro.handelse('formular-skickat');
+
     rt.forEach((r) => { if (r.tumme) URL.revokeObjectURL(r.tumme); });
     rt.clear();
     ko.length = 0;
