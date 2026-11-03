@@ -1452,16 +1452,16 @@ mark.sok-markering {
 .footer-credit { margin-top: .75rem; }
 /* AiM Studios-loggan i stället för textlänken. Attributen width och height
    står på bildens verkliga 480 × 132 så att utrymmet reserveras och inget
-   hoppar vid laddning (BS-15); CSS:en skalar ner till 20 px höjd, alltså
-   cirka 73 px bredd. Länken görs till inline-block med lodrät utfyllnad:
-   bilden är bara 20 px hög, och utan utfyllnaden blir träffytan under de
-   44 px GV-04 kräver vid 390 px. 20 + 12 + 12 = 44. line-height: 0 hindrar
+   hoppar vid laddning (BS-15); CSS:en skalar ner till 24 px höjd, alltså
+   cirka 87 px bredd. Länken görs till inline-block med lodrät utfyllnad:
+   bilden är bara 24 px hög, och utan utfyllnaden blir träffytan under de
+   44 px GV-04 kräver vid 390 px. 24 + 10 + 10 = 44. line-height: 0 hindrar
    radboxen från att lägga på extra höjd ovanpå det. Understrykningen från
    .footer-legal a tas bort: den hör till textlänkar, inte till en logga.
    Ingen platta bakom: loggan är vit och ligger direkt mot petrolbotten. */
 .footer-credit a {
   display: inline-block;
-  padding: 12px 6px;
+  padding: 10px 6px;
   line-height: 0;
   vertical-align: middle;
   text-decoration: none;
@@ -1469,7 +1469,7 @@ mark.sok-markering {
 .footer-credit-logo {
   display: block;
   width: auto;
-  height: 20px;
+  height: 24px;
 }
 
 /* Textsidor (integritetspolicy) */
