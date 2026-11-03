@@ -1293,6 +1293,46 @@ mark.sok-markering {
    kunden skrev och ska inte kompletteras med tecken hon inte skrivit. */
 .omdome blockquote p::before { content: "\201C"; }
 .omdome blockquote p::after  { content: "\201D"; }
+
+/* ---- Långa omdömen klipps till fem rader ----
+   Klippningen ligger på klassen .ar-klippt, som BARA script.js sätter, och
+   bara på de kort som faktiskt är längre än fem rader. Utan JavaScript finns
+   klassen inte, och då syns hela omdömet precis som förut. Det är hela skälet
+   till att den inte står i grundstilen: en avklippt text utan väg vidare vore
+   sämre än en lång.
+
+   Taket räknas ur radhöjden ovan, 1.75, så fem rader är fem rader oavsett
+   teckenstorlek. Ingen hover används: på telefon finns ingen, och där läses
+   sajten mest. */
+.omdome.ar-klippt blockquote p {
+  overflow: hidden;
+  max-height: calc(5 * 1.75em);
+  transition: max-height .28s ease;
+}
+/* Utfällt sätter script.js max-height i pixlar, så att övergången har ett
+   tal att röra sig mot. Därefter byts det mot none, annars kunde en
+   fönsterändring klippa texten igen. */
+.omdome.ar-klippt.ar-utfalld blockquote p { overflow: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .omdome.ar-klippt blockquote p { transition: none; }
+}
+
+/* Knappen byggs av script.js. Ett riktigt button, aldrig en div eller en
+   länk: den växlar ett läge på samma sida och leder ingen vidare.
+   Höjden är 44 px enligt GV-04, också när etiketten är kort.
+   Fokusringen är sidans vanliga var(--focus-ring), alltså --orange-ink,
+   som ger 4,84:1 mot den krämvita sektionsbotten #FAF5EF. */
+.omdome-mer {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 .5rem;
+  margin: 0; border: 0; background: none;
+  font: inherit; font-size: .95rem; font-weight: 500;
+  color: var(--orange-ink);
+  text-decoration: underline; text-underline-offset: 4px;
+  cursor: pointer;
+}
+.omdome-mer:hover { text-decoration-thickness: 2px; }
 .omdome figcaption {
   margin-top: 0; color: var(--muted); font-size: .9rem;
 }

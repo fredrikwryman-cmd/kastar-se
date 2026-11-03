@@ -374,6 +374,142 @@ function initOffertruta() {
 initOffertruta();
 
 /* ---------- Scroll-animationer ---------- */
+/* ---------- Långa omdömen klipps till fem rader ----------
+   Chan D. är flera gånger längre än de andra och gjorde sektionen ojämn.
+   Texten ändras aldrig: hela omdömet ligger kvar i sidan och i
+   tillgänglighetsträdet, det är bara visningen som klipps.
+
+   KLIPPNINGEN LÄGGS PÅ HÄRIFRÅN, inte i grundstilen. Utan JavaScript finns
+   varken klass eller knapp, och då syns hela omdömet. En avklippt text utan
+   väg vidare vore sämre än en lång.
+
+   Antalet rader MÄTS, det hårdkodas inte som ett antal tecken: samma omdöme
+   är fyra rader vid 1200 px och nio vid 390 px, och en teckengräns hade
+   klippt fel vid båda. Mätningen görs om vid fönsterändring, annars står ett
+   kort med knapp som inte behövs, eller utan knapp som behövs, efter att
+   telefonen vänts.
+
+   Ingen hover: på telefon finns ingen, och där läses sajten mest. */
+const OMDOME_RADER = 5;
+
+function initOmdomesklipp() {
+  const kort = Array.from(document.querySelectorAll('.omdome'));
+  if (!kort.length) return;
+
+  const tyst = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : { matches: false };
+
+  const poster = kort.map((figur, i) => ({
+    figur,
+    text: figur.querySelector('blockquote p'),
+    knapp: null,
+    utfalld: false,
+    nr: i + 1,
+  })).filter((post) => post.text);
+
+  function byggKnapp(post) {
+    if (post.knapp) return post.knapp;
+    if (!post.text.id) post.text.id = 'omdome-text-' + post.nr;
+
+    const knapp = document.createElement('button');
+    knapp.type = 'button';
+    knapp.className = 'omdome-mer';
+    /* aria-expanded bär läget. INGEN aria-pressed vid sidan av: två
+       tillstånd på samma knapp läses upp dubbelt. */
+    knapp.setAttribute('aria-expanded', 'false');
+    knapp.setAttribute('aria-controls', post.text.id);
+    knapp.textContent = 'Läs hela';
+    knapp.addEventListener('click', () => vaxla(post));
+
+    post.figur.insertBefore(knapp, post.figur.querySelector('figcaption'));
+    post.knapp = knapp;
+    return knapp;
+  }
+
+  function vaxla(post) {
+    post.utfalld = !post.utfalld;
+    post.knapp.setAttribute('aria-expanded', String(post.utfalld));
+    post.knapp.textContent = post.utfalld ? 'Visa mindre' : 'Läs hela';
+    stall(post);
+    /* Fokus ligger kvar på knappen. Den flyttas aldrig till texten: den som
+       tabbat hit ska kunna fälla in igen med samma tangent. */
+  }
+
+  /* Övergången behöver ett tal att röra sig mot, så utfällt läge får
+     max-height i pixlar. När den är framme byts den mot none, annars hade
+     en fönsterändring kunnat klippa texten igen. Med reducerad rörelse
+     finns ingen övergång och inget transitionend, så bytet sker direkt. */
+  function stall(post) {
+    const t = post.text;
+    if (post.utfalld) {
+      post.figur.classList.add('ar-utfalld');
+      t.style.maxHeight = t.scrollHeight + 'px';
+      if (tyst.matches) {
+        t.style.maxHeight = 'none';
+      } else {
+        t.addEventListener('transitionend', function klar(e) {
+          if (e.propertyName !== 'max-height') return;
+          t.removeEventListener('transitionend', klar);
+          if (post.utfalld) t.style.maxHeight = 'none';
+        });
+      }
+    } else {
+      // Från none går ingen övergång. Sätt nuvarande höjd först.
+      if (t.style.maxHeight === 'none') t.style.maxHeight = t.scrollHeight + 'px';
+      void t.offsetHeight;
+      post.figur.classList.remove('ar-utfalld');
+      t.style.maxHeight = '';
+    }
+  }
+
+  function mat() {
+    poster.forEach((post) => {
+      const t = post.text;
+      // Mät alltid oklippt, annars mäts taket i stället för texten.
+      const varUtfalld = post.figur.classList.contains('ar-utfalld');
+      post.figur.classList.remove('ar-klippt', 'ar-utfalld');
+      t.style.maxHeight = '';
+
+      const stil = window.getComputedStyle(t);
+      const radhojd = parseFloat(stil.lineHeight);
+      const rader = radhojd > 0 ? Math.round(t.scrollHeight / radhojd) : 0;
+      const behovs = rader > OMDOME_RADER;
+
+      if (behovs) {
+        post.figur.classList.add('ar-klippt');
+        byggKnapp(post);
+        post.knapp.hidden = false;
+        if (varUtfalld) {
+          post.figur.classList.add('ar-utfalld');
+          t.style.maxHeight = 'none';
+        }
+      } else {
+        // Kortet ryms: ingen knapp och inget dolt, precis som förut.
+        post.utfalld = false;
+        if (post.knapp) post.knapp.hidden = true;
+        t.style.maxHeight = '';
+      }
+    });
+  }
+
+  /* Mätningen väntar in typsnittet. Med reservtypsnittet blir radhöjden en
+     annan och antalet rader fel, och då hade knappen hamnat på fel kort. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(mat);
+  } else {
+    mat();
+  }
+
+  let timer = null;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(mat, 150);
+  });
+}
+
+initOmdomesklipp();
+
 const revealEls = document.querySelectorAll('.reveal');
 
 if ('IntersectionObserver' in window && revealEls.length) {
