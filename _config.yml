@@ -14,3 +14,12 @@ exclude:
   - PUBLICERA.md
   - README.md
   - skript/
+  # Fem bildfiler som ingen sida refererar: fyra JPEG fran ett tidigt
+  # utkast och kallfilen till app-ikonen. Tillsammans drygt 5 MB som
+  # annars publiceras utan att nagon kan na dem via sajten. De ligger
+  # kvar i repot, de ska bara inte ut pa webben.
+  - assets/1.jpeg
+  - assets/2.jpeg
+  - assets/3.jpeg
+  - assets/4.jpeg
+  - assets/app-ikon-kalla.png

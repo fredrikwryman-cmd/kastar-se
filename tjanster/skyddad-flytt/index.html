@@ -186,15 +186,16 @@
        alls när JavaScript är på, så animationerna är oförändrade. -->
   <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
-<!-- Sidan skiljer sig avsiktligt fran sajtens ovriga sidor pa fyra punkter,
-     och alla fyra har samma skal: besokaren ska inte skriva nagonting nagonstans.
+<!-- Sidan skiljer sig avsiktligt fran sajtens ovriga sidor pa tre punkter,
+     och alla tre har samma skal: besokaren ska inte lamna nagra uppgifter om
+     sig sjalv har.
      1. <body> bar inget attribut som startar assistenten, sa chatten byggs inte.
      2. Skriptet som bygger offertformularet laddas inte.
-     3. Sajtsokningen i sidhuvudet star inte har. Den ar ett falt vars innehall
-        hamnar i en adress, och en adress kan hamna i webblasarhistoriken.
-     4. Sidhuvudets knapp och menyns kontaktlank ringer respektive leder till
+     3. Sidhuvudets knapp och menyns kontaktlank ringer respektive leder till
         sidans egen kontaktrubrik, aldrig till startsidans formularsektion.
-     Mats av DIREKTIV 52 V4, som kraver noll traffar for vart och ett. -->
+     Sajtsokningen i sidhuvudet star kvar som pa sajtens ovriga sidor. Den ar en
+     GET-sokning mot /sok/ och har ingenting med offertformularet att gora.
+     Mats av DIREKTIV 53 V4. -->
 <body>
   <a class="skip" href="#main">Hoppa till innehållet</a>
   <!-- ============ HEADER ============ -->
@@ -220,6 +221,23 @@
         <a href="tel:+46705614845" class="btn btn-primary btn-sm nav-cta">Ring Fredrik</a>
       </nav>
 
+      <details class="sok">
+        <summary class="sok-knapp">
+          <svg class="sok-ikon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="sr-only">Sök</span>
+        </summary>
+        <form class="sok-panel" action="/sok/" method="get" role="search">
+          <div class="container">
+            <label class="sok-etikett" for="sokFalt">Sök på bohagsbolaget.se</label>
+            <div class="sok-rad">
+              <input class="sok-falt" id="sokFalt" type="search" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" />
+              <button class="btn btn-primary sok-skicka" type="submit">Sök</button>
+            </div>
+            <ul class="sok-lista" id="sokLista" role="listbox" aria-label="Förslag" hidden></ul>
+            <p class="sr-only sok-status" aria-live="polite"></p>
+          </div>
+        </form>
+      </details>
     </div>
   </header>
 

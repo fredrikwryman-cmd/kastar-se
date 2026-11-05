@@ -34,6 +34,11 @@ Priser och tjänsteinnehåll står i markupen, inte i en databas. Det är ett
 medvetet val: innehållet ändras några gånger om året och redigeras direkt i
 filerna.
 
+GitHub Pages tillåter inga egna svarsheaders, så sajten kan inte sätta
+Content-Security-Policy, X-Frame-Options eller liknande. Vägen dit vore att
+lägga Cloudflare framför Pages som proxy. Det är inte gjort, och det är ett
+medvetet val så länge sajten är statisk och inte tar emot inloggningar.
+
 ## Prestanda
 
 - **Bilder i WebP** med `srcset` och `sizes` i två bredder per motiv, satta
@@ -112,7 +117,7 @@ krämvitt och den varmare ytan `#F1EAE0` i faktarutan på rot- och rut-sidan.
 | `styles.css` | All styling för sajten. Paletten ligger överst i `:root` |
 | `script.js` | Meny, header, kortlänkar, priskalkylator, formulär, hero-parallax |
 | `kort.css`, `kort.js` | Enbart visitkorten |
-| `verktyg/kalkyl.html` | Internt offertverktyg, inte länkat från sajten |
+| `verktyg/kalkyl.html`, `verktyg/kalender.html` | Offertverktyg och kalender för eget bruk. Publiceras med sajten och svarar 200 för den som har adressen, men är inte länkade någonstans och bär `noindex, nofollow, noarchive` |
 | `assets/` | Bilder i WebP, Open Graph-bilder i JPEG, ikoner, typsnitt |
 | `CNAME`, `site.webmanifest`, `robots.txt`, `sitemap.xml` | Domän, manifest, indexering |
 
