@@ -129,10 +129,12 @@ python skript/bygg-sokindex.py
 - Synonymerna står i `sok/synonymer.json` och fylls på direkt i filen.
 - Ny sida i `sitemap.xml` behöver ett kort namn i `SIDNAMN` överst i skriptet.
 - Ny sida behöver dessutom sin sökväg i `KANDA_SOKVAGAR` i appen,
-  `bohagsbolaget-app/src/app/api/narvaro/route.ts`. Saknas den räknas sidans
-  besök under "annat" i närvarostatistiken i stället för på sidan själv.
-  Listan är handskriven och ligger i ett annat repo, så den följer inte med
-  av sig själv när sajten får en ny sida.
+  `bohagsbolaget-app/src/app/api/narvaro/statistiknyckel.ts`. Saknas den
+  räknas sidans besök under "annat" i närvarostatistiken i stället för på
+  sidan själv. Listan är handskriven och ligger i ett annat repo, så den
+  följer inte med av sig själv när sajten får en ny sida. Den genereras
+  INTE ur `sitemap.xml` och uppdateras inte av något skript: raden skrivs
+  in för hand, annars står den inte där.
 - Ändras `sok/index.json`, `sok/synonymer.json` eller `assets/js/sok.js`:
   höj `?v=` för filen (index och synonymer i `sok.js`, `sok.js` på alla sidor).
 - `skript/` står i exclude i `_config.yml` och publiceras inte.
