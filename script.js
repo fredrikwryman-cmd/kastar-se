@@ -257,7 +257,11 @@ document.querySelectorAll('form.contact-form').forEach(bindKontaktformular);
    Saknas stodet fangas klicket inte alls: lanken beter sig da precis som forut
    och tar besokaren till #kontakt. Ingen ska kunna hamna vid en knapp som inte
    gor nagot. */
-const OFFERT_UTLOSARE = 'a.nav-cta, .cards-services .card-cta[href="#kontakt"]';
+/* Sidan /tjanster/skyddad-flytt/ har samma knapp i headern, men den ringer
+   i stallet for att oppna offertformuläret. Darfor utesluts tel-lankar har:
+   utan undantaget hade querySelector traffat, offert.js hamtats in och
+   klicket fangats med preventDefault, sa att samtalet aldrig startat. */
+const OFFERT_UTLOSARE = 'a.nav-cta:not([href^="tel:"]), .cards-services .card-cta[href="#kontakt"]';
 
 let offertruta = null;
 let offertAterfokus = null;

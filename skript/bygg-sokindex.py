@@ -37,6 +37,7 @@ SIDNAMN = {
     "/tjanster/nedmontering/": "Nedmontering och rivning",
     "/tjanster/magasinering/": "Magasinering",
     "/tjanster/mc-forvaring/": "MC-förvaring",
+    "/tjanster/skyddad-flytt/": "Flytt vid skyddade personuppgifter",
     "/tjanster/foretag/": "Företag och föreningar",
     "/rot-rut.html": "Rot och rut",
     "/integritetspolicy.html": "Integritetspolicy",
