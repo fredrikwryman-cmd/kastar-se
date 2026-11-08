@@ -547,6 +547,47 @@ if (mcStjarna && 'IntersectionObserver' in window &&
   stjarnObs.observe(mcStjarna);
 }
 
+/* ---------- Reklamfilmen på startsidan ----------
+   Filmen startar först när minst HALVA den syns, och pausar när den
+   lämnat fönstret. Tröskeln 0,5 är därför satt på starten; pausen
+   hänger på isIntersecting, alltså när filmen är helt ute, så att en
+   film som nästan syns inte stannar mitt i.
+
+   muted är satt i markupen och är ett villkor, inte en smaksak: en
+   webbläsare vägrar starta en film med ljud utan ett tryck. play()
+   returnerar ändå ett löfte som kan avslås (energisparläge, egen
+   inställning i webbläsaren), och det fångas tyst. Utan catch blir ett
+   avslag en obehandlad rejection i konsolen, och filmen ser trasig ut i
+   en loggkontroll trots att posterbilden och kontrollerna fungerar.
+
+   Med prefers-reduced-motion startar filmen ALDRIG av sig själv.
+   Besökaren trycker play; då spelar den, och pausar fortfarande när den
+   lämnar fönstret.
+
+   Saknas JavaScript eller IntersectionObserver händer ingenting här.
+   Posterbilden står kvar och controls i markupen gör att filmen ändå
+   går att starta för hand. */
+const reklamfilm = document.querySelector('.reklamfilm-video');
+if (reklamfilm && 'IntersectionObserver' in window) {
+  const stillaRorelse = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const filmObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        if (!reklamfilm.paused) reklamfilm.pause();
+        return;
+      }
+      if (entry.intersectionRatio < 0.5) return;
+      if (stillaRorelse.matches) return;
+      if (!reklamfilm.paused) return;
+      const spelar = reklamfilm.play();
+      if (spelar && typeof spelar.catch === 'function') spelar.catch(() => {});
+    });
+  }, { threshold: [0, 0.5] });
+
+  filmObs.observe(reklamfilm);
+}
+
 /* ---------- Parallax på hero ----------
    Bakgrundslagret förflyttas nedåt och skalas upp svagt medan hero-innehållet
    tonar ut. Allt är bundet direkt till scrollpositionen – ingen easing och

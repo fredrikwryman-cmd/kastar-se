@@ -309,7 +309,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=83" />
+  <link rel="stylesheet" href="styles.css?v=84" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -396,47 +396,36 @@
       </div>
     </section>
 
-    <!-- ============ MC-FÖRVARING (säsongsband) ============
-         Läget styrs av data-status: "oppet" eller "fullbokat". CSS:en visar
-         rätt block, så inget JavaScript behövs. Se PUBLICERA.md för hur
-         läget byts och hur bandet tas bort efter säsongen. -->
-    <section class="section mc-band" id="mc-forvaring" data-status="oppet">
-      <div class="container mc-band-inner">
-        <div class="mc-band-text mc-oppet">
-          <svg class="mc-stjarna" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-            <polygon points="50,0 57.12,9.62 67.1,3.02 70.5,14.49 82.14,11.7 81.41,23.65 93.3,25 88.53,35.98 99.24,41.32 91,50 99.24,58.68 88.53,64.02 93.3,75 81.41,76.35 82.14,88.3 70.5,85.51 67.1,96.98 57.12,90.38 50,100 42.88,90.38 32.9,96.98 29.5,85.51 17.86,88.3 18.59,76.35 6.7,75 11.47,64.02 0.76,58.68 9,50 0.76,41.32 11.47,35.98 6.7,25 18.59,23.65 17.86,11.7 29.5,14.49 32.9,3.02 42.88,9.62" fill="var(--orange)" />
-            <circle cx="50" cy="50" r="35" fill="none" stroke="var(--petrol)" stroke-width="1.6" stroke-dasharray="2 2.4" />
-            <text x="50" y="47" text-anchor="middle" font-weight="700" font-size="17" fill="var(--petrol)" letter-spacing=".5">NYHET</text>
-            <text x="50" y="62" text-anchor="middle" font-weight="600" font-size="8.2" fill="var(--petrol)" letter-spacing="1">VINTER 2026</text>
-          </svg>
-          <p class="eyebrow">NYTT I VINTER · PLATS FÖR 30 MOTORCYKLAR</p>
-          <h2>Vi tar hand om hojen i vinter</h2>
-          <p class="lead">Vi hämtar motorcykeln hemma, förvarar den varmt i vårt magasin i Arlandastad och ställer tillbaka den på uppfarten i april.</p>
-          <ul class="mc-bockar">
-            <li><span class="bock" aria-hidden="true"></span> Varmt, torrt och låst</li>
-            <li><span class="bock" aria-hidden="true"></span> Underhållsladdning hela vintern</li>
-            <li><span class="bock" aria-hidden="true"></span> Transport inomhus i vår skåpbil</li>
-          </ul>
-          <!-- PLATSER KVAR: ändra siffran i <strong> och procenten i --bokat.
-               --bokat = bokade platser delat med 30, gånger 100. Exempel: 6 bokade ger "24 av 30" och --bokat: 20%. -->
-          <div class="mc-platser">
-            <p class="mc-platser-rad"><span>Platser kvar i vinter</span> <strong>24 av 30</strong></p>
-            <div class="mc-platser-stapel" aria-hidden="true" style="--bokat: 20%"><span></span></div>
-          </div>
-          <p class="mc-band-lank"><a href="/priser/#mc-forvaring">Se priset för vinterförvaringen</a></p>
-          <div class="hero-actions mc-band-knappar">
-            <a href="/tjanster/mc-forvaring/#boka" class="btn btn-primary">Boka din plats</a>
-            <a href="tel:+46705614845" class="btn btn-light">Ring 070-561 48 45</a>
-          </div>
-          <p class="mc-band-lank"><a href="/tjanster/mc-forvaring/">Läs mer om vinterförvaringen</a></p>
-          <p class="mc-band-fin">Hämtning inom cirka 4 mil från Arlandastad.</p>
-        </div>
-        <div class="mc-band-text mc-fullbokat">
-          <h2>Fullbokat i vinter</h2>
-          <p class="lead">Alla 30 platser är tagna. Ställ dig i kö för nästa säsong så hör vi av oss i god tid.</p>
-          <div class="hero-actions mc-band-knappar">
-            <a href="/tjanster/mc-forvaring/#boka" class="btn btn-primary">Ställ dig i kö</a>
-          </div>
+    <!-- ============ REKLAMFILM ============
+         Ersatte MC-förvaringens säsongsband. Bandet finns kvar i
+         historiken, se commit 1eeac41, och sidan /tjanster/mc-forvaring/
+         samt CSS-reglerna för bandet står orörda kvar.
+
+         Petrolbotten behålls med flit. Sektionen under är krämvit, och
+         sajtens ljusa rytm (se styles.css) säger att två intilliggande
+         ljusa sektioner aldrig får dela botten. Bandet som låg här var
+         petrol och nollställde växlingen; filmen gör samma sak. -->
+    <section class="section section-alt" id="reklamfilm">
+      <div class="container">
+        <!-- Ingen rubrik och ingen text: filmen talar för sig själv.
+             muted krävs för att en webbläsare alls ska tillåta att
+             filmen startar av sig själv. loop gör att den som kommer in
+             mitt i ändå ser hela filmen. preload="metadata" hämtar bara
+             längd och mått, inte 19 MB, så filmen aldrig konkurrerar med
+             hero-bilden om bandbredden. controls står kvar oavsett
+             JavaScript, så filmen alltid går att starta för hand.
+             width och height reserverar ytan, så inget hoppar när
+             filmen laddas. -->
+        <div class="reklamfilm">
+          <video class="reklamfilm-video"
+                 muted playsinline loop
+                 preload="metadata"
+                 controls
+                 poster="/assets/video/reklamfilm-poster.jpg"
+                 aria-label="Reklamfilm för Bohagsbolaget.se"
+                 width="1920" height="1080">
+            <source src="/assets/video/reklamfilm.mp4" type="video/mp4">
+          </video>
         </div>
       </div>
     </section>
@@ -1091,7 +1080,7 @@
   <script src="/assets/js/sok.js?v=8" defer></script>
 
   <script src="/assets/js/offert.js?v=3"></script>
-  <script src="script.js?v=43"></script>
+  <script src="script.js?v=44"></script>
 
   <script src="/assets/js/narvaro.js?v=4" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "484afc0535af4e18a9927f2684270fb0"}'></script><!-- End Cloudflare Web Analytics -->
