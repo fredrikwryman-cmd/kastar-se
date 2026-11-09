@@ -309,7 +309,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=84" />
+  <link rel="stylesheet" href="styles.css?v=85" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -401,33 +401,30 @@
          historiken, se commit 1eeac41, och sidan /tjanster/mc-forvaring/
          samt CSS-reglerna för bandet står orörda kvar.
 
-         Petrolbotten behålls med flit. Sektionen under är krämvit, och
-         sajtens ljusa rytm (se styles.css) säger att två intilliggande
-         ljusa sektioner aldrig får dela botten. Bandet som låg här var
-         petrol och nollställde växlingen; filmen gör samma sak. -->
-    <section class="section section-alt" id="reklamfilm">
-      <div class="container">
-        <!-- Ingen rubrik och ingen text: filmen talar för sig själv.
-             muted krävs för att en webbläsare alls ska tillåta att
-             filmen startar av sig själv. loop gör att den som kommer in
-             mitt i ändå ser hela filmen. preload="metadata" hämtar bara
-             längd och mått, inte 19 MB, så filmen aldrig konkurrerar med
-             hero-bilden om bandbredden. controls står kvar oavsett
-             JavaScript, så filmen alltid går att starta för hand.
-             width och height reserverar ytan, så inget hoppar när
-             filmen laddas. -->
-        <div class="reklamfilm">
-          <video class="reklamfilm-video"
-                 muted playsinline loop
-                 preload="metadata"
-                 controls
-                 poster="/assets/video/reklamfilm-poster.jpg"
-                 aria-label="Reklamfilm för Bohagsbolaget.se"
-                 width="1920" height="1080">
-            <source src="/assets/video/reklamfilm.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
+         Sektionen står med flit UTANFÖR .container och bär varken
+         .section eller .section-alt. Filmen är själva bandet och går
+         kant till kant, precis som bilden i MC-sektionen gjorde. Hade
+         den legat i behållaren hade den fått 20 px luft i sidorna och
+         sektionens padding över och under, och då syns en bakgrund.
+
+         Ingen rubrik och ingen text: filmen talar för sig själv.
+         muted krävs för att en webbläsare alls ska tillåta att filmen
+         startar av sig själv. loop gör att den som kommer in mitt i
+         ändå ser hela filmen. preload="metadata" hämtar bara längd och
+         mått, inte 19 MB, så filmen aldrig konkurrerar med hero-bilden
+         om bandbredden. controls står kvar oavsett JavaScript, så
+         filmen alltid går att starta för hand. width och height
+         reserverar ytan, så inget hoppar när filmen laddas. -->
+    <section id="reklamfilm">
+      <video class="reklamfilm-video"
+             muted playsinline loop
+             preload="metadata"
+             controls
+             poster="/assets/video/reklamfilm-poster.jpg"
+             aria-label="Reklamfilm för Bohagsbolaget.se"
+             width="1920" height="1080">
+        <source src="/assets/video/reklamfilm.mp4" type="video/mp4">
+      </video>
     </section>
 
     <!-- ============ TRYGGHETSRAD ============ -->
