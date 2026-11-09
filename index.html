@@ -309,7 +309,7 @@
        viktaxeln 300–700, alltså räcker en enda hämtning. -->
   <link rel="preload" as="font" type="font/woff2"
         href="assets/fonts/space-grotesk-variable.woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=86" />
+  <link rel="stylesheet" href="styles.css?v=87" />
 
   <!-- Utan JavaScript sätter script.js aldrig klassen .in, och .reveal
        skulle då stå kvar på opacity 0 för alltid. Blocket parsas inte
@@ -407,16 +407,14 @@
          den legat i behållaren hade den fått 20 px luft i sidorna och
          sektionens padding över och under, och då syns en bakgrund.
 
-         På dator talar filmen för sig själv: ingen rubrik, ingen
-         bakgrund, ingen luft. På mobil ligger den i stället i ett
-         petrolband med en rubrik över, eftersom en film som går kant
-         till kant utan något omkring sig läses som en bildyta och inte
-         som ett eget avsnitt när skärmen är smal. Rubriken är dold med
-         display: none över brytpunkten 860px. Både behållaren och
-         rubriken döljs: behållaren för att section-head:s
-         bottenmarginal annars hade flyttat filmen nedåt på dator,
-         rubriken för att dess EGEN beräknade display ska vara none och
-         inte bara ärvas av en dold förälder.
+         Ingen rubrik och ingen text: filmen talar för sig själv.
+
+         Samma HTML bär två utföranden, ett per brytpunkt, och vilket
+         som gäller avgörs helt i styles.css. På dator går filmen kant
+         till kant och behållaren är en genomskinlig genomföring. På
+         mobil, under 860px, ligger filmen i stället inom sajtens
+         innehållsbredd med sidomarginal, kortradie och petrol under,
+         så som den gjorde i commit 3af0d88.
 
          muted krävs för att en webbläsare alls ska tillåta att filmen
          startar av sig själv. loop gör att den som kommer in mitt i
@@ -426,20 +424,19 @@
          filmen alltid går att starta för hand. width och height
          reserverar ytan, så inget hoppar när filmen laddas. -->
     <section id="reklamfilm">
-      <div class="container reklamfilm-rubrik">
-        <div class="section-head">
-          <h2>Trygg hjälp från start till mål</h2>
+      <div class="container">
+        <div class="reklamfilm">
+          <video class="reklamfilm-video"
+                 muted playsinline loop
+                 preload="metadata"
+                 controls
+                 poster="/assets/video/reklamfilm-poster.jpg"
+                 aria-label="Reklamfilm för Bohagsbolaget.se"
+                 width="1920" height="1080">
+            <source src="/assets/video/reklamfilm.mp4" type="video/mp4">
+          </video>
         </div>
       </div>
-      <video class="reklamfilm-video"
-             muted playsinline loop
-             preload="metadata"
-             controls
-             poster="/assets/video/reklamfilm-poster.jpg"
-             aria-label="Reklamfilm för Bohagsbolaget.se"
-             width="1920" height="1080">
-        <source src="/assets/video/reklamfilm.mp4" type="video/mp4">
-      </video>
     </section>
 
     <!-- ============ TRYGGHETSRAD ============ -->

@@ -2638,17 +2638,29 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
 .offert-ram + .offert-chips { margin-top: .9rem; }
 
 /* ---------- Reklamfilm på startsidan ----------
-   Filmen är själva bandet och går kant till kant, precis som bilden i
-   MC-sektionen gjorde. Sektionen ligger därför utanför .container och
-   bär varken .section eller .section-alt.
+   Ett utförande per brytpunkt, buret av samma HTML. Vilket som gäller
+   avgörs helt här; index.html vet ingenting om det.
 
-   Ingen padding, marginal, bakgrund, kantlinje, skugga eller hörnradie,
-   varken här eller på filmen: filmen täcker hela sektionen, så allt
-   sådant hade bara kunnat synas som luft eller en ram runt den.
+   MOBIL är grundläget nedan och är utförandet från commit 3af0d88:
+   filmen inom sajtens innehållsbredd, .container:s 20px i sidled,
+   sajtens kortradie, svart bakom filmen och petrol under alltihop, med
+   .section:s egen luft över och under. En film som går kant till kant
+   utan något omkring sig läses som en bildyta när skärmen är smal; i en
+   rundad ruta med luft runt läses den som ett eget innehåll.
 
-   width: 100 % och inte 100vw. 100vw räknar in rullningslisten och ger
-   en sida som är några pixlar bredare än fönstret, alltså horisontell
-   scroll på varje skärm som har en list.
+   Petrol och inte krämvit: sektionen under är krämvit, och sajtens ljusa
+   rytm säger att två intilliggande ljusa sektioner aldrig får dela
+   botten. Bandet som låg här förut var petrol och nollställde
+   växlingen; filmen gör samma sak.
+
+   DATOR är @media (min-width: 861px) längst ned och är utförandet från
+   1806819: filmen är själva bandet och går kant till kant, precis som
+   bilden i MC-sektionen gjorde.
+
+   Svart bakom filmen, inte petrol: en eventuell brevlåda ska läsas som
+   en del av bilden och inte som en ljusare ram runt den. Tonen är
+   hämtad ur 3af0d88, inte nytillkommen, och den syns över huvud taget
+   bara om källan någon gång slutar vara 16:9.
 
    aspect-ratio räknas ut ur bredden, så ytan är reserverad redan innan
    filmen har någon metadata och ingenting hoppar när den laddas.
@@ -2656,19 +2668,24 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
    ett annat förhållande ska den passas in, aldrig klippas.
 
    display: block är inte kosmetik. En <video> är inline som standard och
-   får då en baslinjerad springa under sig, och den springan hade synts
-   som en remsa mellan filmen och sektionen under.
+   får då en baslinjerad springa under sig. Den springan syns som en
+   svart remsa i underkanten av rutan på mobil, och som en remsa mellan
+   filmen och sektionen under på dator.
 
    Ingen transition står på elementet. Filmen är fokuserbar via sina
    kontroller, och transition på ett fokuserbart element fördröjer
    fokusringen. */
 #reklamfilm {
   margin: 0;
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  background: var(--petrol);
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+}
+
+.reklamfilm {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
 }
 
 .reklamfilm-video {
@@ -2677,55 +2694,43 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: contain;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  background: #000;
 }
 
-/* Fokusringen ritas INNANFÖR filmen, med negativ offset. En ring utanför
-   hade hamnat ovanpå hero och sektionen under, eftersom filmen går kant
-   till kant och inte har någon luft omkring sig. Orange mot petrol ger
-   4,62:1; mot en ljus bildruta är den svagare, men den ligger an mot
-   filmens egen kant och syns därför som en ram. */
+/* Fokusringen måste synas mot petrolbotten. --focus-ring är orange-ink
+   och ger bara 2,34:1 där; mot petrol gäller --orange med 4,62:1.
+   Offset -3px, alltså innanför filmens egen kant, i BÅDA utförandena.
+   På mobil därför att .reklamfilm har overflow: hidden, som klipper en
+   ring som ligger utanför; på dator därför att filmen går kant till
+   kant och en ring utanför hade hamnat ovanpå hero och sektionen under.
+   Ringen ligger an mot filmens kant och läses därför som en ram. */
 .reklamfilm-video:focus-visible {
   outline: 3px solid var(--orange);
   outline-offset: -3px;
 }
 
-/* Dator: rubriken finns i HTML men syns inte, och sektionen är precis
-   som förut bara filmen. BÅDA döljs. Behållaren måste döljas för att
-   .section-head:s bottenmarginal på 2,75rem annars hade tryckt ned
-   filmen, och rubriken måste döljas för sin egen skull: display på ett
-   element inuti ett dolt träd beräknas fortfarande till sitt eget
-   värde, så utan den här raden hade h2:ans beräknade display varit
-   block. */
-.reklamfilm-rubrik,
-.reklamfilm-rubrik h2 { display: none; }
+/* Dator: filmen är bandet och går kant till kant. Behållaren och rutan
+   nollställs till genomskinliga genomföringar: utan maxbredd och
+   sidopadding är .container en vanlig blocklåda i full bredd, och utan
+   radie, botten och skugga syns rutan inte alls.
 
-/* Mobil: filmen ligger i ett petrolband med rubrik över.
-   860px är sajtens mobilbrytpunkt, samma som styr mobilraden, korten
-   och sidfoten, inte ett nytt eget mått.
-
-   Alla tre avstånden är sajtens egna och hämtas därför ur de regler som
-   redan finns, inte ur nya tal:
-   - ovanför rubriken och nedanför filmen: .section:s
-     padding, clamp(3.5rem, 7vw, 5.5rem). Under 860px ligger 7vw under
-     golvet, så värdet är 3,5rem = 56px.
-   - mellan rubriken och filmen: .section-head:s margin-bottom på
-     2,75rem = 44px. H2:ans egna .5rem kollapsar in i den.
-   Sidomarginalen är .container:s 20px, som rubriken bär genom att ligga
-   i en .container. Filmen ligger utanför behållaren och går därför
-   fortfarande kant till kant.
-
-   Vitt på petrol ger 12,30:1. Bakgrunden är var(--petrol), samma
-   variabel som .section-alt använder; sektionen får inte klassen, för
-   då hade bandet funnits även på dator. */
-@media (max-width: 860px) {
+   Filmens bredd är 100 % och inte 100vw. 100vw räknar in rullningslisten
+   och ger en sida som är några pixlar bredare än fönstret, alltså
+   horisontell scroll på varje skärm som har en list. */
+@media (min-width: 861px) {
   #reklamfilm {
-    background: var(--petrol);
-    padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+    background: none;
+    padding: 0;
   }
-  .reklamfilm-rubrik { display: block; }
-  .reklamfilm-rubrik h2 { display: block; color: var(--on-dark); }
+  #reklamfilm > .container {
+    max-width: none;
+    padding: 0;
+  }
+  .reklamfilm {
+    border-radius: 0;
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+  }
+  .reklamfilm-video { background: none; }
 }
