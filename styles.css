@@ -2692,3 +2692,40 @@ section[id], h2[id], h3[id] { scroll-margin-top: 90px; }
   outline: 3px solid var(--orange);
   outline-offset: -3px;
 }
+
+/* Dator: rubriken finns i HTML men syns inte, och sektionen är precis
+   som förut bara filmen. BÅDA döljs. Behållaren måste döljas för att
+   .section-head:s bottenmarginal på 2,75rem annars hade tryckt ned
+   filmen, och rubriken måste döljas för sin egen skull: display på ett
+   element inuti ett dolt träd beräknas fortfarande till sitt eget
+   värde, så utan den här raden hade h2:ans beräknade display varit
+   block. */
+.reklamfilm-rubrik,
+.reklamfilm-rubrik h2 { display: none; }
+
+/* Mobil: filmen ligger i ett petrolband med rubrik över.
+   860px är sajtens mobilbrytpunkt, samma som styr mobilraden, korten
+   och sidfoten, inte ett nytt eget mått.
+
+   Alla tre avstånden är sajtens egna och hämtas därför ur de regler som
+   redan finns, inte ur nya tal:
+   - ovanför rubriken och nedanför filmen: .section:s
+     padding, clamp(3.5rem, 7vw, 5.5rem). Under 860px ligger 7vw under
+     golvet, så värdet är 3,5rem = 56px.
+   - mellan rubriken och filmen: .section-head:s margin-bottom på
+     2,75rem = 44px. H2:ans egna .5rem kollapsar in i den.
+   Sidomarginalen är .container:s 20px, som rubriken bär genom att ligga
+   i en .container. Filmen ligger utanför behållaren och går därför
+   fortfarande kant till kant.
+
+   Vitt på petrol ger 12,30:1. Bakgrunden är var(--petrol), samma
+   variabel som .section-alt använder; sektionen får inte klassen, för
+   då hade bandet funnits även på dator. */
+@media (max-width: 860px) {
+  #reklamfilm {
+    background: var(--petrol);
+    padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  }
+  .reklamfilm-rubrik { display: block; }
+  .reklamfilm-rubrik h2 { display: block; color: var(--on-dark); }
+}
